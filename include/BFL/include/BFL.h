@@ -6,7 +6,7 @@
 /*   By: mancorte <mancorte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 15:46:21 by ribana-b          #+#    #+#             */
-/*   Updated: 2024/09/05 01:09:23 by mancorte         ###   ########.fr       */
+/*   Updated: 2024/10/01 14:06:21 by mancorte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,10 +52,10 @@ enum e_fd
 enum e_exit_status
 {
 	BFL_OK = 0,				/**< 0 */
-	BFL_KO,					/**< 1 */
+	BFL_LKO,					/**< 1 */
 	BFL_RIP_MALLOC,			/**< 2 */
 	BFL_INVALID_ARGC,		/**< 3 */
-	BFL_EXIT_STATUS_LIMIT,	/**< Amount of enums */
+	BFL_EXIT_STATUS_IMIT,	/**< Amount of enums */
 };
 
 /* @------------------------------------------------------------------------@ */

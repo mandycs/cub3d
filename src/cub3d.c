@@ -1,19 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                         :::     ::::::::   */
-/*   cub3d.c                                             :+:     :+:    :+:   */
-/*                                                     +:+ +:+        +:+     */
-/*   By: mancorte <mancorte@student.42malaga.com>    +#+  +:+      +#+        */
-/*                                                 +#+#+#+#+#+   +#+          */
-/*   Created: 2024/10/01 13:46:31 by mancorte           #+#    #+# Malaga     */
-/*   Updated: 2024/10/01 13:46:31 by mancorte          ###   ########.com     */
+/*                                                        :::      ::::::::   */
+/*   cub3d.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mancorte <mancorte@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/10/01 13:46:31 by mancorte          #+#    #+#             */
+/*   Updated: 2024/10/01 17:24:29 by mancorte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-int	main(void)
+int	main(int argc, char **argv)
 {
-	ribanab();
-	return (0);
+	t_cub	cub;
+
+	ft_check_arg(argc, argv, &cub);
 }

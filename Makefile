@@ -33,7 +33,7 @@ UTILS_DIR := utils/
 OBJ_DIR := obj/
 
 INCLUDE_FILES := cub3d.h
-SRC_FILES := cub3d.c
+SRC_FILES := cub3d.c parser.c
 UTILS_FILES := utils.c
 
 INCLUDE = $(addprefix $(INCLUDE_DIR), $(INCLUDE_FILES))
@@ -52,7 +52,7 @@ else
 endif
 
 CFLAGS := -Wall -Wextra -Werror
-CPPFLAGS := -I $(INCLUDE_DIR)
+CPPFLAGS := -I $(INCLUDE_DIR) -I $(BFL_DIR)include
 LDFLAGS := -L $(BFL_DIR)
 LDLIBS := -lBFL -lreadline
 
