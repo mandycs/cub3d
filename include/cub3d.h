@@ -6,7 +6,7 @@
 /*   By: mancorte <mancorte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 13:46:31 by mancorte          #+#    #+#             */
-/*   Updated: 2024/10/01 23:44:50 by mancorte         ###   ########.fr       */
+/*   Updated: 2024/10/02 01:13:40 by mancorte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,12 @@ struct					s_cub
 	char				*ea;
 	char				*f;
 	char				*c;
+	int					fd_no;
+	int					fd_so;
+	int					fd_we;
+	int					fd_ea;
+	int					fd_f;
+	int					fd_c;
 };
 /* @------------------------------------------------------------------------@ */
 /* |                           Function Section                             | */
@@ -74,4 +80,6 @@ void					ft_print_paths(t_cub *cub);
 void					ft_free_cub(t_cub *cub);
 void					initialize_cub(t_cub *cub);
 void					ft_process_texture(t_cub *cub);
+int						ft_check_paths(t_cub *cub);
+int						ft_open_file(char *filename, int *fd);
 #endif

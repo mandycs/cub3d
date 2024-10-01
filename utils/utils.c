@@ -6,7 +6,7 @@
 /*   By: mancorte <mancorte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 13:46:31 by mancorte          #+#    #+#             */
-/*   Updated: 2024/10/02 00:26:15 by mancorte         ###   ########.fr       */
+/*   Updated: 2024/10/02 01:06:14 by mancorte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,4 +82,13 @@ void	initialize_cub(t_cub *cub)
 	cub->ea = NULL;
 	cub->f = NULL;
 	cub->c = NULL;
+	cub->map = NULL;
+	cub->line = NULL;
+	cub->new_lines = NULL;
+	cub->fd_no = 0;
+	cub->fd_so = 0;
+	cub->fd_we = 0;
+	cub->fd_ea = 0;
+	cub->fd_f = 0;
+	cub->fd_c = 0;
 }

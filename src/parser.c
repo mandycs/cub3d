@@ -6,7 +6,7 @@
 /*   By: mancorte <mancorte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 13:49:31 by mancorte          #+#    #+#             */
-/*   Updated: 2024/10/02 00:30:47 by mancorte         ###   ########.fr       */
+/*   Updated: 2024/10/02 01:18:19 by mancorte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,11 @@ int	ft_check_arg(int argc, char **argv, t_cub *cub)
 		return (BFL_LKO);
 	if (ft_extract_text(cub) != BFL_OK)
 		return (BFL_LKO);
+	// if (ft_check_paths(cub) != BFL_OK)
+	// {
+	// 	bfl_fprintf(STDERR, "Error opening paths\n");
+	// 	return (BFL_LKO);
+	// }
 	ft_free_cub(cub);
 	return (BFL_OK);
 }
@@ -112,7 +117,8 @@ int	ft_extract_text(t_cub *cub)
 			}
 			cub->i++;
 		}
-		cub->count++;
+		if (cub->text[cub->count])
+			cub->count++;
 	}
 	return (BFL_OK);
 }
