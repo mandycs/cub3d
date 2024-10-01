@@ -33,7 +33,7 @@ UTILS_DIR := utils/
 OBJ_DIR := obj/
 
 INCLUDE_FILES := cub3d.h
-SRC_FILES := cub3d.c parser.c
+SRC_FILES := cub3d.c parser.c parser_2.c
 UTILS_FILES := utils.c
 
 INCLUDE = $(addprefix $(INCLUDE_DIR), $(INCLUDE_FILES))

@@ -6,7 +6,7 @@
 /*   By: mancorte <mancorte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 13:49:31 by mancorte          #+#    #+#             */
-/*   Updated: 2024/10/01 18:06:39 by mancorte         ###   ########.fr       */
+/*   Updated: 2024/10/02 00:30:47 by mancorte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 int	ft_check_arg(int argc, char **argv, t_cub *cub)
 {
 	cub->fd = 0;
+	cub->count = 0;
 	if (argc != 2)
 	{
 		bfl_fprintf(STDERR, "Error in number of arguments \n");
@@ -25,7 +26,11 @@ int	ft_check_arg(int argc, char **argv, t_cub *cub)
 	cub->fd = ft_extract_path(argv[1]);
 	if (cub->fd == BFL_LKO)
 		return (BFL_LKO);
-	ft_read_file(cub);
+	if (ft_read_file(cub) != BFL_OK)
+		return (BFL_LKO);
+	if (ft_extract_text(cub) != BFL_OK)
+		return (BFL_LKO);
+	ft_free_cub(cub);
 	return (BFL_OK);
 }
 
@@ -51,7 +56,6 @@ int	ft_extract_path(char *filename)
 {
 	int	fd;
 
-	cub->count = 0;
 	fd = open(filename, O_RDONLY);
 	if (fd == -1)
 	{
@@ -87,5 +91,28 @@ int	ft_read_file(t_cub *cub)
 		cub->text[cub->count++] = cub->line;
 	}
 	cub->text[cub->count] = NULL;
+	return (BFL_OK);
+}
+
+int	ft_extract_text(t_cub *cub)
+{
+	cub->count = 0;
+	while (cub->text[cub->count])
+	{
+		cub->i = 0;
+		while (cub->text[cub->count][cub->i] && cub->text[cub->count])
+		{
+			ft_process_texture(cub);
+			if (cub->text[cub->count][cub->i] == '\n')
+				break ;
+			else if (cub->text[cub->count][cub->i] == '1')
+			{
+				ft_extract_map(cub);
+				break ;
+			}
+			cub->i++;
+		}
+		cub->count++;
+	}
 	return (BFL_OK);
 }
