@@ -63,6 +63,7 @@ void	ft_free_cub(t_cub *cub)
 void	initialize_cub(t_cub *cub)
 {
 	cub->i = 0;
+	cub->count = 0;
 	cub->text = NULL;
 	cub->no = NULL;
 	cub->so = NULL;
@@ -77,4 +78,5 @@ void	initialize_cub(t_cub *cub)
 	cub->fd_so = 0;
 	cub->fd_we = 0;
 	cub->fd_ea = 0;
+	cub->error = 0;
 }

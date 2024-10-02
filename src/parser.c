@@ -8,19 +8,19 @@ int	ft_check_arg(int argc, char **argv, t_cub *cub)
 	if (argc != 2)
 	{
 		bfl_fprintf(STDERR, "Error in number of arguments \n");
-		return (BFL_INVALID_ARGC);
+		return (CUB_LKO);
 	}
-	if (ft_check_extension(argv[1]) != BFL_OK)
-		return (BFL_LKO);
+	if (ft_check_extension(argv[1]) != CUB_OK)
+		return (CUB_LKO);
 	cub->fd = ft_extract_path(argv[1]);
-	if (cub->fd == BFL_LKO)
+	if (cub->fd == CUB_OK)
+		return (CUB_LKO);
+	if (ft_read_file(cub) != CUB_OK)
+		return (CUB_RIP_READ);
+	if (ft_extract_text(cub) != CUB_OK)
 		return (BFL_LKO);
-	if (ft_read_file(cub) != BFL_OK)
-		return (BFL_LKO);
-	if (ft_extract_text(cub) != BFL_OK)
-		return (BFL_LKO);
-	// if (ft_check_paths(cub) != BFL_OK)
-	// 	return (BFL_LKO);
+	// if (ft_check_paths(cub) != CUB_OK)
+	// 	return (CUB_LKO);
 	if (ft_check_map(cub) != BFL_OK)
 		return (BFL_LKO);
 	return (BFL_OK);
@@ -41,7 +41,7 @@ int	ft_check_extension(char *str)
 	if (str[i + 1] == 'c' && str[i + 2] == 'u' && str[i + 3] == 'b')
 		return (BFL_OK);
 	bfl_fprintf(STDERR, "Error in extension file\n");
-	return (BFL_OK);
+	return (BFL_LKO);
 }
 
 int	ft_extract_path(char *filename)
@@ -64,7 +64,7 @@ int	ft_read_file(t_cub *cub)
 	if (!cub->text)
 	{
 		bfl_free(cub->text, 2);
-		return (BFL_RIP_MALLOC);
+		return (CUB_RIP_MALLOC);
 	}
 	while ((cub->line = get_next_line(cub->fd)))
 	{
@@ -76,19 +76,23 @@ int	ft_read_file(t_cub *cub)
 			if (!cub->new_lines)
 			{
 				bfl_free(cub->text, 2);
-				return (BFL_RIP_MALLOC);
+				return (CUB_RIP_MALLOC);
 			}
 			cub->text = cub->new_lines;
 		}
 		cub->text[cub->count++] = cub->line;
 	}
 	cub->text[cub->count] = NULL;
-	return (BFL_OK);
+	return (CUB_OK);
 }
 
 int	ft_extract_text(t_cub *cub)
 {
-	cub->count = 0;
+	if (!cub->text[cub->count])
+	{
+		cub->error = CUB_NO_TEXT;
+		return (CUB_LKO);
+	}
 	while (cub->text[cub->count])
 	{
 		cub->i = 0;
@@ -107,5 +111,5 @@ int	ft_extract_text(t_cub *cub)
 		if (cub->text[cub->count])
 			cub->count++;
 	}
-	return (BFL_OK);
+	return (CUB_OK);
 }

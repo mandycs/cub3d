@@ -1,6 +1,5 @@
 #include "cub3d.h"
-//AÑADIR MENSAJE DE ERROR PARA CADA UNO DE LOS PATHS
-//FUNCION CON FLAGS Y ENUM PARA MENSAJES DE ERROR?
+
 void	ft_process_texture(t_cub *cub)
 {
 	if (bfl_strncmp(cub->text[cub->count], "NO", 2) == 0)
@@ -33,6 +32,7 @@ void	ft_extract_path_texture(t_cub *cub, int flag)
 	cub->count++;
 	cub->i = 0;
 }
+
 int	ft_extract_color(t_cub *cub, int flag)
 {
 	while (!bfl_isdigit(cub->text[cub->count][cub->i]))
@@ -86,7 +86,7 @@ int	ft_extract_map(t_cub *cub)
 	}
 	return (BFL_OK);
 }
-
+//NEXT STEP
 int	ft_extract_color_aux(t_cub *cub, int flag)
 {
 	if (flag == 0)

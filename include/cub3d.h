@@ -6,7 +6,7 @@
 /*   By: mancorte <mancorte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 13:46:31 by mancorte          #+#    #+#             */
-/*   Updated: 2024/10/02 17:17:19 by mancorte         ###   ########.fr       */
+/*   Updated: 2024/10/03 00:10:58 by mancorte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,22 @@ typedef struct s_cub	t_cub;
 /* @------------------------------------------------------------------------@ */
 /* |                             Enum Section                               | */
 /* @------------------------------------------------------------------------@ */
+enum					e_exit_status_cub
+{
+	CUB_OK = 0,     /**< 0 */
+	CUB_LKO,        /**< 1 */
+	CUB_RIP_MALLOC, /**< Amount of enums */
+	CUB_RIP_READ,
+	CUB_NO_TEXT,
+	CUB_NO_PATH,
+	CUB_ERROR_NO_PATH,
+	CUB_ERROR_SO_PATH,
+	CUB_ERROR_WE_PATH,
+	CUB_ERROR_EA_PATH,
+	CUB_ERROR_COLOR,
+	CUB_ERROR_MAP,
 
+};
 /* @------------------------------------------------------------------------@ */
 /* |                            Struct Section                              | */
 /* @------------------------------------------------------------------------@ */
@@ -66,6 +81,7 @@ struct					s_cub
 	int					c_r;
 	int					c_g;
 	int					c_b;
+	int					error;
 };
 /* @------------------------------------------------------------------------@ */
 /* |                           Function Section                             | */
@@ -87,7 +103,12 @@ void					ft_free_cub(t_cub *cub);
 void					initialize_cub(t_cub *cub);
 void					ft_process_texture(t_cub *cub);
 int						ft_check_paths(t_cub *cub);
-int						ft_open_file(char *filename, int *fd);
+int						ft_open_file(char *filename, int *fd, int flag, t_cub *cub);
 int						ft_check_map(t_cub *cub);
 int						ft_valid_color(t_cub *cub);
+void					ft_check_error(t_cub *cub);
+void					ft_paths_close(t_cub *cub);
+void					ft_close_fd(t_cub *cub);
+void					ft_check_error(t_cub *cub);
+void					ft_check_error_2(t_cub *cub);
 #endif
