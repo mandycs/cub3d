@@ -1,32 +1,6 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   parser_2.c                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mancorte <mancorte@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/01 19:50:42 by mancorte          #+#    #+#             */
-/*   Updated: 2024/10/02 00:27:20 by mancorte         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "cub3d.h"
-
-int	ft_valid_char(t_cub *cub)
-{
-	if (cub->text[cub->count][cub->i] == 'N'
-		|| cub->text[cub->count][cub->i] == 'S'
-		|| cub->text[cub->count][cub->i] == 'W'
-		|| cub->text[cub->count][cub->i] == 'E'
-		|| cub->text[cub->count][cub->i] == '1'
-		|| cub->text[cub->count][cub->i] == '0')
-		return (BFL_OK);
-	else if (bfl_isspace(cub->text[cub->count][cub->i]))
-		return (BFL_OK);
-	else
-		return (BFL_LKO);
-}
-
+//AÑADIR MENSAJE DE ERROR PARA CADA UNO DE LOS PATHS
+//FUNCION CON FLAGS Y ENUM PARA MENSAJES DE ERROR?
 void	ft_process_texture(t_cub *cub)
 {
 	if (bfl_strncmp(cub->text[cub->count], "NO", 2) == 0)
@@ -59,17 +33,30 @@ void	ft_extract_path_texture(t_cub *cub, int flag)
 	cub->count++;
 	cub->i = 0;
 }
-
-void	ft_extract_color(t_cub *cub, int flag)
+int	ft_extract_color(t_cub *cub, int flag)
 {
 	while (!bfl_isdigit(cub->text[cub->count][cub->i]))
 		cub->i++;
-	if (flag == 0)
+	if(cub->text[cub->count][cub->i] == '\0')
+	{
+		bfl_fprintf(STDERR, "Error (Missing Color)\n");
+		return (BFL_LKO);
+	}
+	if (flag == 0 && cub->text[cub->count][cub->i])
+	{
 		cub->f = bfl_strdup(&cub->text[cub->count][cub->i]);
-	else if (flag == 1)
+		if (ft_extract_color_aux(cub, flag) == BFL_LKO)
+			return (BFL_LKO);
+	}
+	else if (flag == 1 && cub->text[cub->count][cub->i])
+	{
 		cub->c = bfl_strdup(&cub->text[cub->count][cub->i]);
+		if (ft_extract_color_aux(cub, flag) == BFL_LKO)
+			return (BFL_LKO);
+	}
 	cub->count++;
 	cub->i = 0;
+	return (BFL_OK);
 }
 
 int	ft_extract_map(t_cub *cub)
@@ -96,6 +83,35 @@ int	ft_extract_map(t_cub *cub)
 		cub->map[cub->i] = bfl_strdup(cub->text[tmp]);
 		cub->i++;
 		tmp++;
+	}
+	return (BFL_OK);
+}
+
+int	ft_extract_color_aux(t_cub *cub, int flag)
+{
+	if (flag == 0)
+	{
+		cub->f_r = bfl_atoi(cub->f);
+		cub->f_aux = bfl_strchr(cub->f, ',');
+		if (!cub->f_aux)
+			return (BFL_LKO);
+		cub->f_g = bfl_atoi(cub->f_aux + 1);
+		cub->f_aux = bfl_strchr(cub->f_aux + 1, ',');
+		if (!cub->f_aux)
+			return (BFL_LKO);
+		cub->f_b = bfl_atoi(cub->f_aux + 1);
+	}
+	if (flag == 1)
+	{
+		cub->c_r = bfl_atoi(cub->c);
+		cub->f_aux = bfl_strchr(cub->c, ',');
+		if (!cub->f_aux)
+			return (BFL_LKO);
+		cub->c_g = bfl_atoi(cub->f_aux + 1);
+		cub->f_aux = bfl_strchr(cub->f_aux + 1, ',');
+		if (!cub->f_aux)
+			return (BFL_LKO);
+		cub->c_b = bfl_atoi(cub->f_aux + 1);
 	}
 	return (BFL_OK);
 }

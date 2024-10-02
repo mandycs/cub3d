@@ -1,14 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   parser.c                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: mancorte <mancorte@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/01 13:49:31 by mancorte          #+#    #+#             */
-/*   Updated: 2024/10/02 01:18:19 by mancorte         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
 
 #include "cub3d.h"
 
@@ -31,11 +20,9 @@ int	ft_check_arg(int argc, char **argv, t_cub *cub)
 	if (ft_extract_text(cub) != BFL_OK)
 		return (BFL_LKO);
 	// if (ft_check_paths(cub) != BFL_OK)
-	// {
-	// 	bfl_fprintf(STDERR, "Error opening paths\n");
 	// 	return (BFL_LKO);
-	// }
-	ft_free_cub(cub);
+	if (ft_check_map(cub) != BFL_OK)
+		return (BFL_LKO);
 	return (BFL_OK);
 }
 

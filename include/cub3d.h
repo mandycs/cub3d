@@ -6,7 +6,7 @@
 /*   By: mancorte <mancorte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 13:46:31 by mancorte          #+#    #+#             */
-/*   Updated: 2024/10/02 01:13:40 by mancorte         ###   ########.fr       */
+/*   Updated: 2024/10/02 17:17:19 by mancorte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ struct					s_cub
 	int					capacity;
 	int					count;
 	int					i;
+	int					j;
 	char				**text;
 	char				**map;
 	int					tmp;
@@ -53,13 +54,18 @@ struct					s_cub
 	char				*we;
 	char				*ea;
 	char				*f;
+	char				*f_aux;
 	char				*c;
 	int					fd_no;
 	int					fd_so;
 	int					fd_we;
 	int					fd_ea;
-	int					fd_f;
-	int					fd_c;
+	int					f_r;
+	int					f_g;
+	int					f_b;
+	int					c_r;
+	int					c_g;
+	int					c_b;
 };
 /* @------------------------------------------------------------------------@ */
 /* |                           Function Section                             | */
@@ -72,9 +78,9 @@ int						ft_extract_path(char *filename);
 int						ft_read_file(t_cub *cub);
 void					ft_print_map(t_cub *cub);
 int						ft_extract_text(t_cub *cub);
-int						ft_valid_char(t_cub *cub);
 void					ft_extract_path_texture(t_cub *cub, int flag);
-void					ft_extract_color(t_cub *cub, int flag);
+int						ft_extract_color(t_cub *cub, int flag);
+int						ft_extract_color_aux(t_cub *cub, int flag);
 int						ft_extract_map(t_cub *cub);
 void					ft_print_paths(t_cub *cub);
 void					ft_free_cub(t_cub *cub);
@@ -82,4 +88,6 @@ void					initialize_cub(t_cub *cub);
 void					ft_process_texture(t_cub *cub);
 int						ft_check_paths(t_cub *cub);
 int						ft_open_file(char *filename, int *fd);
+int						ft_check_map(t_cub *cub);
+int						ft_valid_color(t_cub *cub);
 #endif
