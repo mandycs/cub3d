@@ -30,6 +30,7 @@ INCLUDE_DIR := include/
 BFL_DIR := $(INCLUDE_DIR)BFL/
 SRC_DIR := src/
 UTILS_DIR := utils/
+MLX42_DIR := $(INCLUDE_DIR)MLX42/
 OBJ_DIR := obj/
 
 INCLUDE_FILES := cub3d.h
@@ -40,10 +41,12 @@ INCLUDE = $(addprefix $(INCLUDE_DIR), $(INCLUDE_FILES))
 SRC = $(addprefix $(SRC_DIR), $(SRC_FILES))
 UTILS = $(addprefix $(UTILS_DIR), $(UTILS_FILES))
 
+LIBMLX42 := $(MLX42_DIR)/build/libmlx42.a
+
 OBJ = $(patsubst $(SRC_DIR)%.c, $(OBJ_DIR)%.o, $(SRC)) \
 	$(patsubst $(UTILS_DIR)%.c, $(OBJ_DIR)%.o, $(UTILS))
 
-CC = clang
+CC := clang
 
 ifdef WITH_DEBUG
 	CFLAGS := -Wall -Wextra -Werror -gdwarf-2 
@@ -52,8 +55,9 @@ else
 endif
 
 CFLAGS := -Wall -Wextra -Werror
-CPPFLAGS := -I $(INCLUDE_DIR) -I $(BFL_DIR)include
-LDFLAGS := -L $(BFL_DIR)
+CPPFLAGS := -I $(INCLUDE_DIR) -I $(BFL_DIR)include -I $(MLX42_DIR)/include/MLX42
+LDFLAGS := -L $(BFL_DIR) -L $(MLX42_DIR)/build
+LDLIBS := -lBFL -lmlx42 -lglfw -pthread -lm -ldl
 
 RM := rm -rf
 
@@ -71,21 +75,23 @@ FCLEAN_MSG = @echo "🗑️  🦔 $(T_MAGENTA)$(BOLD)$(NAME) $(RESET)$(T_RED)des
 # |                                 Targets                                  | #
 # @--------------------------------------------------------------------------@ #
 
-all: $(NAME)
+all: build_mlx42 $(NAME)
 
 ifdef WITH_DEBUG
-$(NAME): $(OBJ_DIR) $(OBJ)
+$(NAME): $(LIBMLX42) $(OBJ_DIR) $(OBJ)
 	$(OBJ_MSG)
 	@make -s debug -C $(BFL_DIR)
 	@$(CC) -o $@ $(OBJ) $(CPPFLAGS) $(LDFLAGS) $(LDLIBS)
 	$(OUTPUT_MSG)
 else
-$(NAME): $(OBJ_DIR) $(OBJ)
+$(NAME): $(LIBMLX42) $(OBJ_DIR) $(OBJ)
 	$(OBJ_MSG)
 	@make -s -C $(BFL_DIR)
 	@$(CC) -o $@ $(OBJ) $(CPPFLAGS) $(LDFLAGS) $(LDLIBS)
 	$(OUTPUT_MSG)
 endif
+
+$(LIBMLX42): $(MLX42_DIR)
 
 $(OBJ_DIR):
 	@mkdir -p $(OBJ_DIR)
@@ -107,10 +113,16 @@ $(OBJ_DIR)%.o: $(EXECUTE_DIR)%.c $(INCLUDE)
 	$(COMPILE_MSG)
 	@$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 
+build_mlx42:
+	@git submodule update --init --recursive
+	@cmake -S include/MLX42 -B include/MLX42/build
+	@cmake --build include/MLX42/build -j4
+
 clean:
 	@$(RM) $(OBJ_DIR)
 	@make clean -s -C $(BFL_DIR)
 	$(CLEAN_MSG)
+	@make clean -s -C $(MLX42_DIR)/build
 
 fclean: clean
 	@$(RM) $(NAME) tags
@@ -131,4 +143,4 @@ tags:
 bonus:
 	@make -s -C bonus_part
 
-.PHONY: all bonus clean debug fclean re tags
+.PHONY: all bonus build_mlx42 clean debug fclean re tags

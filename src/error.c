@@ -20,6 +20,7 @@ void	ft_check_error(t_cub *cub)
 	else if (cub->error > CUB_NO_PATH)
 	{
 		ft_check_error_2(cub);
+	}
 	exit(CUB_LKO);
 }
 
