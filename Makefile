@@ -54,7 +54,6 @@ endif
 CFLAGS := -Wall -Wextra -Werror
 CPPFLAGS := -I $(INCLUDE_DIR) -I $(BFL_DIR)include
 LDFLAGS := -L $(BFL_DIR)
-LDLIBS := -lBFL -lreadline
 
 RM := rm -rf
 
@@ -62,11 +61,11 @@ RM := rm -rf
 # |                                Messages                                  | #
 # @--------------------------------------------------------------------------@ #
 
-COMPILE_MSG = @echo "$(CLEAR_LINE)$(T_WHITE)$(BOLD)Compiling $<...$(RESET)"
-OBJ_MSG = @echo "$(T_MAGENTA)$(BOLD)$(NAME) $(T_YELLOW)Objects $(RESET)$(T_GREEN)created successfully!$(RESET)"
-OUTPUT_MSG = @echo "$(T_MAGENTA)$(BOLD)$(NAME) $(RESET)$(T_GREEN)created successfully!$(RESET)"
-CLEAN_MSG = @echo "$(T_MAGENTA)$(BOLD)$(NAME) $(T_YELLOW)Objects $(RESET)$(T_RED)destroyed successfully!$(RESET)"
-FCLEAN_MSG = @echo "$(T_MAGENTA)$(BOLD)$(NAME) $(RESET)$(T_RED)destroyed successfully!$(RESET)"
+COMPILE_MSG = @echo "$(CLEAR_LINE)🧩 🦔 $(T_WHITE)$(BOLD)Compiling $<...$(RESET)"
+OBJ_MSG = @echo "✅ 🦔 $(T_YELLOW)$(BOLD)Objects $(RESET)$(T_GREEN)created successfully!$(RESET)"
+OUTPUT_MSG = @echo "✅ 🦔 $(T_MAGENTA)$(BOLD)$(NAME) $(RESET)$(T_GREEN)created successfully!$(RESET)"
+CLEAN_MSG = @echo "🗑️  🦔 $(T_YELLOW)$(BOLD)Objects $(RESET)$(T_RED)destroyed successfully!$(RESET)"
+FCLEAN_MSG = @echo "🗑️  🦔 $(T_MAGENTA)$(BOLD)$(NAME) $(RESET)$(T_RED)destroyed successfully!$(RESET)"
 
 # @--------------------------------------------------------------------------@ #
 # |                                 Targets                                  | #
@@ -127,11 +126,9 @@ debug:
 	@make -s WITH_DEBUG=1
 
 tags:
-	@$(shell find . -path ./bonus_part -prune -o -print -type f \( -name "*c" -o -name "*.h" \) > temp)
-	@ctags -F $(shell cat temp)
-	@$(RM) temp
+	@$(shell ctags $$(find . -name "*.[ch]"))
 
 bonus:
 	@make -s -C bonus_part
 
-.PHONY = all bonus clean debug fclean re tags
+.PHONY: all bonus clean debug fclean re tags
