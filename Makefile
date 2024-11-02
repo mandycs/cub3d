@@ -75,18 +75,24 @@ FCLEAN_MSG = @echo "🗑️  🦔 $(T_MAGENTA)$(BOLD)$(NAME) $(RESET)$(T_RED)des
 # |                                 Targets                                  | #
 # @--------------------------------------------------------------------------@ #
 
+run: main
+	./$(NAME)
+main: build_mlx42
+	make -j4 -s -C $(BFL_DIR)
+	clang -o cub3d -g -Wall -Wextra -Werror src/main.c $(CPPFLAGS) $(LDFLAGS) $(LDLIBS)
+
 all: build_mlx42 $(NAME)
 
 ifdef WITH_DEBUG
 $(NAME): $(LIBMLX42) $(OBJ_DIR) $(OBJ)
 	$(OBJ_MSG)
-	@make -s debug -C $(BFL_DIR)
+	@make -j4 -s debug -C $(BFL_DIR)
 	@$(CC) -o $@ $(OBJ) $(CPPFLAGS) $(LDFLAGS) $(LDLIBS)
 	$(OUTPUT_MSG)
 else
 $(NAME): $(LIBMLX42) $(OBJ_DIR) $(OBJ)
 	$(OBJ_MSG)
-	@make -s -C $(BFL_DIR)
+	@make -j4 -s -C $(BFL_DIR)
 	@$(CC) -o $@ $(OBJ) $(CPPFLAGS) $(LDFLAGS) $(LDLIBS)
 	$(OUTPUT_MSG)
 endif

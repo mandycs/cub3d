@@ -23,7 +23,9 @@
 
 # include "BFL.h"
 # include "MLX42.h"
+# include "utils.h"
 # include <fcntl.h>
+# include <stdbool.h>
 # include <stdio.h>
 
 /* @------------------------------------------------------------------------@ */
