@@ -26,10 +26,10 @@ union u_color
 {
 	struct
 	{
-		unsigned char	r;
-		unsigned char	g;
-		unsigned char	b;
 		unsigned char	a;
+		unsigned char	b;
+		unsigned char	g;
+		unsigned char	r;
 	};
 	unsigned char	data[4];
 	unsigned long	hex;
