@@ -23,6 +23,7 @@ int	ft_check_arg(int argc, char **argv, t_cub *cub)
 	// 	return (CUB_LKO);
 	if (ft_check_map(cub) != BFL_OK)
 		return (BFL_LKO);
+	ft_map_len(cub);
 	return (BFL_OK);
 }
 

@@ -6,7 +6,7 @@
 /*   By: mancorte <mancorte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 13:46:31 by mancorte          #+#    #+#             */
-/*   Updated: 2024/10/19 13:39:00 by ribana-b         ###   ########.com      */
+/*   Updated: 2024/12/09 15:13:15 by mancorte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,7 +106,8 @@ void					ft_free_cub(t_cub *cub);
 void					initialize_cub(t_cub *cub);
 void					ft_process_texture(t_cub *cub);
 int						ft_check_paths(t_cub *cub);
-int						ft_open_file(char *filename, int *fd, int flag, t_cub *cub);
+int						ft_open_file(char *filename, int *fd, int flag,
+							t_cub *cub);
 int						ft_check_map(t_cub *cub);
 int						ft_valid_color(t_cub *cub);
 void					ft_check_error(t_cub *cub);
@@ -114,4 +115,5 @@ void					ft_paths_close(t_cub *cub);
 void					ft_close_fd(t_cub *cub);
 void					ft_check_error(t_cub *cub);
 void					ft_check_error_2(t_cub *cub);
+void					ft_map_len(t_cub *cub);
 #endif

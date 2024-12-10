@@ -1,6 +1,7 @@
 
 #include "cub3d.h"
-//CAMBIAR LA FUNCION OPEN EN BASE A LO DE CUB AÑADIDO
+
+// CAMBIAR LA FUNCION OPEN EN BASE A LO DE CUB AÑADIDO
 int	ft_check_paths(t_cub *cub)
 {
 	if (cub->no == NULL || cub->so == NULL || cub->we == NULL || cub->ea == NULL
@@ -22,6 +23,7 @@ int	ft_check_paths(t_cub *cub)
 		return (CUB_LKO);
 	return (CUB_OK);
 }
+
 int	ft_valid_color(t_cub *cub)
 {
 	if (cub->f_b < 0 || cub->f_b > 255 || cub->f_g < 0 || cub->f_g > 255
@@ -78,4 +80,17 @@ int	ft_check_map(t_cub *cub)
 		cub->i++;
 	}
 	return (CUB_OK);
+}
+
+void	ft_map_len(t_cub *cub)
+{
+	cub->i = 0;
+	cub->len = 0;
+	while (cub->map[cub->i])
+	{
+		cub->tmp = bfl_strlen(cub->map[cub->i]);
+		if (cub->tmp > cub->len)
+			cub->len = cub->tmp;
+		cub->i++;
+	}
 }
