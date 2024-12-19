@@ -1,7 +1,7 @@
 #include "cub3d.h"
 
 // Cambiar este 0 a 1 para activar este main
-#if 0
+#if 1
 int	main(int argc, char **argv)
 {
 	t_cub	cub;

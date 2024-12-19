@@ -91,27 +91,27 @@ int	ft_extract_color_aux(t_cub *cub, int flag)
 {
 	if (flag == 0)
 	{
-		cub->f_r = bfl_atoi(cub->f);
+		cub->f.r = bfl_atoi(cub->f);
 		cub->f_aux = bfl_strchr(cub->f, ',');
 		if (!cub->f_aux)
 			return (BFL_LKO);
-		cub->f_g = bfl_atoi(cub->f_aux + 1);
+		cub->f.g = bfl_atoi(cub->f_aux + 1);
 		cub->f_aux = bfl_strchr(cub->f_aux + 1, ',');
 		if (!cub->f_aux)
 			return (BFL_LKO);
-		cub->f_b = bfl_atoi(cub->f_aux + 1);
+		cub->f.b = bfl_atoi(cub->f_aux + 1);
 	}
 	if (flag == 1)
 	{
-		cub->c_r = bfl_atoi(cub->c);
+		cub->c.r = bfl_atoi(cub->c);
 		cub->f_aux = bfl_strchr(cub->c, ',');
 		if (!cub->f_aux)
 			return (BFL_LKO);
-		cub->c_g = bfl_atoi(cub->f_aux + 1);
+		cub->c.g = bfl_atoi(cub->f_aux + 1);
 		cub->f_aux = bfl_strchr(cub->f_aux + 1, ',');
 		if (!cub->f_aux)
 			return (BFL_LKO);
-		cub->c_b = bfl_atoi(cub->f_aux + 1);
+		cub->c.b = bfl_atoi(cub->f_aux + 1);
 	}
 	return (BFL_OK);
 }

@@ -79,4 +79,6 @@ void	initialize_cub(t_cub *cub)
 	cub->fd_we = 0;
 	cub->fd_ea = 0;
 	cub->error = 0;
+	cub->f.a = 255;
+	cub->c.a = 255;
 }

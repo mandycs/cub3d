@@ -18,11 +18,13 @@ int	ft_check_arg(int argc, char **argv, t_cub *cub)
 	if (ft_read_file(cub) != CUB_OK)
 		return (CUB_RIP_READ);
 	if (ft_extract_text(cub) != CUB_OK)
-		return (BFL_LKO);
-	// if (ft_check_paths(cub) != CUB_OK)
-	// 	return (CUB_LKO);
-	if (ft_check_map(cub) != BFL_OK)
-		return (BFL_LKO);
+		return (CUB_LKO);
+	if (ft_check_paths(cub) != CUB_OK)
+		return (CUB_LKO);
+	if (ft_check_map(cub) != CUB_OK)
+		return (CUB_LKO);
+	if (ft_floodfill(cub) != CUB_OK)
+		return (CUB_LKO)
 	ft_map_len(cub);
 	return (BFL_OK);
 }

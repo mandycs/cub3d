@@ -6,7 +6,7 @@
 /*   By: mancorte <mancorte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 13:46:31 by mancorte          #+#    #+#             */
-/*   Updated: 2024/12/09 15:13:15 by mancorte         ###   ########.fr       */
+/*   Updated: 2024/12/19 17:53:00 by mancorte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 # include <fcntl.h>
 # include <stdbool.h>
 # include <stdio.h>
+# include "utils.h"
 
 /* @------------------------------------------------------------------------@ */
 /* |                            Typedef Section                             | */
@@ -78,12 +79,8 @@ struct					s_cub
 	int					fd_so;
 	int					fd_we;
 	int					fd_ea;
-	int					f_r;
-	int					f_g;
-	int					f_b;
-	int					c_r;
-	int					c_g;
-	int					c_b;
+	t_color				f;
+	t_color				c;
 	int					error;
 };
 /* @------------------------------------------------------------------------@ */
