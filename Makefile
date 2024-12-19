@@ -34,7 +34,7 @@ MLX42_DIR := $(INCLUDE_DIR)MLX42/
 OBJ_DIR := obj/
 
 INCLUDE_FILES := cub3d.h
-SRC_FILES := cub3d.c parser.c parser_2.c parser_3.c error.c
+SRC_FILES := cub3d.c parser.c parser_2.c parser_3.c parser_4.c error.c
 UTILS_FILES := utils.c
 
 INCLUDE = $(addprefix $(INCLUDE_DIR), $(INCLUDE_FILES))

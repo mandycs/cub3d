@@ -19,32 +19,17 @@ int	ft_check_paths(t_cub *cub)
 		return (CUB_LKO);
 	if (ft_open_file(cub->ea, &cub->fd_ea, 9, cub) != CUB_OK)
 		return (CUB_LKO);
-	if (ft_valid_color(cub) != CUB_OK)
-		return (CUB_LKO);
 	return (CUB_OK);
 }
 
-int	ft_valid_color(t_cub *cub)
-{
-	if (cub->f_b < 0 || cub->f_b > 255 || cub->f_g < 0 || cub->f_g > 255
-		|| cub->f_r < 0 || cub->f_r > 255)
-	{
-		cub->error = CUB_ERROR_COLOR;
-		bfl_fprintf(STDERR, "Error in floor color(Overflow)\n");
-		return (CUB_LKO);
-	}
-	if (cub->c_b < 0 || cub->c_b > 255 || cub->c_g < 0 || cub->c_g > 255
-		|| cub->c_r < 0 || cub->c_r > 255)
-	{
-		cub->error = CUB_ERROR_COLOR;
-		bfl_fprintf(STDERR, "Error in ceiling color(Overflow)\n");
-		return (CUB_LKO);
-	}
-	return (CUB_OK);
-}
 
 int	ft_open_file(char *filename, int *fd, int flag, t_cub *cub)
 {
+	if (ft_check_extension_texture(filename))
+	{
+		bfl_fprintf(STDERR, "Error in extension in file '%s'\n", filename);
+		return(CUB_LKO);
+	}
 	*fd = open(filename, O_RDONLY);
 	if (*fd == -1)
 	{

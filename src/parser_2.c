@@ -45,13 +45,13 @@ int	ft_extract_color(t_cub *cub, int flag)
 	if (flag == 0 && cub->text[cub->count][cub->i])
 	{
 		cub->f = bfl_strdup(&cub->text[cub->count][cub->i]);
-		if (ft_extract_color_aux(cub, flag) == BFL_LKO)
+		if (ft_extract_color_aux_f(cub) == BFL_LKO)
 			return (BFL_LKO);
 	}
 	else if (flag == 1 && cub->text[cub->count][cub->i])
 	{
 		cub->c = bfl_strdup(&cub->text[cub->count][cub->i]);
-		if (ft_extract_color_aux(cub, flag) == BFL_LKO)
+		if (ft_extract_color_aux_c(cub) == BFL_LKO)
 			return (BFL_LKO);
 	}
 	cub->count++;
@@ -86,32 +86,29 @@ int	ft_extract_map(t_cub *cub)
 	}
 	return (BFL_OK);
 }
-//NEXT STEP
-int	ft_extract_color_aux(t_cub *cub, int flag)
+
+int	ft_extract_color_aux_c(t_cub *cub)
 {
-	if (flag == 0)
-	{
-		cub->f.r = bfl_atoi(cub->f);
-		cub->f_aux = bfl_strchr(cub->f, ',');
-		if (!cub->f_aux)
-			return (BFL_LKO);
-		cub->f.g = bfl_atoi(cub->f_aux + 1);
-		cub->f_aux = bfl_strchr(cub->f_aux + 1, ',');
-		if (!cub->f_aux)
-			return (BFL_LKO);
-		cub->f.b = bfl_atoi(cub->f_aux + 1);
-	}
-	if (flag == 1)
-	{
-		cub->c.r = bfl_atoi(cub->c);
-		cub->f_aux = bfl_strchr(cub->c, ',');
-		if (!cub->f_aux)
-			return (BFL_LKO);
-		cub->c.g = bfl_atoi(cub->f_aux + 1);
-		cub->f_aux = bfl_strchr(cub->f_aux + 1, ',');
-		if (!cub->f_aux)
-			return (BFL_LKO);
-		cub->c.b = bfl_atoi(cub->f_aux + 1);
-	}
+	int	tmp;
+	
+	tmp = 0;
+	tmp = bfl_atoi(cub->f);
+	if (tmp < 0 || tmp > 255)
+		return(BFL_LKO);
+	cub->ceiling_c.r = tmp;
+	cub->f_aux = bfl_strchr(cub->f, ',');
+	if (!cub->f_aux)
+		return (BFL_LKO);
+	tmp = bfl_atoi(cub->f_aux + 1);
+	if (tmp < 0 || tmp > 255)
+		return(BFL_LKO);
+	cub->ceiling_c.g = tmp;
+	cub->f_aux = bfl_strchr(cub->f_aux + 1, ',');
+	if (!cub->f_aux)
+		return (BFL_LKO);
+	tmp = bfl_atoi(cub->f_aux + 1);
+	if (tmp < 0 || tmp > 255)
+		return(BFL_LKO);
+	cub->ceiling_c.b = tmp;
 	return (BFL_OK);
 }

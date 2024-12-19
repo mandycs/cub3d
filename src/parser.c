@@ -19,12 +19,12 @@ int	ft_check_arg(int argc, char **argv, t_cub *cub)
 		return (CUB_RIP_READ);
 	if (ft_extract_text(cub) != CUB_OK)
 		return (CUB_LKO);
-	if (ft_check_paths(cub) != CUB_OK)
-		return (CUB_LKO);
+	// if (ft_check_paths(cub) != CUB_OK)
+	// 	return (CUB_LKO);
 	if (ft_check_map(cub) != CUB_OK)
-		return (CUB_LKO);
-	if (ft_floodfill(cub) != CUB_OK)
-		return (CUB_LKO)
+		return ( CUB_LKO);
+	// if (ft_floodfill(cub) != CUB_OK)
+	// 	return (CUB_LKO);
 	ft_map_len(cub);
 	return (BFL_OK);
 }
@@ -91,7 +91,8 @@ int	ft_read_file(t_cub *cub)
 
 int	ft_extract_text(t_cub *cub)
 {
-	if (!cub->text[cub->count])
+	cub->count = 0;
+	if (!cub->text && !cub->text[cub->count])
 	{
 		cub->error = CUB_NO_TEXT;
 		return (CUB_LKO);

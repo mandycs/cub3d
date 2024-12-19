@@ -6,7 +6,7 @@
 /*   By: mancorte <mancorte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 13:46:31 by mancorte          #+#    #+#             */
-/*   Updated: 2024/12/19 17:53:00 by mancorte         ###   ########.fr       */
+/*   Updated: 2024/12/19 21:22:51 by mancorte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@
 # include <fcntl.h>
 # include <stdbool.h>
 # include <stdio.h>
-# include "utils.h"
 
 /* @------------------------------------------------------------------------@ */
 /* |                            Typedef Section                             | */
@@ -79,8 +78,8 @@ struct					s_cub
 	int					fd_so;
 	int					fd_we;
 	int					fd_ea;
-	t_color				f;
-	t_color				c;
+	t_color				floor_c;
+	t_color				ceiling_c;
 	int					error;
 };
 /* @------------------------------------------------------------------------@ */
@@ -96,7 +95,8 @@ void					ft_print_map(t_cub *cub);
 int						ft_extract_text(t_cub *cub);
 void					ft_extract_path_texture(t_cub *cub, int flag);
 int						ft_extract_color(t_cub *cub, int flag);
-int						ft_extract_color_aux(t_cub *cub, int flag);
+int						ft_extract_color_aux_f(t_cub *cub);
+int						ft_extract_color_aux_c(t_cub *cub);
 int						ft_extract_map(t_cub *cub);
 void					ft_print_paths(t_cub *cub);
 void					ft_free_cub(t_cub *cub);
@@ -113,4 +113,5 @@ void					ft_close_fd(t_cub *cub);
 void					ft_check_error(t_cub *cub);
 void					ft_check_error_2(t_cub *cub);
 void					ft_map_len(t_cub *cub);
+int						ft_check_extension_texture(char *str);
 #endif
