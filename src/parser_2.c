@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parser_2.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mancorte <mancorte@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/12/20 22:22:16 by mancorte          #+#    #+#             */
+/*   Updated: 2024/12/21 01:47:22 by mancorte         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3d.h"
 
 void	ft_process_texture(t_cub *cub)
@@ -37,7 +49,7 @@ int	ft_extract_color(t_cub *cub, int flag)
 {
 	while (!bfl_isdigit(cub->text[cub->count][cub->i]))
 		cub->i++;
-	if(cub->text[cub->count][cub->i] == '\0')
+	if (cub->text[cub->count][cub->i] == '\0')
 	{
 		bfl_fprintf(STDERR, "Error (Missing Color)\n");
 		return (BFL_LKO);
@@ -90,25 +102,25 @@ int	ft_extract_map(t_cub *cub)
 int	ft_extract_color_aux_c(t_cub *cub)
 {
 	int	tmp;
-	
+
 	tmp = 0;
 	tmp = bfl_atoi(cub->f);
 	if (tmp < 0 || tmp > 255)
-		return(BFL_LKO);
+		return (BFL_LKO);
 	cub->ceiling_c.r = tmp;
 	cub->f_aux = bfl_strchr(cub->f, ',');
 	if (!cub->f_aux)
 		return (BFL_LKO);
 	tmp = bfl_atoi(cub->f_aux + 1);
 	if (tmp < 0 || tmp > 255)
-		return(BFL_LKO);
+		return (BFL_LKO);
 	cub->ceiling_c.g = tmp;
 	cub->f_aux = bfl_strchr(cub->f_aux + 1, ',');
 	if (!cub->f_aux)
 		return (BFL_LKO);
 	tmp = bfl_atoi(cub->f_aux + 1);
 	if (tmp < 0 || tmp > 255)
-		return(BFL_LKO);
+		return (BFL_LKO);
 	cub->ceiling_c.b = tmp;
 	return (BFL_OK);
 }

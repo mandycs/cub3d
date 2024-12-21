@@ -6,7 +6,7 @@
 /*   By: mancorte <mancorte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 20:59:21 by mancorte          #+#    #+#             */
-/*   Updated: 2024/12/19 21:28:16 by mancorte         ###   ########.fr       */
+/*   Updated: 2024/12/21 02:52:58 by mancorte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,44 +15,91 @@
 int	ft_check_extension_texture(char *str)
 {
 	int	i;
+	int	tmp;
+	int	len;
 
+	tmp =0;
 	i = 0;
-	while (str[i] != '\0' && str[i] != '.')
-		i++;
-	if (str[i] == '\0')
+	len = bfl_strlen(str);
+	len = len - 4;
+	printf("len = %d\n", len);
+	printf("Extension =%s\n", str + len);
+	if (str[len + 1] != 'p' || str[len + 2] != 'n' || str[len + 3] != 'g')
 	{
 		bfl_fprintf(STDERR, "Error in extension file\n");
 		return (BFL_LKO);
 	}
-	if (str[i + 1] == 'p' && str[i + 2] == 'n' && str[i + 3] == 'g')
-		return (BFL_OK);
-	bfl_fprintf(STDERR, "Error in extension file\n");
-	return (BFL_LKO);
+	return (BFL_OK);
 }
 
-//add error log about which one fails
+// add error log about which one fails
 int	ft_extract_color_aux_f(t_cub *cub)
 {
 	int	tmp;
-	
+
 	tmp = 0;
 	tmp = bfl_atoi(cub->f);
 	if (tmp < 0 || tmp > 255)
-		return(BFL_LKO);
+		return (BFL_LKO);
 	cub->floor_c.r = tmp;
 	cub->f_aux = bfl_strchr(cub->f, ',');
 	if (!cub->f_aux)
 		return (BFL_LKO);
 	tmp = bfl_atoi(cub->f_aux + 1);
 	if (tmp < 0 || tmp > 255)
-		return(BFL_LKO);
+		return (BFL_LKO);
 	cub->floor_c.g = tmp;
 	cub->f_aux = bfl_strchr(cub->f_aux + 1, ',');
 	if (!cub->f_aux)
 		return (BFL_LKO);
 	tmp = bfl_atoi(cub->f_aux + 1);
 	if (tmp < 0 || tmp > 255)
-		return(BFL_LKO);
+		return (BFL_LKO);
 	cub->floor_c.b = tmp;
 	return (BFL_OK);
+}
+
+// static void	flood_fill(t_info *info, char ***map, int x, int y)
+// {
+// 	if ((*map)[x][y] != WALL && (*map)[x][y] != FILL)
+// 	{
+// 		(*map)[x][y] = FILL;
+// 		flood_fill(info, map, x - 1, y);
+// 		flood_fill(info, map, x, y - 1);
+// 		flood_fill(info, map, x + 1, y);
+// 		flood_fill(info, map, x, y + 1);
+// 	}
+// }
+
+void	ft_init_pos(t_cub *cub)
+{
+	cub->i = 0;
+	while (cub->map[cub->i])
+	{
+		cub->j = 0;
+		while (cub->map[cub->i][cub->j])
+		{
+			if (cub->map[cub->i][cub->j] == 'N'
+				|| cub->map[cub->i][cub->j] == 'S'
+				|| cub->map[cub->i][cub->j] == 'W'
+				|| cub->map[cub->i][cub->j] == 'E')
+			{
+				cub->pos_x = cub->j;
+				cub->pos_y = cub->i;
+			}
+			cub->j++;
+		}
+	cub->i++;
+	}
+}
+
+int	ft_map_functions(t_cub *cub)
+{
+	if (ft_check_map(cub) != CUB_OK)
+		return (BFL_LKO);
+	ft_init_pos(cub);
+	// if (ft_floodfill(cub) != CUB_OK)
+	// 	return (CUB_LKO);
+	ft_map_len(cub);
+	return (CUB_OK);
 }

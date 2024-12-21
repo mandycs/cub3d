@@ -6,7 +6,7 @@
 /*   By: mancorte <mancorte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 13:46:31 by mancorte          #+#    #+#             */
-/*   Updated: 2024/12/19 21:22:51 by mancorte         ###   ########.fr       */
+/*   Updated: 2024/12/21 02:22:10 by mancorte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@
 /* |                            Define Section                              | */
 /* @------------------------------------------------------------------------@ */
 # define INITIAL_CAPACITY 16
+# define WALL = '1'
+# define FILL = '.'
 /* @------------------------------------------------------------------------@ */
 /* |                            Include Section                             | */
 /* @------------------------------------------------------------------------@ */
@@ -49,7 +51,7 @@ enum					e_exit_status_cub
 	CUB_ERROR_EA_PATH,
 	CUB_ERROR_COLOR,
 	CUB_ERROR_MAP,
-
+	CUB_ERROR_NO_MAP
 };
 /* @------------------------------------------------------------------------@ */
 /* |                            Struct Section                              | */
@@ -67,6 +69,8 @@ struct					s_cub
 	int					len;
 	char				*line;
 	char				**new_lines;
+	int					pos_x;
+	int					pos_y;
 	char				*no;
 	char				*so;
 	char				*we;
@@ -106,7 +110,6 @@ int						ft_check_paths(t_cub *cub);
 int						ft_open_file(char *filename, int *fd, int flag,
 							t_cub *cub);
 int						ft_check_map(t_cub *cub);
-int						ft_valid_color(t_cub *cub);
 void					ft_check_error(t_cub *cub);
 void					ft_paths_close(t_cub *cub);
 void					ft_close_fd(t_cub *cub);
@@ -114,4 +117,8 @@ void					ft_check_error(t_cub *cub);
 void					ft_check_error_2(t_cub *cub);
 void					ft_map_len(t_cub *cub);
 int						ft_check_extension_texture(char *str);
+// static void				flood_fill(t_info *info, char ***map, int x, int y);
+void					ft_init_pos(t_cub *cub);
+int						ft_map_functions(t_cub *cub);
+void					ft_clean_paths(t_cub *cub);
 #endif

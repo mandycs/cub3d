@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parser.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mancorte <mancorte@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/12/20 22:20:39 by mancorte          #+#    #+#             */
+/*   Updated: 2024/12/20 22:30:21 by mancorte         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "cub3d.h"
 
@@ -19,13 +30,9 @@ int	ft_check_arg(int argc, char **argv, t_cub *cub)
 		return (CUB_RIP_READ);
 	if (ft_extract_text(cub) != CUB_OK)
 		return (CUB_LKO);
-	// if (ft_check_paths(cub) != CUB_OK)
-	// 	return (CUB_LKO);
-	if (ft_check_map(cub) != CUB_OK)
-		return ( CUB_LKO);
-	// if (ft_floodfill(cub) != CUB_OK)
-	// 	return (CUB_LKO);
-	ft_map_len(cub);
+	if (ft_check_paths(cub) != CUB_OK)
+		return (CUB_LKO);
+	ft_map_functions(cub);
 	return (BFL_OK);
 }
 

@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parser_3.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mancorte <mancorte@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/12/20 22:25:03 by mancorte          #+#    #+#             */
+/*   Updated: 2024/12/21 02:08:19 by mancorte         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "cub3d.h"
 
@@ -11,6 +22,7 @@ int	ft_check_paths(t_cub *cub)
 		cub->error = CUB_NO_PATH;
 		return (CUB_LKO);
 	}
+	ft_clean_paths(cub);
 	if (ft_open_file(cub->no, &cub->fd_no, 6, cub) != CUB_OK)
 		return (CUB_LKO);
 	if (ft_open_file(cub->so, &cub->fd_so, 7, cub) != CUB_OK)
@@ -22,27 +34,31 @@ int	ft_check_paths(t_cub *cub)
 	return (CUB_OK);
 }
 
-
 int	ft_open_file(char *filename, int *fd, int flag, t_cub *cub)
 {
 	if (ft_check_extension_texture(filename))
 	{
 		bfl_fprintf(STDERR, "Error in extension in file '%s'\n", filename);
-		return(CUB_LKO);
+		return (CUB_LKO);
 	}
-	*fd = open(filename, O_RDONLY);
+	printf( "%s",filename);
+	*fd = open("./test.png", O_RDONLY);
 	if (*fd == -1)
 	{
+		printf("El fd es %d\n", *fd);
 		cub->error = flag;
 		bfl_fprintf(STDERR, "Error in opening file '%s'\n", filename);
 		return (BFL_LKO);
 	}
 	return (BFL_OK);
 }
+
 // FALTA QUE SI NO HAY MAPA DEVUELVA ERROR
 int	ft_check_map(t_cub *cub)
 {
 	cub->i = 0;
+	if (!cub->map[cub->i])
+		return (CUB_ERROR_NO_MAP);
 	while (cub->map[cub->i])
 	{
 		cub->j = 0;
