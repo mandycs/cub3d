@@ -7,12 +7,30 @@
 #define WIDTH 800
 #define HEIGHT 600
 #define LOGGING 1
+#define PIXEL_SIZE 16
+#define RESIZE 4
+
+// Hardcoded map for testing
+static const char *smap[] = {
+	"              1111111",
+	"111111111111111000001",
+	"100000000011000000001",
+	"100000000001000000001",
+	"11100000N100000000001",
+	"  1000011111111111111",
+	"  100001             ",
+	"11100001             ",
+	"10000001             ",
+	"11111111             ",
+};
 
 typedef enum e_log_level	t_log_level;
 typedef enum e_type			t_type;
 typedef struct s_weapon		t_weapon;
 typedef struct s_toolbar	t_toolbar;
 typedef struct s_player		t_player;
+typedef struct s_map		t_map;
+typedef struct s_screen		t_screen;
 typedef struct s_info		t_info;
 
 enum e_log_level
@@ -54,25 +72,49 @@ struct s_player
 {
 	t_v2		position;
 	t_toolbar	toolbar;
-	int			speed;
+	float		speed;
 	int			fov;
+};
+
+struct s_map
+{
+	char		**data;
+	int			rows;
+	int			cols;
+};
+
+struct s_screen
+{
+	mlx_image_t	*view;
+	mlx_image_t	*buffer;
+	int			width;
+	int			height;
 };
 
 struct s_info
 {
 	mlx_t		*mlx;
 	t_player	player;
+	t_map		map;
+	t_screen	screen;
 };
 
-mlx_t		*cub_init(int width, int height, const char *title, bool resize);
+// Cub
+bool		cub_create(t_info *info);
 void		cub_close_window(mlx_t *mlx);
-void		cub_destroy(mlx_t *mlx);
-
-int			cub_log(t_log_level, const char *message);
+void		cub_destroy(t_info *info);
+int			cub_log(t_log_level level, const char *message);
 int			log_info(const char *message);
 int			log_error(const char *message);
 
+// Hooks
 void		hook_control_keys(void *param);
+void		hook_option_key(mlx_key_data_t keydata, void *param);
+void		hook_control_mouse(mouse_key_t button, action_t action,
+				modifier_key_t mods, void *param);
+void		hook_loader(t_info *info);
+
+// Controls
 void		move_forward(t_info *info);
 void		move_left(t_info *info);
 void		move_right(t_info *info);
@@ -80,30 +122,52 @@ void		move_backward(t_info *info);
 void		rotate_left(t_info *info);
 void		rotate_right(t_info *info);
 
-void		hook_option_key(mlx_key_data_t keydata, void *param);
-void		switch_weapon(t_toolbar *toolbar, t_type type);
-
-void		hook_control_mouse(mouse_key_t button, action_t action,
-							modifier_key_t mods, void* param);
-void		attack(t_weapon *weapon);
-
+// Weapons
 t_weapon	create_hand(void);
 t_weapon	create_knife(void);
 t_weapon	create_gun(void);
 t_weapon	create_shotgun(void);
 bool		create_weapon(t_weapon *weapon_address, t_type type);
 
+void		switch_weapon(t_toolbar *toolbar, t_type type);
+void		attack(t_weapon *weapon);
+
 void		reduce_ammo(t_weapon *weapon);
 void		reload_ammo(t_weapon *weapon);
 
+// Toolbar
 bool		create_toolbar(t_toolbar *toolbar);
 
+// Player
 bool		create_player(t_player *player);
+t_v2		get_player_position(void);
 
+// Map
+bool		create_map(t_map *map);
+bool		create_map_data(t_map *map);
+void		destroy_map(t_map *map);
+
+// Debug
 void		print_info(t_info *info);
 void		print_player(t_player *player);
 void		print_toolbar(t_toolbar *toolbar);
 void		print_weapon(t_weapon *weapon);
+
+// Render
+void		render(void *param);
+void		render_map(t_map *map, t_screen *screen);
+void		render_player(t_player *player, t_screen *screen);
+
+// Screen
+bool		create_screen(t_screen *screen, mlx_t *mlx);
+
+// MLX Utils
+void		set_color(uint8_t *pixel, t_color color);
+void		put_pixel(mlx_image_t *img, int x, int y, t_color color);
+void		draw_rectangle(mlx_image_t *img, t_v2 position, t_v2 size,
+				t_color color);
+void		clear_background(void *param);
+void		swap_buffers(void *param);
 
 int	main(int argc, char **argv)
 {
@@ -111,17 +175,17 @@ int	main(int argc, char **argv)
 
 	(void)argc;
 	(void)argv;
-
-	if (!create_player(&info.player))
-		log_error("you know wa");
-	info.mlx = cub_init(WIDTH, HEIGHT, "Cub3D", false);
-	if (!info.mlx)
-		return (log_error("Couldn't init mlx"));
-	mlx_loop_hook(info.mlx, hook_control_keys, &info);
-	mlx_key_hook(info.mlx, hook_option_key, &info);
-	mlx_mouse_hook(info.mlx, hook_control_mouse, &info);
+	if (!cub_create(&info))
+		return (log_error("Couldn't create cub resources"));
+	if (mlx_image_to_window(info.mlx, info.screen.view, 0, 0) < 0)
+	{
+		log_error("Couldn't draw the screen");
+		cub_destroy(&info);
+		return (1);
+	}
+	hook_loader(&info);
 	mlx_loop(info.mlx);
-	cub_destroy(info.mlx);
+	cub_destroy(&info);
 	return (0);
 }
 
@@ -151,6 +215,16 @@ int	log_error(const char *message)
 	return (cub_log(ERROR, message));
 }
 
+void	hook_loader(t_info *info)
+{
+	mlx_loop_hook(info->mlx, hook_control_keys, info);
+	mlx_key_hook(info->mlx, hook_option_key, info);
+	mlx_mouse_hook(info->mlx, hook_control_mouse, info);
+	mlx_loop_hook(info->mlx, clear_background, info);
+	mlx_loop_hook(info->mlx, render, info);
+	mlx_loop_hook(info->mlx, swap_buffers, info);
+}
+
 void	hook_control_keys(void *param)
 {
 	t_info	*info;
@@ -175,7 +249,7 @@ void	hook_control_keys(void *param)
 
 void	hook_option_key(mlx_key_data_t keydata, void *param)
 {
-	t_info *info;
+	t_info	*info;
 
 	info = param;
 	if (keydata.key == MLX_KEY_P)
@@ -196,7 +270,7 @@ void	switch_weapon(t_toolbar *toolbar, t_type type)
 }
 
 void	hook_control_mouse(mouse_key_t button, action_t action,
-							modifier_key_t mods, void* param)
+						modifier_key_t mods, void *param)
 {
 	t_info	*info;
 
@@ -220,32 +294,42 @@ void	rotate_right(t_info *info)
 
 void	move_forward(t_info *info)
 {
-	(void)info;
+	info->player.position.x -= info->player.speed;
 	log_info("Move forward");
 }
 
 void	move_left(t_info *info)
 {
-	(void)info;
+	info->player.position.y -= info->player.speed;
 	log_info("Move left");
 }
 
 void	move_right(t_info *info)
 {
-	(void)info;
+	info->player.position.y += info->player.speed;
 	log_info("Move right");
 }
 
 void	move_backward(t_info *info)
 {
-	(void)info;
+	info->player.position.x += info->player.speed;
 	log_info("Move backward");
 }
 
-mlx_t	*cub_init(int width, int height, const char *title, bool resize)
+bool	cub_create(t_info *info)
 {
+	info->mlx = mlx_init(PIXEL_SIZE * 16 * RESIZE, PIXEL_SIZE * 9 * RESIZE,
+			"Cub3D", false);
+	if (!info->mlx)
+		return (false);
 	log_info("Window initialized");
-	return (mlx_init(width, height, title, resize));
+	if (!create_player(&info->player))
+		return (log_error("Couldn't create player"));
+	if (!create_map(&info->map))
+		return (log_error("Couldn't create map"));
+	if (!create_screen(&info->screen, info->mlx))
+		return (log_error("Couldn't create screen"));
+	return (true);
 }
 
 void	cub_close_window(mlx_t *mlx)
@@ -254,10 +338,11 @@ void	cub_close_window(mlx_t *mlx)
 	mlx_close_window(mlx);
 }
 
-void	cub_destroy(mlx_t *mlx)
+void	cub_destroy(t_info *info)
 {
+	mlx_terminate(info->mlx);
+	destroy_map(&info->map);
 	log_info("Resources destroyed");
-	mlx_terminate(mlx);
 }
 
 t_weapon	create_hand(void)
@@ -352,14 +437,108 @@ bool	create_toolbar(t_toolbar *toolbar)
 	return (true);
 }
 
+// This will probably accept a map later on
+t_v2	get_player_position(void)
+{
+	t_v2	position;
+	int		i;
+	int		j;
+	int		map_rows;
+
+	i = -1;
+	map_rows = sizeof(smap) / sizeof(smap[0]);
+	while (++i < map_rows)
+	{
+		j = -1;
+		while (++j < (int)bfl_strlen(smap[i]))
+		{
+			if (smap[i][j] == 'N')
+			{
+				position.x = (float)i * PIXEL_SIZE;
+				position.y = (float)j * PIXEL_SIZE;
+				return (position);
+			}
+		}
+	}
+	return ((t_v2){.x = -1, .y = -1});
+}
+
 bool	create_player(t_player *player)
 {
-	player->position = (t_v2){.x = 0, .y = 0};
+	player->position = get_player_position();
 	if (!create_toolbar(&player->toolbar))
 		return (false);
 	player->speed = 1;
 	player->fov = 10;
 	log_info("Created player");
+	return (true);
+}
+
+void	destroy_map(t_map *map)
+{
+	int	i;
+
+	i = 0;
+	while (map->data && map->data[i])
+	{
+		free(map->data[i]);
+		++i;
+	}
+	free(map->data);
+}
+
+bool	create_map(t_map *map)
+{
+	if (!create_map_data(map))
+		return (false);
+	log_info("Created map");
+	return (true);
+}
+
+void	temp_fill_map(t_map *map)
+{
+	for (int i = 0; i < map->rows; ++i)
+	{
+		for (int j = 0; j < map->cols; ++j)
+		{
+			map->data[i][j] = smap[i][j];
+		}
+	}
+}
+
+bool	create_map_data(t_map *map)
+{
+	int	i;
+
+	map->rows = 10;
+	map->cols = 21;
+	map->data = malloc((map->rows + 1) * sizeof(char *));
+	if (!map->data)
+		return (false);
+	i = -1;
+	while (++i < map->rows)
+	{
+		map->data[i] = bfl_calloc((map->cols + 1), sizeof(char));
+		if (!map->data[i])
+		{
+			destroy_map(map);
+			return (false);
+		}
+	}
+	map->data[i] = NULL;
+	temp_fill_map(map);
+	return (true);
+}
+
+bool	create_screen(t_screen *screen, mlx_t *mlx)
+{
+	screen->width = mlx->width;
+	screen->height = mlx->height;
+	screen->view = mlx_new_image(mlx, screen->width, screen->height);
+	screen->buffer = mlx_new_image(mlx, screen->width, screen->height);
+	if (!screen->view || !screen->buffer)
+		return (false);
+	log_info("Created screen");
 	return (true);
 }
 
@@ -406,6 +585,7 @@ void	print_info(t_info *info)
 
 void	print_player(t_player *player)
 {
+	printf("Player position: %f, %f\n", player->position.x, player->position.y);
 	print_toolbar(&player->toolbar);
 }
 
@@ -419,4 +599,126 @@ void	print_weapon(t_weapon *weapon)
 	// This has to be replaced to a log_info, but I don't have support
 	// for va_args yet
 	printf("%s: %d/%d\n", weapon->name, weapon->ammo, weapon->total_ammo);
+}
+
+void	render(void *param)
+{
+	t_info	*info;
+
+	info = param;
+	render_map(&info->map, &info->screen);
+	render_player(&info->player, &info->screen);
+}
+
+void	render_map_element(t_map *map, t_screen *screen, int i, int j)
+{
+	t_v2	position;
+	t_v2	size;
+
+	position = (t_v2){
+		.x = j * PIXEL_SIZE,
+		.y = i * PIXEL_SIZE,
+	};
+	size = (t_v2){
+		.x = PIXEL_SIZE,
+		.y = PIXEL_SIZE,
+	};
+	if (map->data[i][j] != '1' && map->data[i][j] != ' ')
+		draw_rectangle(screen->buffer, position, size, WHITE);
+	else if (map->data[i][j] == '1')
+		draw_rectangle(screen->buffer, position, size, BLACK);
+}
+
+void	render_map(t_map *map, t_screen *screen)
+{
+	int	i;
+	int	j;
+
+	i = -1;
+	while (++i < map->rows)
+	{
+		j = -1;
+		while (++j < map->cols)
+		{
+			render_map_element(map, screen, i, j);
+		}
+	}
+}
+
+void	render_player(t_player *player, t_screen *screen)
+{
+	t_v2	position;
+	t_v2	size;
+
+	position = (t_v2){
+		.x = player->position.y,
+		.y = player->position.x,
+	};
+	size = (t_v2){
+		.x = PIXEL_SIZE,
+		.y = PIXEL_SIZE,
+	};
+	draw_rectangle(screen->buffer, position, size, LIGHTRED);
+}
+
+void	set_color(uint8_t *pixel, t_color color)
+{
+	pixel[0] = color.r;
+	pixel[1] = color.g;
+	pixel[2] = color.b;
+	pixel[3] = color.a;
+}
+
+void	put_pixel(mlx_image_t *img, int x, int y, t_color color)
+{
+	int	pos;
+
+	pos = y * img->width + x;
+	if (pos < 0 || pos >= (int)(img->width * img->height))
+	{
+		log_error("Tried to put pixel, but is out of bounds!");
+		return ;
+	}
+	set_color(&img->pixels[pos * sizeof(int)], color);
+}
+
+void	draw_rectangle(mlx_image_t *img, t_v2 position, t_v2 size,
+		t_color color)
+{
+	int	i;
+	int	j;
+
+	i = position.x - 1;
+	while (++i < position.x + size.x)
+	{
+		j = position.y - 1;
+		while (++j < position.y + size.y)
+		{
+			put_pixel(img, i, j, color);
+		}
+	}
+}
+
+void	clear_background(void *param)
+{
+	t_info			*info;
+	unsigned int	i;
+
+	info = param;
+	i = 0;
+	while (i < info->screen.buffer->width * info->screen.buffer->height
+		* sizeof(int))
+	{
+		set_color(&info->screen.buffer->pixels[i], GRAY);
+		i += 4;
+	}
+}
+
+void	swap_buffers(void *param)
+{
+	t_info	*info;
+
+	info = param;
+	bfl_memcpy(info->screen.view->pixels, info->screen.buffer->pixels,
+		info->screen.width * info->screen.height * sizeof(int));
 }

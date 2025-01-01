@@ -149,4 +149,8 @@ tags:
 bonus:
 	@make -s -C bonus_part
 
+# This will be removed later
+norm_main:
+	norminette src/main.c | grep -v "Too many" | grep -v "Forbidden control" | grep -v "Typedef declaration" | grep -v "Enum declaration" | grep -v "Struct declaration"
+
 .PHONY: all bonus build_mlx42 clean debug fclean re tags
