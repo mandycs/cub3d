@@ -74,6 +74,7 @@ struct s_player
 	t_toolbar	toolbar;
 	float		speed;
 	int			fov;
+	float		angle;
 };
 
 struct s_map
@@ -157,6 +158,7 @@ void		print_weapon(t_weapon *weapon);
 void		render(void *param);
 void		render_map(t_map *map, t_screen *screen);
 void		render_player(t_player *player, t_screen *screen);
+void		render_fov(t_player *player, t_screen *screen, t_map *map);
 
 // Screen
 bool		create_screen(t_screen *screen, mlx_t *mlx);
@@ -164,10 +166,16 @@ bool		create_screen(t_screen *screen, mlx_t *mlx);
 // MLX Utils
 void		set_color(uint8_t *pixel, t_color color);
 void		put_pixel(mlx_image_t *img, int x, int y, t_color color);
-void		draw_rectangle(mlx_image_t *img, t_v2 position, t_v2 size,
-				t_color color);
 void		clear_background(void *param);
 void		swap_buffers(void *param);
+
+void		draw_rectangle(mlx_image_t *img, t_v2 position, t_v2 size,
+				t_color color);
+int			calculate_step(float dx, float dy);
+void		draw_line(mlx_image_t *img, t_v2 start, t_v2 end, t_color color);
+
+// Utils
+float		deg_to_rads(float angle);
 
 int	main(int argc, char **argv)
 {
@@ -282,13 +290,13 @@ void	hook_control_mouse(mouse_key_t button, action_t action,
 
 void	rotate_left(t_info *info)
 {
-	(void)info;
+	info->player.angle = bfl_mod(info->player.angle - 1, 360);
 	log_info("Rotate left");
 }
 
 void	rotate_right(t_info *info)
 {
-	(void)info;
+	info->player.angle = bfl_mod(info->player.angle + 1, 360);
 	log_info("Rotate right");
 }
 
@@ -469,7 +477,8 @@ bool	create_player(t_player *player)
 	if (!create_toolbar(&player->toolbar))
 		return (false);
 	player->speed = 1;
-	player->fov = 10;
+	player->fov = 100;
+	player->angle = 0;
 	log_info("Created player");
 	return (true);
 }
@@ -586,6 +595,7 @@ void	print_info(t_info *info)
 void	print_player(t_player *player)
 {
 	printf("Player position: %f, %f\n", player->position.x, player->position.y);
+	printf("Player angle: %f\n", player->angle);
 	print_toolbar(&player->toolbar);
 }
 
@@ -608,6 +618,7 @@ void	render(void *param)
 	info = param;
 	render_map(&info->map, &info->screen);
 	render_player(&info->player, &info->screen);
+	render_fov(&info->player, &info->screen, &info->map);
 }
 
 void	render_map_element(t_map *map, t_screen *screen, int i, int j)
@@ -661,6 +672,41 @@ void	render_player(t_player *player, t_screen *screen)
 	draw_rectangle(screen->buffer, position, size, LIGHTRED);
 }
 
+// NOTE: Angle must be in rads
+t_v2	calculate_fov_end(t_v2 start, float angle, int fov, t_map *map)
+{
+	t_v2	p;
+	int		i;
+
+	i = -1;
+	p = (t_v2){.x = start.x, .y = start.y};
+	while (++i < fov)
+	{
+		p.x += cos(angle);
+		p.y += sin(angle);
+		if (p.x / PIXEL_SIZE < 0 || p.x / PIXEL_SIZE >= map->cols
+			|| p.y / PIXEL_SIZE < 0 || p.y / PIXEL_SIZE >= map->rows)
+			break ;
+		if (map->data[(int)(p.y / PIXEL_SIZE)][(int)(p.x / PIXEL_SIZE)] == '1')
+			break ;
+	}
+	return (p);
+}
+
+void	render_fov(t_player *player, t_screen *screen, t_map *map)
+{
+	t_v2	start;
+	t_v2	end;
+
+	start = (t_v2){
+		.x = player->position.y + PIXEL_SIZE * 0.5,
+		.y = player->position.x + PIXEL_SIZE * 0.5,
+	};
+	end = calculate_fov_end(start, deg_to_rads(player->angle),
+			player->fov, map);
+	draw_line(screen->buffer, start, end, GREEN);
+}
+
 void	set_color(uint8_t *pixel, t_color color)
 {
 	pixel[0] = color.r;
@@ -699,6 +745,37 @@ void	draw_rectangle(mlx_image_t *img, t_v2 position, t_v2 size,
 	}
 }
 
+int	calculate_step(float dx, float dy)
+{
+	if (dx < 0)
+		dx *= -1;
+	if (dy < 0)
+		dy *= -1;
+	if (dx > dy)
+		return (dx);
+	return (dy);
+}
+
+void	draw_line(mlx_image_t *img, t_v2 start, t_v2 end, t_color color)
+{
+	int		step;
+	t_v2	increment;
+	t_v2	p;
+	int		i;
+
+	step = calculate_step(end.x - start.x, end.y - start.y);
+	increment.x = (end.x - start.x) / step;
+	increment.y = (end.y - start.y) / step;
+	p = start;
+	i = -1;
+	while (++i <= step)
+	{
+		put_pixel(img, p.x, p.y, color);
+		p.x += increment.x;
+		p.y += increment.y;
+	}
+}
+
 void	clear_background(void *param)
 {
 	t_info			*info;
@@ -721,4 +798,9 @@ void	swap_buffers(void *param)
 	info = param;
 	bfl_memcpy(info->screen.view->pixels, info->screen.buffer->pixels,
 		info->screen.width * info->screen.height * sizeof(int));
+}
+
+float	deg_to_rads(float angle)
+{
+	return (angle * M_PI / 180);
 }

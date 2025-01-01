@@ -6,7 +6,7 @@
 /*   By: mancorte <mancorte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 15:46:21 by ribana-b          #+#    #+#             */
-/*   Updated: 2024/10/02 18:14:13 by mancorte         ###   ########.fr       */
+/*   Updated: 2025/01/01 15:11:59 by ribana-b         ###   ########.com      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -624,6 +624,11 @@ double				bfl_pow(double number, int exponent);
  * @return - -1 if number is negative.
  */
 double				bfl_sqrt(double number);
+
+/**
+ * @brief Calculate the mod
+ */
+int					bfl_mod(int dividend, int divisor);
 
 /* @------------------------------------------------------------------------@ */
 /* |                                memory                                  | */
