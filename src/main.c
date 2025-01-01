@@ -4,8 +4,6 @@
 // to allow giving more information
 
 #include "cub3d.h"
-#define WIDTH 800
-#define HEIGHT 600
 #define LOGGING 1
 #define PIXEL_SIZE 16
 #define RESIZE 4
@@ -302,25 +300,73 @@ void	rotate_right(t_info *info)
 
 void	move_forward(t_info *info)
 {
-	info->player.position.x -= info->player.speed;
+	int	x;
+	int	y;
+	t_player	player;
+	t_map		map;
+
+	player = info->player;
+	map = info->map;
+	x = (player.position.x - player.speed) / PIXEL_SIZE;
+	y = player.position.y / PIXEL_SIZE;
+	if (player.position.y / PIXEL_SIZE - y > 0 && map.data[x][y + 1] == '1')
+		++y;
+	if (x >= 0 && x < (map.rows - 1) * PIXEL_SIZE && map.data[x][y] != '1')
+		info->player.position.x -= player.speed;
 	log_info("Move forward");
 }
 
 void	move_left(t_info *info)
 {
-	info->player.position.y -= info->player.speed;
+	int			x;
+	int			y;
+	t_player	player;
+	t_map		map;
+
+	player = info->player;
+	map = info->map;
+	x = player.position.x / PIXEL_SIZE;
+	y = (player.position.y - player.speed) / PIXEL_SIZE;
+	if (player.position.x / PIXEL_SIZE - x > 0 && map.data[x + 1][y] == '1')
+		++x;
+	if (player.position.y >= 0 && map.data[x][y] != '1')
+		info->player.position.y -= player.speed;
 	log_info("Move left");
 }
 
 void	move_right(t_info *info)
 {
-	info->player.position.y += info->player.speed;
+	int			x;
+	int			y;
+	t_player	player;
+	t_map		map;
+
+	player = info->player;
+	map = info->map;
+	x = player.position.x / PIXEL_SIZE;
+	y = (player.position.y + player.speed + PIXEL_SIZE - 1) / PIXEL_SIZE;
+	if (player.position.x / PIXEL_SIZE - x > 0 && map.data[x + 1][y] == '1')
+		++x;
+	if (player.position.y >= 0 && map.data[x][y] != '1')
+		info->player.position.y += player.speed;
 	log_info("Move right");
 }
 
 void	move_backward(t_info *info)
 {
-	info->player.position.x += info->player.speed;
+	int	x;
+	int	y;
+	t_player	player;
+	t_map		map;
+
+	player = info->player;
+	map = info->map;
+	x = (player.position.x + player.speed + PIXEL_SIZE - 1) / PIXEL_SIZE;
+	y = player.position.y / PIXEL_SIZE;
+	if (player.position.y / PIXEL_SIZE - y > 0 && map.data[x][y + 1] == '1')
+		++y;
+	if (x >= 0 && x < (map.rows - 1) * PIXEL_SIZE && map.data[x][y] != '1')
+		info->player.position.x += player.speed;
 	log_info("Move backward");
 }
 
@@ -476,7 +522,7 @@ bool	create_player(t_player *player)
 	player->position = get_player_position();
 	if (!create_toolbar(&player->toolbar))
 		return (false);
-	player->speed = 1;
+	player->speed = 2;
 	player->fov = 100;
 	player->angle = 0;
 	log_info("Created player");
@@ -590,6 +636,9 @@ void	attack(t_weapon *weapon)
 void	print_info(t_info *info)
 {
 	print_player(&info->player);
+	int x = info->player.position.x / PIXEL_SIZE;
+	int y = info->player.position.y / PIXEL_SIZE;
+	printf("MAP: %c | %d %d\n", info->map.data[x][y],x ,y);
 }
 
 void	print_player(t_player *player)
