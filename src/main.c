@@ -1,22 +1,26 @@
 // Single file program to facilitate the development, I'll refactor it later
 
-// TODO: Make logs to accept va_args or create something like sprintf
-// to allow giving more information
+/**
+ * TODO:
+ *
+ * - Make logs to accept va_args or create something like sprintf
+ * to allow giving more information (low prio)
+ */
 
 #include "cub3d.h"
 #define LOGGING 1
-#define PIXEL_SIZE 16
-#define RESIZE 4
+#define PIXEL_SIZE 32
+#define RESIZE 2
 
 // Hardcoded map for testing
 static const char *smap[] = {
 	"              1111111",
-	"111111111111111000001",
-	"100000000011000000001",
-	"100000000001000000001",
-	"11100000N100000000001",
-	"  1000011111111111111",
-	"  100001             ",
+	"111111111101011000001",
+	"100000000010100000001",
+	"10000000N001000000001",
+	"111000000100000000001",
+	"  1010101111111111111",
+	"  100101             ",
 	"11100001             ",
 	"10000001             ",
 	"11111111             ",
@@ -156,7 +160,7 @@ void		print_weapon(t_weapon *weapon);
 void		render(void *param);
 void		render_map(t_map *map, t_screen *screen);
 void		render_player(t_player *player, t_screen *screen);
-void		render_fov(t_player *player, t_screen *screen, t_map *map);
+void		render_fov(t_player *player, t_map *map, t_screen *screen);
 
 // Screen
 bool		create_screen(t_screen *screen, mlx_t *mlx);
@@ -300,8 +304,8 @@ void	rotate_right(t_info *info)
 
 void	move_forward(t_info *info)
 {
-	int	x;
-	int	y;
+	int			x;
+	int			y;
 	t_player	player;
 	t_map		map;
 
@@ -354,8 +358,8 @@ void	move_right(t_info *info)
 
 void	move_backward(t_info *info)
 {
-	int	x;
-	int	y;
+	int			x;
+	int			y;
 	t_player	player;
 	t_map		map;
 
@@ -523,7 +527,7 @@ bool	create_player(t_player *player)
 	if (!create_toolbar(&player->toolbar))
 		return (false);
 	player->speed = 2;
-	player->fov = 100;
+	player->fov = 60;
 	player->angle = 0;
 	log_info("Created player");
 	return (true);
@@ -667,7 +671,7 @@ void	render(void *param)
 	info = param;
 	render_map(&info->map, &info->screen);
 	render_player(&info->player, &info->screen);
-	render_fov(&info->player, &info->screen, &info->map);
+	render_fov(&info->player, &info->map, &info->screen);
 }
 
 void	render_map_element(t_map *map, t_screen *screen, int i, int j)
@@ -721,6 +725,22 @@ void	render_player(t_player *player, t_screen *screen)
 	draw_rectangle(screen->buffer, position, size, LIGHTRED);
 }
 
+bool	is_wall_collision(t_map *map, int x, int y)
+{
+	int		i;
+	int		j;
+
+	i = x / PIXEL_SIZE;
+	j = y / PIXEL_SIZE;
+	if (i >= 0 && i < map->cols && j >= 0 && j < map->rows
+		&& map->data[j][i] == '1')
+		return (true);
+	i = (x + 1) / PIXEL_SIZE;
+	j = y / PIXEL_SIZE;
+	return (i >= 0 && i < map->cols && j >= 0 && j < map->rows
+		&& map->data[j][i] == '1');
+}
+
 // NOTE: Angle must be in rads
 t_v2	calculate_fov_end(t_v2 start, float angle, int fov, t_map *map)
 {
@@ -733,16 +753,13 @@ t_v2	calculate_fov_end(t_v2 start, float angle, int fov, t_map *map)
 	{
 		p.x += cos(angle);
 		p.y += sin(angle);
-		if (p.x / PIXEL_SIZE < 0 || p.x / PIXEL_SIZE >= map->cols
-			|| p.y / PIXEL_SIZE < 0 || p.y / PIXEL_SIZE >= map->rows)
-			break ;
-		if (map->data[(int)(p.y / PIXEL_SIZE)][(int)(p.x / PIXEL_SIZE)] == '1')
+		if (is_wall_collision(map, p.x, p.y))
 			break ;
 	}
 	return (p);
 }
 
-void	render_fov(t_player *player, t_screen *screen, t_map *map)
+void	render_fov(t_player *player, t_map *map, t_screen *screen)
 {
 	t_v2	start;
 	t_v2	end;
@@ -752,6 +769,12 @@ void	render_fov(t_player *player, t_screen *screen, t_map *map)
 		.y = player->position.x + PIXEL_SIZE * 0.5,
 	};
 	end = calculate_fov_end(start, deg_to_rads(player->angle),
+			player->fov, map);
+	draw_line(screen->buffer, start, end, GREEN);
+	end = calculate_fov_end(start, deg_to_rads(bfl_mod(player->angle + 30, 360)),
+			player->fov, map);
+	draw_line(screen->buffer, start, end, GREEN);
+	end = calculate_fov_end(start, deg_to_rads(bfl_mod(player->angle - 30, 360)),
 			player->fov, map);
 	draw_line(screen->buffer, start, end, GREEN);
 }
