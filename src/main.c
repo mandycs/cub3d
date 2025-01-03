@@ -3,23 +3,28 @@
 /**
  * TODO:
  *
+ * - Reimplement wall collision when moving
  * - Implement textures
  * - Have a limit distance rendering
  * - Make logs to accept va_args or create something like sprintf
  * to allow giving more information
+ *
+ * NOTE:
+ * Don't activate logging while outside of the map, because it will lag due
+ * to printing error
  */
 
 #include "cub3d.h"
 #define LOGGING 0
-#define PIXEL_SIZE 16
-#define RESIZE 5
+#define PIXEL_SIZE 8
+#define RESIZE 4
 
 // Hardcoded map for testing
 static const char *smap[] = {
 	"              1111111",
 	"111111111101011000001",
 	"100000000010100000001",
-	"10000000N001000000001",
+	"1000000000010000N0001",
 	"111000000100000000001",
 	"  1010101111111111111",
 	"  100101             ",
@@ -182,6 +187,7 @@ void		draw_rectangle(mlx_image_t *img, t_v2 position, t_v2 size,
 void		draw_line(mlx_image_t *img, t_v2 start, t_v2 end, t_color color);
 
 // Utils
+void		update(void *param);
 float		deg_to_rads(float angle);
 t_v2		calculate_wall_collision(t_v2 start, float angle, int fov,
 				t_map *map);
@@ -236,6 +242,7 @@ int	log_error(const char *message)
 
 void	hook_loader(t_info *info)
 {
+	mlx_loop_hook(info->mlx, update, info);
 	mlx_loop_hook(info->mlx, hook_control_keys, info);
 	mlx_key_hook(info->mlx, hook_option_key, info);
 	mlx_mouse_hook(info->mlx, hook_control_mouse, info);
@@ -313,73 +320,45 @@ void	rotate_right(t_info *info)
 
 void	move_forward(t_info *info)
 {
-	int			x;
-	int			y;
-	t_player	player;
-	t_map		map;
+	t_player	*player;
 
-	player = info->player;
-	map = info->map;
-	x = (player.position.x - player.speed) / PIXEL_SIZE;
-	y = player.position.y / PIXEL_SIZE;
-	if (player.position.y / PIXEL_SIZE - y > 0 && map.data[x][y + 1] == '1')
-		++y;
-	if (x >= 0 && x < (map.rows - 1) * PIXEL_SIZE && map.data[x][y] != '1')
-		info->player.position.x -= player.speed;
+	player = &info->player;
+	player->position.x += player->speed * sin(deg_to_rads(player->angle));
+	player->position.y += player->speed * cos(deg_to_rads(player->angle));
 	log_info("Move forward");
 }
 
 void	move_left(t_info *info)
 {
-	int			x;
-	int			y;
-	t_player	player;
-	t_map		map;
+	t_player	*player;
 
-	player = info->player;
-	map = info->map;
-	x = player.position.x / PIXEL_SIZE;
-	y = (player.position.y - player.speed) / PIXEL_SIZE;
-	if (player.position.x / PIXEL_SIZE - x > 0 && map.data[x + 1][y] == '1')
-		++x;
-	if (player.position.y >= 0 && map.data[x][y] != '1')
-		info->player.position.y -= player.speed;
-	log_info("Move left");
+	player = &info->player;
+	player->position.x -= player->speed
+		* sin(deg_to_rads(bfl_mod(player->angle + 90, 360)));
+	player->position.y -= player->speed
+		* cos(deg_to_rads(bfl_mod(player->angle + 90, 360)));
+	log_info("Move right");
 }
 
 void	move_right(t_info *info)
 {
-	int			x;
-	int			y;
-	t_player	player;
-	t_map		map;
+	t_player	*player;
 
-	player = info->player;
-	map = info->map;
-	x = player.position.x / PIXEL_SIZE;
-	y = (player.position.y + player.speed + PIXEL_SIZE - 1) / PIXEL_SIZE;
-	if (player.position.x / PIXEL_SIZE - x > 0 && map.data[x + 1][y] == '1')
-		++x;
-	if (player.position.y >= 0 && map.data[x][y] != '1')
-		info->player.position.y += player.speed;
+	player = &info->player;
+	player->position.x += player->speed
+		* sin(deg_to_rads(bfl_mod(player->angle + 90, 360)));
+	player->position.y += player->speed
+		* cos(deg_to_rads(bfl_mod(player->angle + 90, 360)));
 	log_info("Move right");
 }
 
 void	move_backward(t_info *info)
 {
-	int			x;
-	int			y;
-	t_player	player;
-	t_map		map;
+	t_player	*player;
 
-	player = info->player;
-	map = info->map;
-	x = (player.position.x + player.speed + PIXEL_SIZE - 1) / PIXEL_SIZE;
-	y = player.position.y / PIXEL_SIZE;
-	if (player.position.y / PIXEL_SIZE - y > 0 && map.data[x][y + 1] == '1')
-		++y;
-	if (x >= 0 && x < (map.rows - 1) * PIXEL_SIZE && map.data[x][y] != '1')
-		info->player.position.x += player.speed;
+	player = &info->player;
+	player->position.x -= player->speed * sin(deg_to_rads(player->angle));
+	player->position.y -= player->speed * cos(deg_to_rads(player->angle));
 	log_info("Move backward");
 }
 
@@ -680,6 +659,7 @@ void	render(void *param)
 	render_map(&info->map, &info->screen);
 	render_player(&info->player, &info->screen);
 	render_fov(&info->player, &info->map, &info->screen);
+	//info->player.angle = bfl_mod(info->player.angle + 1, 360);
 }
 
 void	render_map_element(t_map *map, t_screen *screen, int i, int j)
@@ -997,4 +977,12 @@ void	swap_buffers(void *param)
 float	deg_to_rads(float angle)
 {
 	return (angle * M_PI / 180);
+}
+
+void	update(void *param)
+{
+	t_info	*info;
+
+	info = param;
+	info->player.speed = 20 * info->mlx->delta_time;
 }
