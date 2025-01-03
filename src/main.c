@@ -3,14 +3,16 @@
 /**
  * TODO:
  *
+ * - Implement textures
+ * - Have a limit distance rendering
  * - Make logs to accept va_args or create something like sprintf
- * to allow giving more information (low prio)
+ * to allow giving more information
  */
 
 #include "cub3d.h"
-#define LOGGING 1
-#define PIXEL_SIZE 32
-#define RESIZE 2
+#define LOGGING 0
+#define PIXEL_SIZE 16
+#define RESIZE 5
 
 // Hardcoded map for testing
 static const char *smap[] = {
@@ -161,6 +163,10 @@ void		render(void *param);
 void		render_map(t_map *map, t_screen *screen);
 void		render_player(t_player *player, t_screen *screen);
 void		render_fov(t_player *player, t_map *map, t_screen *screen);
+void		render_wall(t_screen *screen, int x, float distance, t_color color);
+void		render_floor(t_screen *screen, t_color color);
+void		render_ceiling(t_screen *screen, t_color color);
+void		render_view(t_player *player, t_map *map, t_screen *screen);
 
 // Screen
 bool		create_screen(t_screen *screen, mlx_t *mlx);
@@ -173,11 +179,14 @@ void		swap_buffers(void *param);
 
 void		draw_rectangle(mlx_image_t *img, t_v2 position, t_v2 size,
 				t_color color);
-int			calculate_step(float dx, float dy);
 void		draw_line(mlx_image_t *img, t_v2 start, t_v2 end, t_color color);
 
 // Utils
 float		deg_to_rads(float angle);
+t_v2		calculate_wall_collision(t_v2 start, float angle, int fov,
+				t_map *map);
+float		calculate_distance(t_player *player, t_map *map, float angle);
+int			calculate_step(float dx, float dy);
 
 int	main(int argc, char **argv)
 {
@@ -526,8 +535,8 @@ bool	create_player(t_player *player)
 	player->position = get_player_position();
 	if (!create_toolbar(&player->toolbar))
 		return (false);
-	player->speed = 2;
-	player->fov = 60;
+	player->speed = 1;
+	player->fov = PIXEL_SIZE * 2;
 	player->angle = 0;
 	log_info("Created player");
 	return (true);
@@ -640,9 +649,7 @@ void	attack(t_weapon *weapon)
 void	print_info(t_info *info)
 {
 	print_player(&info->player);
-	int x = info->player.position.x / PIXEL_SIZE;
-	int y = info->player.position.y / PIXEL_SIZE;
-	printf("MAP: %c | %d %d\n", info->map.data[x][y],x ,y);
+	printf("FPS: %f\n", 1 / info->mlx->delta_time);
 }
 
 void	print_player(t_player *player)
@@ -669,6 +676,7 @@ void	render(void *param)
 	t_info	*info;
 
 	info = param;
+	render_view(&info->player, &info->map, &info->screen);
 	render_map(&info->map, &info->screen);
 	render_player(&info->player, &info->screen);
 	render_fov(&info->player, &info->map, &info->screen);
@@ -742,7 +750,7 @@ bool	is_wall_collision(t_map *map, int x, int y)
 }
 
 // NOTE: Angle must be in rads
-t_v2	calculate_fov_end(t_v2 start, float angle, int fov, t_map *map)
+t_v2	calculate_wall_collision(t_v2 start, float angle, int fov, t_map *map)
 {
 	t_v2	p;
 	int		i;
@@ -763,20 +771,134 @@ void	render_fov(t_player *player, t_map *map, t_screen *screen)
 {
 	t_v2	start;
 	t_v2	end;
+	int		i;
 
 	start = (t_v2){
 		.x = player->position.y + PIXEL_SIZE * 0.5,
 		.y = player->position.x + PIXEL_SIZE * 0.5,
 	};
-	end = calculate_fov_end(start, deg_to_rads(player->angle),
+	end = calculate_wall_collision(start, deg_to_rads(player->angle),
 			player->fov, map);
 	draw_line(screen->buffer, start, end, GREEN);
-	end = calculate_fov_end(start, deg_to_rads(bfl_mod(player->angle + 30, 360)),
-			player->fov, map);
-	draw_line(screen->buffer, start, end, GREEN);
-	end = calculate_fov_end(start, deg_to_rads(bfl_mod(player->angle - 30, 360)),
-			player->fov, map);
-	draw_line(screen->buffer, start, end, GREEN);
+	i = -1;
+	while (++i < 31)
+	{
+		end = calculate_wall_collision(start,
+				deg_to_rads(bfl_mod(player->angle + i, 360)), player->fov, map);
+		draw_line(screen->buffer, start, end, GREEN);
+		end = calculate_wall_collision(start,
+				deg_to_rads(bfl_mod(player->angle - i, 360)), player->fov, map);
+		draw_line(screen->buffer, start, end, GREEN);
+	}
+}
+
+void	render_ceiling(t_screen *screen, t_color color)
+{
+	t_v2	start;
+	t_v2	end;
+	int		x;
+
+	x = 0;
+	start = (t_v2){
+		.x = x,
+		.y = 0,
+	};
+	end = (t_v2){
+		.x = x,
+		.y = screen->height * 0.5,
+	};
+	while (x < screen->width)
+	{
+		start.x = x;
+		end.x = x;
+		draw_line(screen->buffer, start, end, color);
+		++x;
+	}
+}
+
+void	render_floor(t_screen *screen, t_color color)
+{
+	t_v2	start;
+	t_v2	end;
+	int		x;
+
+	x = 0;
+	start = (t_v2){
+		.x = x,
+		.y = screen->height * 0.5,
+	};
+	end = (t_v2){
+		.x = x,
+		.y = screen->height - 1,
+	};
+	while (x < screen->width)
+	{
+		start.x = x;
+		end.x = x;
+		draw_line(screen->buffer, start, end, color);
+		++x;
+	}
+}
+
+void	render_wall(t_screen *screen, int x, float distance, t_color color)
+{
+	t_v2	start;
+	t_v2	end;
+	int		wall_start;
+	int		wall_end;
+	int		wall_height;
+
+	wall_height = (int)(screen->height * PIXEL_SIZE * 0.5 / distance);
+	wall_start = screen->height * 0.5 - wall_height * 0.5;
+	wall_end = wall_start + wall_height;
+	start = (t_v2){
+		.x = x,
+		.y = wall_start,
+	};
+	end = (t_v2){
+		.x = x,
+		.y = wall_end,
+	};
+	if (end.y >= screen->height)
+		end.y = screen->height - 1;
+	draw_line(screen->buffer, start, end, color);
+}
+
+float	calculate_distance(t_player *player, t_map *map, float angle)
+{
+	float	distance;
+	t_v2	start;
+	t_v2	end;
+
+	start = (t_v2){
+		.x = player->position.y + PIXEL_SIZE * 0.5,
+		.y = player->position.x + PIXEL_SIZE * 0.5,
+	};
+	end = calculate_wall_collision(start, deg_to_rads(angle), player->fov, map);
+	distance = sqrt(pow(end.x - start.x, 2) + pow(end.y - start.y, 2));
+	distance *= cos(deg_to_rads(bfl_mod(angle - player->angle, 360)));
+	return (distance);
+}
+
+void	render_view(t_player *player, t_map *map, t_screen *screen)
+{
+	float	step;
+	float	angle;
+	float	distance;
+	int		x;
+
+	step = (float)player->fov / screen->width;
+	angle = bfl_mod(player->angle - player->fov * 0.5, 360);
+	x = 0;
+	render_ceiling(screen, BLUE);
+	render_floor(screen, LIGHTBLUE);
+	while (x < screen->width)
+	{
+		distance = calculate_distance(player, map, angle);
+		render_wall(screen, x, distance, LIGHTGREEN);
+		angle += step;
+		++x;
+	}
 }
 
 void	set_color(uint8_t *pixel, t_color color)
