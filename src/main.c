@@ -506,7 +506,7 @@ t_v2	get_player_position(void)
 			}
 		}
 	}
-	return ((t_v2){.x = -1, .y = -1});
+	return (v2_create(-1, -1));
 }
 
 bool	create_player(t_player *player)
@@ -667,14 +667,8 @@ void	render_map_element(t_map *map, t_screen *screen, int i, int j)
 	t_v2	position;
 	t_v2	size;
 
-	position = (t_v2){
-		.x = j * PIXEL_SIZE,
-		.y = i * PIXEL_SIZE,
-	};
-	size = (t_v2){
-		.x = PIXEL_SIZE,
-		.y = PIXEL_SIZE,
-	};
+	position = v2_create(j * PIXEL_SIZE, i * PIXEL_SIZE);
+	size = v2_create(PIXEL_SIZE, PIXEL_SIZE);
 	if (map->data[i][j] != '1' && map->data[i][j] != ' ')
 		draw_rectangle(screen->buffer, position, size, WHITE);
 	else if (map->data[i][j] == '1')
@@ -702,14 +696,8 @@ void	render_player(t_player *player, t_screen *screen)
 	t_v2	position;
 	t_v2	size;
 
-	position = (t_v2){
-		.x = player->position.y,
-		.y = player->position.x,
-	};
-	size = (t_v2){
-		.x = PIXEL_SIZE,
-		.y = PIXEL_SIZE,
-	};
+	position = v2_create(player->position.y, player->position.x);
+	size = v2_create(PIXEL_SIZE, PIXEL_SIZE);
 	draw_rectangle(screen->buffer, position, size, LIGHTRED);
 }
 
@@ -736,7 +724,7 @@ t_v2	calculate_wall_collision(t_v2 start, float angle, int fov, t_map *map)
 	int		i;
 
 	i = -1;
-	p = (t_v2){.x = start.x, .y = start.y};
+	p = v2_create(start.x, start.y);
 	while (++i < fov)
 	{
 		p.x += cos(angle);
@@ -753,10 +741,8 @@ void	render_fov(t_player *player, t_map *map, t_screen *screen)
 	t_v2	end;
 	int		i;
 
-	start = (t_v2){
-		.x = player->position.y + PIXEL_SIZE * 0.5,
-		.y = player->position.x + PIXEL_SIZE * 0.5,
-	};
+	start = v2_create(player->position.y + PIXEL_SIZE * 0.5,
+			player->position.x + PIXEL_SIZE * 0.5);
 	end = calculate_wall_collision(start, deg_to_rads(player->angle),
 			player->fov, map);
 	draw_line(screen->buffer, start, end, GREEN);
@@ -779,14 +765,8 @@ void	render_ceiling(t_screen *screen, t_color color)
 	int		x;
 
 	x = 0;
-	start = (t_v2){
-		.x = x,
-		.y = 0,
-	};
-	end = (t_v2){
-		.x = x,
-		.y = screen->height * 0.5,
-	};
+	start = v2_create(x, 0);
+	end = v2_create(x, screen->height * 0.5);
 	while (x < screen->width)
 	{
 		start.x = x;
@@ -803,14 +783,8 @@ void	render_floor(t_screen *screen, t_color color)
 	int		x;
 
 	x = 0;
-	start = (t_v2){
-		.x = x,
-		.y = screen->height * 0.5,
-	};
-	end = (t_v2){
-		.x = x,
-		.y = screen->height - 1,
-	};
+	start = v2_create(x, screen->height * 0.5);
+	end = v2_create(x, screen->height - 1);
 	while (x < screen->width)
 	{
 		start.x = x;
@@ -831,14 +805,8 @@ void	render_wall(t_screen *screen, int x, float distance, t_color color)
 	wall_height = (int)(screen->height * PIXEL_SIZE * 0.5 / distance);
 	wall_start = screen->height * 0.5 - wall_height * 0.5;
 	wall_end = wall_start + wall_height;
-	start = (t_v2){
-		.x = x,
-		.y = wall_start,
-	};
-	end = (t_v2){
-		.x = x,
-		.y = wall_end,
-	};
+	start = v2_create(x, wall_start);
+	end = v2_create(x, wall_end);
 	if (end.y >= screen->height)
 		end.y = screen->height - 1;
 	draw_line(screen->buffer, start, end, color);
@@ -850,10 +818,8 @@ float	calculate_distance(t_player *player, t_map *map, float angle)
 	t_v2	start;
 	t_v2	end;
 
-	start = (t_v2){
-		.x = player->position.y + PIXEL_SIZE * 0.5,
-		.y = player->position.x + PIXEL_SIZE * 0.5,
-	};
+	start = v2_create(player->position.y + PIXEL_SIZE * 0.5,
+			player->position.x + PIXEL_SIZE * 0.5);
 	end = calculate_wall_collision(start, deg_to_rads(angle), player->fov, map);
 	distance = sqrt(pow(end.x - start.x, 2) + pow(end.y - start.y, 2));
 	distance *= cos(deg_to_rads(bfl_mod(angle - player->angle, 360)));
@@ -937,6 +903,8 @@ void	draw_line(mlx_image_t *img, t_v2 start, t_v2 end, t_color color)
 	t_v2	p;
 	int		i;
 
+	if (v2_equals(&start, &end))
+		return ;
 	step = calculate_step(end.x - start.x, end.y - start.y);
 	increment.x = (end.x - start.x) / step;
 	increment.y = (end.y - start.y) / step;

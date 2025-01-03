@@ -35,7 +35,7 @@ OBJ_DIR := obj/
 
 INCLUDE_FILES := cub3d.h
 SRC_FILES := cub3d.c parser.c parser_2.c parser_3.c parser_4.c parser_5.c error.c
-UTILS_FILES := utils.c
+UTILS_FILES := utils.c v2add.c v2create.c v2div.c v2mult.c v2sub.c v2zero.c
 
 INCLUDE = $(addprefix $(INCLUDE_DIR), $(INCLUDE_FILES))
 SRC = $(addprefix $(SRC_DIR), $(SRC_FILES))
@@ -79,7 +79,7 @@ run: main
 	./$(NAME)
 main: build_mlx42
 	make -j4 -s -C $(BFL_DIR)
-	clang -o cub3d -g -Wall -Wextra -Werror src/main.c $(CPPFLAGS) $(LDFLAGS) $(LDLIBS)
+	clang -o cub3d -g -Wall -Wextra -Werror src/main.c utils/*.c $(CPPFLAGS) $(LDFLAGS) $(LDLIBS)
 
 all: build_mlx42 $(NAME)
 
