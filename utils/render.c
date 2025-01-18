@@ -1,13 +1,25 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   render.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ribana-b <ribana-b@student.42malaga.com>   +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/18 21:26:43 by ribana-b          #+#    #+# Malaga      */
+/*   Updated: 2025/01/18 21:42:38 by ribana-b         ###   ########.com      */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "utils.h"
 
 void	render_view(t_player *player, t_map *map, t_screen *screen)
 {
-	float	step;
-	float	angle;
-	float	distance;
+	double	step;
+	double	angle;
+	double	distance;
 	int		x;
 
-	step = (float)player->fov / screen->width;
+	step = (double)player->fov / screen->width;
 	angle = bfl_mod(player->angle - player->fov * 0.5, 360);
 	x = 0;
 	render_ceiling(screen, blue());

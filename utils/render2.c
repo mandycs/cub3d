@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   render2.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ribana-b <ribana-b@student.42malaga.com>   +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/18 21:26:42 by ribana-b          #+#    #+# Malaga      */
+/*   Updated: 2025/01/18 21:27:12 by ribana-b         ###   ########.com      */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "utils.h"
 
 void	render_map_element(t_map *map, t_screen *screen, int i, int j)
@@ -12,7 +24,6 @@ void	render_map_element(t_map *map, t_screen *screen, int i, int j)
 	else if (map->data[i][j] == '1')
 		draw_rectangle(screen->buffer, position, size, black());
 }
-
 
 void	render_ceiling(t_screen *screen, t_color color)
 {
@@ -50,7 +61,7 @@ void	render_floor(t_screen *screen, t_color color)
 	}
 }
 
-void	render_wall(t_screen *screen, int x, float distance, t_color color)
+void	render_wall(t_screen *screen, int x, double distance, t_color color)
 {
 	t_v2	start;
 	t_v2	end;

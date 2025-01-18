@@ -6,7 +6,7 @@ static const char *smap[] = {
 	"              1111111",
 	"111111111101011000001",
 	"100000000010100000001",
-	"1000000000010000N0001",
+	"1000000000N1000000001",
 	"111000000100000000001",
 	"  1010101111111111111",
 	"  100101             ",
@@ -32,10 +32,10 @@ typedef struct s_info	t_info;
 /* |                           Function Section                             | */
 /* @------------------------------------------------------------------------@ */
 
-float	deg_to_rads(float angle);
-int		calculate_step(float dx, float dy);
-float	calculate_distance(t_player *player, t_map *map, float angle);
-t_v2	calculate_wall_collision(t_v2 start, float angle, int fov, t_map *map);
+double	deg_to_rads(double angle);
+int		calculate_step(double dx, double dy);
+double	calculate_distance(t_player *player, t_map *map, double angle);
+t_v2	calculate_wall_collision(t_v2 start, double angle, int fov, t_map *map);
 bool	is_wall_collision(t_map *map, int x, int y);
 
 bool	create_textures(t_info *info);
@@ -49,7 +49,7 @@ void	render_view(t_player *player, t_map *map, t_screen *screen);
 void	render_map_element(t_map *map, t_screen *screen, int i, int j);
 void	render_ceiling(t_screen *screen, t_color color);
 void	render_floor(t_screen *screen, t_color color);
-void	render_wall(t_screen *screen, int x, float distance, t_color color);
+void	render_wall(t_screen *screen, int x, double distance, t_color color);
 
 void	set_color(uint8_t *pixel, t_color color);
 void	put_pixel(mlx_image_t *img, int x, int y, t_color color);

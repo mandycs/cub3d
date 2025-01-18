@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   wall_collision.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ribana-b <ribana-b@student.42malaga.com>   +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/18 21:26:50 by ribana-b          #+#    #+# Malaga      */
+/*   Updated: 2025/01/18 22:04:52 by ribana-b         ###   ########.com      */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "utils.h"
 
 bool	is_wall_collision(t_map *map, int x, int y)
@@ -17,7 +29,7 @@ bool	is_wall_collision(t_map *map, int x, int y)
 }
 
 // NOTE: Angle must be in rads
-t_v2	calculate_wall_collision(t_v2 start, float angle, int fov, t_map *map)
+t_v2	calculate_wall_collision(t_v2 start, double angle, int fov, t_map *map)
 {
 	t_v2	p;
 	int		i;
@@ -29,7 +41,7 @@ t_v2	calculate_wall_collision(t_v2 start, float angle, int fov, t_map *map)
 		p.x += cos(angle);
 		p.y += sin(angle);
 		if (is_wall_collision(map, p.x, p.y))
-			break ;
+			return (p);
 	}
 	return (p);
 }

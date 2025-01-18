@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   deg_to_rads.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ribana-b <ribana-b@student.42malaga.com>   +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/18 21:26:32 by ribana-b          #+#    #+# Malaga      */
+/*   Updated: 2025/01/18 21:26:32 by ribana-b         ###   ########.com      */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "utils.h"
 
-float	deg_to_rads(float angle)
+double	deg_to_rads(double angle)
 {
 	return (angle * M_PI / 180);
 }

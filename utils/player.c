@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   player.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ribana-b <ribana-b@student.42malaga.com>   +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/18 21:26:40 by ribana-b          #+#    #+# Malaga      */
+/*   Updated: 2025/01/18 21:26:41 by ribana-b         ###   ########.com      */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "utils.h"
 
 // This will probably accept a map later on
@@ -17,8 +29,8 @@ t_v2	get_player_position(void)
 		{
 			if (smap[i][j] == 'N')
 			{
-				position.x = (float)i * PIXEL_SIZE;
-				position.y = (float)j * PIXEL_SIZE;
+				position.x = (double)i * PIXEL_SIZE;
+				position.y = (double)j * PIXEL_SIZE;
 				return (position);
 			}
 		}

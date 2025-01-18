@@ -8,7 +8,7 @@
 # define INITIAL_CAPACITY 16
 # define WALL = '1'
 # define FILL = '.'
-# define PIXEL_SIZE 48
+# define PIXEL_SIZE 32
 # define RESIZE 4
 
 /* @------------------------------------------------------------------------@ */
@@ -94,9 +94,9 @@ struct s_player
 {
 	t_v2		position;
 	t_toolbar	toolbar;
-	float		speed;
+	double		speed;
 	int			fov;
-	float		angle;
+	double		angle;
 };
 
 struct s_map
