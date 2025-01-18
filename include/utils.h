@@ -1,6 +1,20 @@
 #ifndef UTILS_H
 # define UTILS_H
 
+// Hardcoded map for testing
+static const char *smap[] = {
+	"              1111111",
+	"111111111101011000001",
+	"100000000010100000001",
+	"1000000000010000N0001",
+	"111000000100000000001",
+	"  1010101111111111111",
+	"  100101             ",
+	"11100001             ",
+	"10000001             ",
+	"11111111             ",
+};
+
 /* @------------------------------------------------------------------------@ */
 /* |                            Include Section                             | */
 /* @------------------------------------------------------------------------@ */
@@ -43,5 +57,30 @@ void	put_pixel(mlx_image_t *img, int x, int y, t_color color);
 void	draw_rectangle(mlx_image_t *img, t_v2 position, t_v2 size,
 		t_color color);
 void	draw_line(mlx_image_t *img, t_v2 start, t_v2 end, t_color color);
+
+void	clear_background(void *param);
+void	swap_buffers(void *param);
+void	update(void *param);
+
+void	move_left(t_info *info);
+void	move_right(t_info *info);
+void	move_backward(t_info *info);
+void	move_forward(t_info *info);
+
+void	rotate_left(t_info *info);
+void	rotate_right(t_info *info);
+
+void	hook_loader(t_info *info);
+
+bool	cub_create(t_info *info);
+void	cub_close_window(mlx_t *mlx);
+void	cub_destroy(t_info *info);
+
+bool	create_player(t_player *player);
+t_v2	get_player_position(void);
+
+bool	create_map(t_map *map);
+bool	create_map_data(t_map *map);
+void	destroy_map(t_map *map);
 
 #endif // UTILS_H

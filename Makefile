@@ -72,6 +72,13 @@ UTILS_FILES := utils.c\
 			   render.c\
 			   render2.c\
 			   draw.c\
+			   logic.c\
+			   move.c\
+			   player.c\
+			   rotate.c\
+			   map.c\
+			   hook.c\
+			   cub_resources.c\
 
 V2_FILES := v2add.c\
 			v2create.c\
