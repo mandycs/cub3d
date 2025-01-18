@@ -16,7 +16,7 @@
 
 #include "cub3d.h"
 #define LOGGING 0
-#define PIXEL_SIZE 8
+#define PIXEL_SIZE 16
 #define RESIZE 4
 
 // Hardcoded map for testing
@@ -201,12 +201,15 @@ int	main(int argc, char **argv)
 	(void)argc;
 	(void)argv;
 	if (!cub_create(&info))
+	{
+		if (info.mlx)
+			cub_destroy(&info);
 		return (log_error("Couldn't create cub resources"));
+	}
 	if (mlx_image_to_window(info.mlx, info.screen.view, 0, 0) < 0)
 	{
-		log_error("Couldn't draw the screen");
 		cub_destroy(&info);
-		return (1);
+		return (log_error("Couldn't draw the screen"));
 	}
 	hook_loader(&info);
 	mlx_loop(info.mlx);
@@ -370,11 +373,11 @@ bool	cub_create(t_info *info)
 		return (false);
 	log_info("Window initialized");
 	if (!create_player(&info->player))
-		return (log_error("Couldn't create player"));
+		return (!log_error("Couldn't create player"));
 	if (!create_map(&info->map))
-		return (log_error("Couldn't create map"));
+		return (!log_error("Couldn't create map"));
 	if (!create_screen(&info->screen, info->mlx))
-		return (log_error("Couldn't create screen"));
+		return (!log_error("Couldn't create screen"));
 	return (true);
 }
 
