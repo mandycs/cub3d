@@ -16,8 +16,8 @@
 
 #include "cub3d.h"
 #define LOGGING 0
-#define PIXEL_SIZE 16
-#define RESIZE 4
+#define PIXEL_SIZE 32
+#define RESIZE 2
 
 // Hardcoded map for testing
 static const char *smap[] = {
@@ -103,10 +103,12 @@ struct s_screen
 
 struct s_info
 {
-	mlx_t		*mlx;
-	t_player	player;
-	t_map		map;
-	t_screen	screen;
+	mlx_t			*mlx;
+	mlx_image_t		*img[4];
+	mlx_texture_t	*tex[4];
+	t_player		player;
+	t_map			map;
+	t_screen		screen;
 };
 
 // Cub
@@ -175,6 +177,10 @@ void		render_view(t_player *player, t_map *map, t_screen *screen);
 
 // Screen
 bool		create_screen(t_screen *screen, mlx_t *mlx);
+
+// Textures
+bool		create_textures(t_info *info);
+void		destroy_textures(t_info *info);
 
 // MLX Utils
 void		set_color(uint8_t *pixel, t_color color);
@@ -376,6 +382,8 @@ bool	cub_create(t_info *info)
 		return (!log_error("Couldn't create player"));
 	if (!create_map(&info->map))
 		return (!log_error("Couldn't create map"));
+	if (!create_textures(info))
+		return (!log_error("Couldn't create textures"));
 	if (!create_screen(&info->screen, info->mlx))
 		return (!log_error("Couldn't create screen"));
 	return (true);
@@ -389,8 +397,9 @@ void	cub_close_window(mlx_t *mlx)
 
 void	cub_destroy(t_info *info)
 {
-	mlx_terminate(info->mlx);
 	destroy_map(&info->map);
+	destroy_textures(info);
+	mlx_terminate(info->mlx);
 	log_info("Resources destroyed");
 }
 
@@ -580,6 +589,42 @@ bool	create_map_data(t_map *map)
 	return (true);
 }
 
+// Temp textures, might change them later
+bool	create_textures(t_info *info)
+{
+	int	i;
+
+	i = 0;
+	info->tex[i++] = mlx_load_png("./sprites/red.png");
+	info->tex[i++] = mlx_load_png("./sprites/green.png");
+	info->tex[i++] = mlx_load_png("./sprites/yellow.png");
+	info->tex[i++] = mlx_load_png("./sprites/purple.png");
+	while (i--)
+	{
+		if (!info->tex[i])
+			return (false);
+		info->img[i] = mlx_texture_to_image(info->mlx, info->tex[i]);
+		if (!info->img[i])
+			return (false);
+	}
+	log_info("Created textures");
+	return (true);
+}
+
+void	destroy_textures(t_info *info)
+{
+	int	i;
+
+	i = 4;
+	while (i--)
+	{
+		if (info->img[i])
+			mlx_delete_image(info->mlx, info->img[i]);
+		if (info->tex[i])
+			mlx_delete_texture(info->tex[i]);
+	}
+}
+
 bool	create_screen(t_screen *screen, mlx_t *mlx)
 {
 	screen->width = mlx->width;
@@ -704,40 +749,6 @@ void	render_player(t_player *player, t_screen *screen)
 	draw_rectangle(screen->buffer, position, size, LIGHTRED);
 }
 
-bool	is_wall_collision(t_map *map, int x, int y)
-{
-	int		i;
-	int		j;
-
-	i = x / PIXEL_SIZE;
-	j = y / PIXEL_SIZE;
-	if (i >= 0 && i < map->cols && j >= 0 && j < map->rows
-		&& map->data[j][i] == '1')
-		return (true);
-	i = (x + 1) / PIXEL_SIZE;
-	j = y / PIXEL_SIZE;
-	return (i >= 0 && i < map->cols && j >= 0 && j < map->rows
-		&& map->data[j][i] == '1');
-}
-
-// NOTE: Angle must be in rads
-t_v2	calculate_wall_collision(t_v2 start, float angle, int fov, t_map *map)
-{
-	t_v2	p;
-	int		i;
-
-	i = -1;
-	p = v2_create(start.x, start.y);
-	while (++i < fov)
-	{
-		p.x += cos(angle);
-		p.y += sin(angle);
-		if (is_wall_collision(map, p.x, p.y))
-			break ;
-	}
-	return (p);
-}
-
 void	render_fov(t_player *player, t_map *map, t_screen *screen)
 {
 	t_v2	start;
@@ -795,6 +806,40 @@ void	render_floor(t_screen *screen, t_color color)
 		draw_line(screen->buffer, start, end, color);
 		++x;
 	}
+}
+
+bool	is_wall_collision(t_map *map, int x, int y)
+{
+	int		i;
+	int		j;
+
+	i = x / PIXEL_SIZE;
+	j = y / PIXEL_SIZE;
+	if (i >= 0 && i < map->cols && j >= 0 && j < map->rows
+		&& map->data[j][i] == '1')
+		return (true);
+	i = (x + 1) / PIXEL_SIZE;
+	j = y / PIXEL_SIZE;
+	return (i >= 0 && i < map->cols && j >= 0 && j < map->rows
+		&& map->data[j][i] == '1');
+}
+
+// NOTE: Angle must be in rads
+t_v2	calculate_wall_collision(t_v2 start, float angle, int fov, t_map *map)
+{
+	t_v2	p;
+	int		i;
+
+	i = -1;
+	p = v2_create(start.x, start.y);
+	while (++i < fov)
+	{
+		p.x += cos(angle);
+		p.y += sin(angle);
+		if (is_wall_collision(map, p.x, p.y))
+			break ;
+	}
+	return (p);
 }
 
 void	render_wall(t_screen *screen, int x, float distance, t_color color)
