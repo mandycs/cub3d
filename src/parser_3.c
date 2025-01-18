@@ -6,7 +6,7 @@
 /*   By: mancorte <mancorte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 22:25:03 by mancorte          #+#    #+#             */
-/*   Updated: 2024/12/21 02:08:19 by mancorte         ###   ########.fr       */
+/*   Updated: 2025/01/18 23:04:29 by mancorte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,13 +85,13 @@ int	ft_check_map(t_cub *cub)
 
 void	ft_map_len(t_cub *cub)
 {
-	cub->i = 0;
-	cub->len = 0;
-	while (cub->map[cub->i])
+	cub->height = 0;
+	cub->width = 0;
+	while (cub->map[cub->height])
 	{
-		cub->tmp = bfl_strlen(cub->map[cub->i]);
-		if (cub->tmp > cub->len)
-			cub->len = cub->tmp;
-		cub->i++;
+		cub->tmp = bfl_strlen(cub->map[cub->height]);
+		if (cub->tmp > cub->width)
+			cub->width = cub->tmp;
+		cub->height++;
 	}
 }

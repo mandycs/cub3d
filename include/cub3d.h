@@ -6,7 +6,7 @@
 /*   By: mancorte <mancorte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 13:46:31 by mancorte          #+#    #+#             */
-/*   Updated: 2024/12/21 02:22:10 by mancorte         ###   ########.fr       */
+/*   Updated: 2025/01/18 23:04:42 by mancorte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,8 @@ struct					s_cub
 	char				**text;
 	char				**map;
 	int					tmp;
-	int					len;
+	int					width;
+	int					height;
 	char				*line;
 	char				**new_lines;
 	int					pos_x;

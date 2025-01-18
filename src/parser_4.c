@@ -6,7 +6,7 @@
 /*   By: mancorte <mancorte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 20:59:21 by mancorte          #+#    #+#             */
-/*   Updated: 2024/12/21 02:52:58 by mancorte         ###   ########.fr       */
+/*   Updated: 2025/01/18 23:22:17 by mancorte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,17 +59,16 @@ int	ft_extract_color_aux_f(t_cub *cub)
 	return (BFL_OK);
 }
 
-// static void	flood_fill(t_info *info, char ***map, int x, int y)
-// {
-// 	if ((*map)[x][y] != WALL && (*map)[x][y] != FILL)
-// 	{
-// 		(*map)[x][y] = FILL;
-// 		flood_fill(info, map, x - 1, y);
-// 		flood_fill(info, map, x, y - 1);
-// 		flood_fill(info, map, x + 1, y);
-// 		flood_fill(info, map, x, y + 1);
-// 	}
-// }
+static void	flood_fill(t_cub *cub, ***map, int x, int y)
+{
+	if ((*map)[x][y] == WALL && (*map)[x][y] == FILL && x < 0 && y < 0 && x >= cub->width && y >= cub->height)
+		return;
+	(*map)[x][y] = FILL;
+	flood_fill(cub, map, x - 1, y);
+	flood_fill(cub, map, x, y - 1);
+	flood_fill(cub, map, x + 1, y);
+	flood_fill(cub, map, x, y + 1);
+}
 
 void	ft_init_pos(t_cub *cub)
 {
@@ -98,8 +97,8 @@ int	ft_map_functions(t_cub *cub)
 	if (ft_check_map(cub) != CUB_OK)
 		return (BFL_LKO);
 	ft_init_pos(cub);
-	// if (ft_floodfill(cub) != CUB_OK)
-	// 	return (CUB_LKO);
 	ft_map_len(cub);
+	ft_floodfill(cub, cub->map, cub->pos_x, cub->pos_y)
+	
 	return (CUB_OK);
 }
