@@ -32,10 +32,11 @@ SRC_DIR := src/
 LOG_DIR := $(SRC_DIR)/log/
 WEAPON_DIR := $(SRC_DIR)/weapon/
 UTILS_DIR := utils/
+V2_DIR := $(UTILS_DIR)/v2/
 MLX42_DIR := $(INCLUDE_DIR)MLX42/
 OBJ_DIR := obj/
 
-INCLUDE_FILES := cub3d.h
+INCLUDE_FILES := cub3d.h cub_log.h utils.h v2.h weapon.h colors.h
 SRC_FILES := cub3d.c parser.c parser_2.c parser_3.c parser_4.c parser_5.c error.c
 LOG_FILES := cub_log.c log_info.c log_error.c
 WEAPON_FILES := create_weapon.c attack.c switch_weapon.c reload_ammo.c create_toolbar.c
@@ -43,16 +44,18 @@ UTILS_FILES := utils.c v2add.c v2create.c v2div.c v2mult.c v2sub.c v2zero.c
 
 INCLUDE = $(addprefix $(INCLUDE_DIR), $(INCLUDE_FILES))
 SRC = $(addprefix $(SRC_DIR), $(SRC_FILES))
-UTILS = $(addprefix $(UTILS_DIR), $(UTILS_FILES))
 LOG = $(addprefix $(LOG_DIR), $(LOG_FILES))
 WEAPON = $(addprefix $(WEAPON_DIR), $(WEAPON_FILES))
+UTILS = $(addprefix $(UTILS_DIR), $(UTILS_FILES))
+V2 = $(addprefix $(V2_DIR), $(V2_FILES))
 
 LIBMLX42 := $(MLX42_DIR)/build/libmlx42.a
 
 OBJ = $(patsubst $(SRC_DIR)%.c, $(OBJ_DIR)%.o, $(SRC)) \
 	$(patsubst $(UTILS_DIR)%.c, $(OBJ_DIR)%.o, $(UTILS)) \
 	$(patsubst $(LOG_DIR)%.c, $(OBJ_DIR)%.o, $(LOG)) \
-	$(patsubst $(WEAPON_DIR)%.c, $(OBJ_DIR)%.o, $(WEAPON))
+	$(patsubst $(WEAPON_DIR)%.c, $(OBJ_DIR)%.o, $(WEAPON)) \
+	$(patsubst $(V2_DIR)%.c, $(OBJ_DIR)%.o, $(V2))
 
 CC := clang
 
@@ -88,7 +91,7 @@ run: main
 
 main: build_mlx42
 	make -j4 -s -C $(BFL_DIR)
-	clang -o cub3d -g -Wall -Wextra -Werror src/main.c utils/*.c src/log/*.c src/weapon/*.c $(CPPFLAGS) $(LDFLAGS) $(LDLIBS)
+	clang -o cub3d -g -Wall -Wextra -Werror src/main.c utils/*.c utils/v2/*.c src/log/*.c src/weapon/*.c $(CPPFLAGS) $(LDFLAGS) $(LDLIBS)
 
 all: build_mlx42 $(NAME)
 
@@ -116,15 +119,19 @@ $(OBJ_DIR)%.o: $(SRC_DIR)%.c $(INCLUDE)
 	$(COMPILE_MSG)
 	@$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 
-$(OBJ_DIR)%.o: $(UTILS_DIR)%.c $(INCLUDE)
-	$(COMPILE_MSG)
-	@$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
-
 $(OBJ_DIR)%.o: $(LOG_DIR)%.c $(INCLUDE)
 	$(COMPILE_MSG)
 	@$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 
 $(OBJ_DIR)%.o: $(WEAPON_DIR)%.c $(INCLUDE)
+	$(COMPILE_MSG)
+	@$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
+
+$(OBJ_DIR)%.o: $(UTILS_DIR)%.c $(INCLUDE)
+	$(COMPILE_MSG)
+	@$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
+
+$(OBJ_DIR)%.o: $(V2_DIR)%.c $(INCLUDE)
 	$(COMPILE_MSG)
 	@$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 
