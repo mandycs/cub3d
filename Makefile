@@ -53,46 +53,49 @@ SRC_FILES := cub3d.c\
 			 parser_4.c\
 			 parser_5.c\
 
-LOG_FILES := cub_log.c \
-			 log_info.c \
-			 log_error.c
+LOG_FILES := cub_log.c\
+			 log_info.c\
+			 log_error.c\
 
-WEAPON_FILES := create_weapon.c \
-				attack.c \
-				switch_weapon.c \
-				reload_ammo.c \
-				create_toolbar.c
+WEAPON_FILES := create_weapon.c\
+				attack.c\
+				switch_weapon.c\
+				reload_ammo.c\
+				create_toolbar.c\
 
-UTILS_FILES := utils.c \
-			   deg_to_rads.c \
-			   calculate_step.c \
-			   wall_collision.c \
-			   calculate_distance.c \
-			   texture.c
+UTILS_FILES := utils.c\
+			   deg_to_rads.c\
+			   calculate_step.c\
+			   wall_collision.c\
+			   calculate_distance.c\
+			   texture.c\
+			   render.c\
+			   render2.c\
+			   draw.c\
 
-V2_FILES := v2add.c \
-			v2create.c \
-			v2div.c \
-			v2mult.c \
-			v2sub.c \
-			v2zero.c \
-			v2equals.c
+V2_FILES := v2add.c\
+			v2create.c\
+			v2div.c\
+			v2mult.c\
+			v2sub.c\
+			v2zero.c\
+			v2equals.c\
 
-COLORS_FILES := black.c \
-				blue.c \
-				darkgray.c \
-				get_color.c \
-				gray.c \
-				green.c \
-				lighblue.c \
-				lightgreen.c \
-				lightred.c \
-				lightyellow.c \
-				red.c \
-				white.c \
-				yellow.c
+COLORS_FILES := black.c\
+				blue.c\
+				darkgray.c\
+				get_color.c\
+				gray.c\
+				green.c\
+				lighblue.c\
+				lightgreen.c\
+				lightred.c\
+				lightyellow.c\
+				red.c\
+				white.c\
+				yellow.c\
 
-SCREEN_FILES := create_screen.c
+SCREEN_FILES := create_screen.c\
 
 INCLUDE = $(addprefix $(INCLUDE_DIR), $(INCLUDE_FILES))
 SRC = $(addprefix $(SRC_DIR), $(SRC_FILES))
