@@ -8,25 +8,31 @@
 # define INITIAL_CAPACITY 16
 # define WALL = '1'
 # define FILL = '.'
+# define PIXEL_SIZE 16
+# define RESIZE 4
 
 /* @------------------------------------------------------------------------@ */
 /* |                            Include Section                             | */
 /* @------------------------------------------------------------------------@ */
 
-# include "BFL.h"
-# include "MLX42.h"
-# include "utils.h"
 # include <fcntl.h>
+# include <math.h>
 # include <stdbool.h>
 # include <stdio.h>
+# include "BFL.h"
+# include "MLX42.h"
+# include "screen.h"
 # include "weapon.h"
-# include <math.h>
+# include "utils.h"
 
 /* @------------------------------------------------------------------------@ */
 /* |                            Typedef Section                             | */
 /* @------------------------------------------------------------------------@ */
 
 typedef struct s_cub	t_cub;
+typedef struct s_player	t_player;
+typedef struct s_map	t_map;
+typedef struct s_info	t_info;
 
 /* @------------------------------------------------------------------------@ */
 /* |                             Enum Section                               | */
@@ -82,6 +88,32 @@ struct					s_cub
 	t_color				floor_c;
 	t_color				ceiling_c;
 	int					error;
+};
+
+struct s_player
+{
+	t_v2		position;
+	t_toolbar	toolbar;
+	float		speed;
+	int			fov;
+	float		angle;
+};
+
+struct s_map
+{
+	char		**data;
+	int			rows;
+	int			cols;
+};
+
+struct s_info
+{
+	mlx_t			*mlx;
+	mlx_image_t		*img[4];
+	mlx_texture_t	*tex[4];
+	t_player		player;
+	t_map			map;
+	t_screen		screen;
 };
 
 /* @------------------------------------------------------------------------@ */

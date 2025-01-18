@@ -36,8 +36,6 @@
 
 #include "cub_log.h"
 #include "cub3d.h"
-#define PIXEL_SIZE 16
-#define RESIZE 4
 
 // Hardcoded map for testing
 static const char *smap[] = {
@@ -51,45 +49,6 @@ static const char *smap[] = {
 	"11100001             ",
 	"10000001             ",
 	"11111111             ",
-};
-
-typedef struct s_player		t_player;
-typedef struct s_map		t_map;
-typedef struct s_screen		t_screen;
-typedef struct s_info		t_info;
-
-struct s_player
-{
-	t_v2		position;
-	t_toolbar	toolbar;
-	float		speed;
-	int			fov;
-	float		angle;
-};
-
-struct s_map
-{
-	char		**data;
-	int			rows;
-	int			cols;
-};
-
-struct s_screen
-{
-	mlx_image_t	*view;
-	mlx_image_t	*buffer;
-	int			width;
-	int			height;
-};
-
-struct s_info
-{
-	mlx_t			*mlx;
-	mlx_image_t		*img[4];
-	mlx_texture_t	*tex[4];
-	t_player		player;
-	t_map			map;
-	t_screen		screen;
 };
 
 // Cub
@@ -137,9 +96,6 @@ void		render_floor(t_screen *screen, t_color color);
 void		render_ceiling(t_screen *screen, t_color color);
 void		render_view(t_player *player, t_map *map, t_screen *screen);
 
-// Screen
-bool		create_screen(t_screen *screen, mlx_t *mlx);
-
 // Textures
 bool		create_textures(t_info *info);
 void		destroy_textures(t_info *info);
@@ -156,11 +112,9 @@ void		draw_line(mlx_image_t *img, t_v2 start, t_v2 end, t_color color);
 
 // Utils
 void		update(void *param);
-float		deg_to_rads(float angle);
 t_v2		calculate_wall_collision(t_v2 start, float angle, int fov,
 				t_map *map);
 float		calculate_distance(t_player *player, t_map *map, float angle);
-int			calculate_step(float dx, float dy);
 
 int	main(int argc, char **argv)
 {
@@ -464,18 +418,6 @@ void	destroy_textures(t_info *info)
 	}
 }
 
-bool	create_screen(t_screen *screen, mlx_t *mlx)
-{
-	screen->width = mlx->width;
-	screen->height = mlx->height;
-	screen->view = mlx_new_image(mlx, screen->width, screen->height);
-	screen->buffer = mlx_new_image(mlx, screen->width, screen->height);
-	if (!screen->view || !screen->buffer)
-		return (false);
-	log_info("Created screen");
-	return (true);
-}
-
 void	print_info(t_info *info)
 {
 	print_player(&info->player);
@@ -610,40 +552,6 @@ void	render_floor(t_screen *screen, t_color color)
 	}
 }
 
-bool	is_wall_collision(t_map *map, int x, int y)
-{
-	int		i;
-	int		j;
-
-	i = x / PIXEL_SIZE;
-	j = y / PIXEL_SIZE;
-	if (i >= 0 && i < map->cols && j >= 0 && j < map->rows
-		&& map->data[j][i] == '1')
-		return (true);
-	i = (x + 1) / PIXEL_SIZE;
-	j = y / PIXEL_SIZE;
-	return (i >= 0 && i < map->cols && j >= 0 && j < map->rows
-		&& map->data[j][i] == '1');
-}
-
-// NOTE: Angle must be in rads
-t_v2	calculate_wall_collision(t_v2 start, float angle, int fov, t_map *map)
-{
-	t_v2	p;
-	int		i;
-
-	i = -1;
-	p = v2_create(start.x, start.y);
-	while (++i < fov)
-	{
-		p.x += cos(angle);
-		p.y += sin(angle);
-		if (is_wall_collision(map, p.x, p.y))
-			break ;
-	}
-	return (p);
-}
-
 void	render_wall(t_screen *screen, int x, float distance, t_color color)
 {
 	t_v2	start;
@@ -660,20 +568,6 @@ void	render_wall(t_screen *screen, int x, float distance, t_color color)
 	if (end.y >= screen->height)
 		end.y = screen->height - 1;
 	draw_line(screen->buffer, start, end, color);
-}
-
-float	calculate_distance(t_player *player, t_map *map, float angle)
-{
-	float	distance;
-	t_v2	start;
-	t_v2	end;
-
-	start = v2_create(player->position.y + PIXEL_SIZE * 0.5,
-			player->position.x + PIXEL_SIZE * 0.5);
-	end = calculate_wall_collision(start, deg_to_rads(angle), player->fov, map);
-	distance = sqrt(pow(end.x - start.x, 2) + pow(end.y - start.y, 2));
-	distance *= cos(deg_to_rads(bfl_mod(angle - player->angle, 360)));
-	return (distance);
 }
 
 void	render_view(t_player *player, t_map *map, t_screen *screen)
@@ -735,17 +629,6 @@ void	draw_rectangle(mlx_image_t *img, t_v2 position, t_v2 size,
 	}
 }
 
-int	calculate_step(float dx, float dy)
-{
-	if (dx < 0)
-		dx *= -1;
-	if (dy < 0)
-		dy *= -1;
-	if (dx > dy)
-		return (dx);
-	return (dy);
-}
-
 void	draw_line(mlx_image_t *img, t_v2 start, t_v2 end, t_color color)
 {
 	int		step;
@@ -790,11 +673,6 @@ void	swap_buffers(void *param)
 	info = param;
 	bfl_memcpy(info->screen.view->pixels, info->screen.buffer->pixels,
 		info->screen.width * info->screen.height * sizeof(int));
-}
-
-float	deg_to_rads(float angle)
-{
-	return (angle * M_PI / 180);
 }
 
 void	update(void *param)
