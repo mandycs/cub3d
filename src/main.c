@@ -35,10 +35,9 @@
  */
 
 #include "cub_log.h"
-#include "weapon.h"
 #include "cub3d.h"
-#define PIXEL_SIZE 32
-#define RESIZE 2
+#define PIXEL_SIZE 16
+#define RESIZE 4
 
 // Hardcoded map for testing
 static const char *smap[] = {
@@ -58,7 +57,6 @@ typedef struct s_player		t_player;
 typedef struct s_map		t_map;
 typedef struct s_screen		t_screen;
 typedef struct s_info		t_info;
-
 
 struct s_player
 {
@@ -522,9 +520,9 @@ void	render_map_element(t_map *map, t_screen *screen, int i, int j)
 	position = v2_create(j * PIXEL_SIZE, i * PIXEL_SIZE);
 	size = v2_create(PIXEL_SIZE, PIXEL_SIZE);
 	if (map->data[i][j] != '1' && map->data[i][j] != ' ')
-		draw_rectangle(screen->buffer, position, size, WHITE);
+		draw_rectangle(screen->buffer, position, size, white());
 	else if (map->data[i][j] == '1')
-		draw_rectangle(screen->buffer, position, size, BLACK);
+		draw_rectangle(screen->buffer, position, size, black());
 }
 
 void	render_map(t_map *map, t_screen *screen)
@@ -550,7 +548,7 @@ void	render_player(t_player *player, t_screen *screen)
 
 	position = v2_create(player->position.y, player->position.x);
 	size = v2_create(PIXEL_SIZE, PIXEL_SIZE);
-	draw_rectangle(screen->buffer, position, size, LIGHTRED);
+	draw_rectangle(screen->buffer, position, size, lightred());
 }
 
 void	render_fov(t_player *player, t_map *map, t_screen *screen)
@@ -563,16 +561,16 @@ void	render_fov(t_player *player, t_map *map, t_screen *screen)
 			player->position.x + PIXEL_SIZE * 0.5);
 	end = calculate_wall_collision(start, deg_to_rads(player->angle),
 			player->fov, map);
-	draw_line(screen->buffer, start, end, GREEN);
+	draw_line(screen->buffer, start, end, green());
 	i = -1;
 	while (++i < 31)
 	{
 		end = calculate_wall_collision(start,
 				deg_to_rads(bfl_mod(player->angle + i, 360)), player->fov, map);
-		draw_line(screen->buffer, start, end, GREEN);
+		draw_line(screen->buffer, start, end, green());
 		end = calculate_wall_collision(start,
 				deg_to_rads(bfl_mod(player->angle - i, 360)), player->fov, map);
-		draw_line(screen->buffer, start, end, GREEN);
+		draw_line(screen->buffer, start, end, green());
 	}
 }
 
@@ -688,12 +686,12 @@ void	render_view(t_player *player, t_map *map, t_screen *screen)
 	step = (float)player->fov / screen->width;
 	angle = bfl_mod(player->angle - player->fov * 0.5, 360);
 	x = 0;
-	render_ceiling(screen, BLUE);
-	render_floor(screen, LIGHTBLUE);
+	render_ceiling(screen, blue());
+	render_floor(screen, lightblue());
 	while (x < screen->width)
 	{
 		distance = calculate_distance(player, map, angle);
-		render_wall(screen, x, distance, LIGHTGREEN);
+		render_wall(screen, x, distance, lightgreen());
 		angle += step;
 		++x;
 	}
@@ -780,7 +778,7 @@ void	clear_background(void *param)
 	while (i < info->screen.buffer->width * info->screen.buffer->height
 		* sizeof(int))
 	{
-		set_color(&info->screen.buffer->pixels[i], GRAY);
+		set_color(&info->screen.buffer->pixels[i], gray());
 		i += 4;
 	}
 }

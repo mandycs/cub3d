@@ -2,21 +2,10 @@
 # define COLORS_H
 
 /* @------------------------------------------------------------------------@ */
-/* |                            Define Section                              | */
+/* |                            Include Section                             | */
 /* @------------------------------------------------------------------------@ */
 
-#define WHITE ((t_color){.r = 255, .g = 255, .b = 255, .a = 255})
-#define BLACK ((t_color){.r = 0, .g = 0, .b = 0, .a = 255})
-#define RED ((t_color){.r = 255, .g = 0, .b = 0, .a = 255})
-#define GREEN ((t_color){.r = 0, .g = 255, .b = 0, .a = 255})
-#define BLUE ((t_color){.r = 0, .g = 0, .b = 255, .a = 255})
-#define YELLOW ((t_color){.r = 255, .g = 255, .b = 0, .a = 255})
-#define LIGHTRED ((t_color){.r = 255, .g = 127, .b = 127, .a = 255})
-#define LIGHTGREEN ((t_color){.r = 127, .g = 255, .b = 127, .a = 255})
-#define LIGHTBLUE ((t_color){.r = 127, .g = 127, .b = 255, .a = 255})
-#define LIGHTYELLOW ((t_color){.r = 255, .g = 255, .b = 127, .a = 255})
-#define DARKGRAY ((t_color){.hex = 0x303030FF})
-#define GRAY ((t_color){.hex = 0x606060FF})
+# include <stdint.h>
 
 /* @------------------------------------------------------------------------@ */
 /* |                            Typedef Section                             | */
@@ -32,13 +21,31 @@ union u_color
 {
 	struct
 	{
-		unsigned char	a;
-		unsigned char	b;
-		unsigned char	g;
-		unsigned char	r;
+		uint8_t	a;
+		uint8_t	b;
+		uint8_t	g;
+		uint8_t	r;
 	};
-	unsigned char	data[4];
-	unsigned long	hex;
+	uint8_t		data[4];
+	uint32_t	hex;
 };
+
+/* @------------------------------------------------------------------------@ */
+/* |                           Function Section                             | */
+/* @------------------------------------------------------------------------@ */
+
+t_color	get_color(uint8_t r, uint8_t g, uint8_t b, uint8_t a);
+t_color	white(void);
+t_color	black(void);
+t_color	red(void);
+t_color	green(void);
+t_color	blue(void);
+t_color	yellow(void);
+t_color	lightred(void);
+t_color	lightgreen(void);
+t_color	lightblue(void);
+t_color	lightyellow(void);
+t_color	darkgray(void);
+t_color	gray(void);
 
 #endif // COLORS_H

@@ -19,6 +19,7 @@
 # include <fcntl.h>
 # include <stdbool.h>
 # include <stdio.h>
+# include "weapon.h"
 # include <math.h>
 
 /* @------------------------------------------------------------------------@ */
