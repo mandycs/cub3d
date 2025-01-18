@@ -96,10 +96,6 @@ void		render_floor(t_screen *screen, t_color color);
 void		render_ceiling(t_screen *screen, t_color color);
 void		render_view(t_player *player, t_map *map, t_screen *screen);
 
-// Textures
-bool		create_textures(t_info *info);
-void		destroy_textures(t_info *info);
-
 // MLX Utils
 void		set_color(uint8_t *pixel, t_color color);
 void		put_pixel(mlx_image_t *img, int x, int y, t_color color);
@@ -382,41 +378,6 @@ bool	create_map_data(t_map *map)
 	return (true);
 }
 
-// Temp textures, might change them later
-bool	create_textures(t_info *info)
-{
-	int	i;
-
-	i = 0;
-	info->tex[i++] = mlx_load_png("./sprites/red.png");
-	info->tex[i++] = mlx_load_png("./sprites/green.png");
-	info->tex[i++] = mlx_load_png("./sprites/yellow.png");
-	info->tex[i++] = mlx_load_png("./sprites/purple.png");
-	while (i--)
-	{
-		if (!info->tex[i])
-			return (false);
-		info->img[i] = mlx_texture_to_image(info->mlx, info->tex[i]);
-		if (!info->img[i])
-			return (false);
-	}
-	log_info("Created textures");
-	return (true);
-}
-
-void	destroy_textures(t_info *info)
-{
-	int	i;
-
-	i = 4;
-	while (i--)
-	{
-		if (info->img[i])
-			mlx_delete_image(info->mlx, info->img[i]);
-		if (info->tex[i])
-			mlx_delete_texture(info->tex[i]);
-	}
-}
 
 void	print_info(t_info *info)
 {

@@ -8,7 +8,7 @@
 # define INITIAL_CAPACITY 16
 # define WALL = '1'
 # define FILL = '.'
-# define PIXEL_SIZE 16
+# define PIXEL_SIZE 48
 # define RESIZE 4
 
 /* @------------------------------------------------------------------------@ */
