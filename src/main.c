@@ -8,14 +8,35 @@
  * - Have a limit distance rendering
  * - Make logs to accept va_args or create something like sprintf
  * to allow giving more information
+ * - Reimplement the minimap to scale according to the size of the screen
  *
  * NOTE:
  * Don't activate logging while outside of the map, because it will lag due
  * to printing error
+ *
+ * MANDATORY:
+ * - Parse the map
+ *   - Check valid chars (01NSWE)
+ *   - Check map closed
+ *   - Allow multiple lines between parameters except for the map
+ *   - Allow any order, except for the map which has to be at the end
+ * - Different wall textures depending on the side
+ * - Camera rotation with Left/Right Arrows (DONE)
+ * - Move with WASD (DONE)
+ * - Press ESC to close the window (DONE)
+ * - Closing the window terminates the program (DONE)
+ *
+ * BONUS:
+ * - Wall collisions
+ * - A minimap system (DONE)
+ * - Doors that can open and close
+ * - Animated sprites
+ * - Camera rotation with mouse
  */
 
+#include "cub_log.h"
+#include "weapon.h"
 #include "cub3d.h"
-#define LOGGING 0
 #define PIXEL_SIZE 32
 #define RESIZE 2
 
@@ -33,49 +54,11 @@ static const char *smap[] = {
 	"11111111             ",
 };
 
-typedef enum e_log_level	t_log_level;
-typedef enum e_type			t_type;
-typedef struct s_weapon		t_weapon;
-typedef struct s_toolbar	t_toolbar;
 typedef struct s_player		t_player;
 typedef struct s_map		t_map;
 typedef struct s_screen		t_screen;
 typedef struct s_info		t_info;
 
-enum e_log_level
-{
-	DEBUG,
-	INFO,
-	WARNING,
-	ERROR,
-};
-
-enum e_type
-{
-	HAND,
-	KNIFE,
-	GUN,
-	SHOTGUN,
-	MAX_TYPES,
-};
-
-struct s_weapon
-{
-	t_type	type;
-	char	name[32];
-	int		damage;
-	int		ammo;
-	int		max_ammo;
-	int		total_ammo;
-	int		range;
-};
-
-struct s_toolbar
-{
-	t_weapon	weapons[MAX_TYPES];
-	int			index;
-	t_weapon	*current_weapon;
-};
 
 struct s_player
 {
@@ -115,9 +98,6 @@ struct s_info
 bool		cub_create(t_info *info);
 void		cub_close_window(mlx_t *mlx);
 void		cub_destroy(t_info *info);
-int			cub_log(t_log_level level, const char *message);
-int			log_info(const char *message);
-int			log_error(const char *message);
 
 // Hooks
 void		hook_control_keys(void *param);
@@ -133,22 +113,6 @@ void		move_right(t_info *info);
 void		move_backward(t_info *info);
 void		rotate_left(t_info *info);
 void		rotate_right(t_info *info);
-
-// Weapons
-t_weapon	create_hand(void);
-t_weapon	create_knife(void);
-t_weapon	create_gun(void);
-t_weapon	create_shotgun(void);
-bool		create_weapon(t_weapon *weapon_address, t_type type);
-
-void		switch_weapon(t_toolbar *toolbar, t_type type);
-void		attack(t_weapon *weapon);
-
-void		reduce_ammo(t_weapon *weapon);
-void		reload_ammo(t_weapon *weapon);
-
-// Toolbar
-bool		create_toolbar(t_toolbar *toolbar);
 
 // Player
 bool		create_player(t_player *player);
@@ -223,32 +187,6 @@ int	main(int argc, char **argv)
 	return (0);
 }
 
-int	cub_log(t_log_level level, const char *message)
-{
-	if (LOGGING)
-	{
-		if (level == DEBUG)
-			bfl_fprintf(STDOUT, "[DEBUG] %s\n", message);
-		else if (level == INFO)
-			bfl_fprintf(STDOUT, "[INFO] %s\n", message);
-		else if (level == WARNING)
-			bfl_fprintf(STDERR, "[WARNING] %s\n", message);
-		else if (level == ERROR)
-			bfl_fprintf(STDERR, "[ERROR] %s\n", message);
-	}
-	return (1);
-}
-
-int	log_info(const char *message)
-{
-	return (cub_log(INFO, message));
-}
-
-int	log_error(const char *message)
-{
-	return (cub_log(ERROR, message));
-}
-
 void	hook_loader(t_info *info)
 {
 	mlx_loop_hook(info->mlx, update, info);
@@ -297,11 +235,6 @@ void	hook_option_key(mlx_key_data_t keydata, void *param)
 		switch_weapon(&info->player.toolbar, GUN);
 	if (keydata.key == MLX_KEY_4)
 		switch_weapon(&info->player.toolbar, SHOTGUN);
-}
-
-void	switch_weapon(t_toolbar *toolbar, t_type type)
-{
-	toolbar->current_weapon = &toolbar->weapons[type];
 }
 
 void	hook_control_mouse(mouse_key_t button, action_t action,
@@ -401,98 +334,6 @@ void	cub_destroy(t_info *info)
 	destroy_textures(info);
 	mlx_terminate(info->mlx);
 	log_info("Resources destroyed");
-}
-
-t_weapon	create_hand(void)
-{
-	t_weapon	weapon;
-
-	weapon.type = HAND;
-	bfl_memcpy(weapon.name, "HAND", 5);
-	weapon.damage = 1;
-	weapon.ammo = -1;
-	weapon.max_ammo = -1;
-	weapon.total_ammo = -1;
-	weapon.range = 1;
-	log_info("Created weapon HAND");
-	return (weapon);
-}
-
-t_weapon	create_knife(void)
-{
-	t_weapon	weapon;
-
-	weapon.type = KNIFE;
-	bfl_memcpy(weapon.name, "KNIFE", 6);
-	weapon.damage = 2;
-	weapon.ammo = -1;
-	weapon.max_ammo = -1;
-	weapon.total_ammo = -1;
-	weapon.range = 1;
-	log_info("Created weapon KNIFE");
-	return (weapon);
-}
-
-t_weapon	create_gun(void)
-{
-	t_weapon	weapon;
-
-	weapon.type = GUN;
-	bfl_memcpy(weapon.name, "GUN", 4);
-	weapon.damage = 4;
-	weapon.ammo = 16;
-	weapon.max_ammo = 16;
-	weapon.total_ammo = 64;
-	weapon.range = 8;
-	log_info("Created weapon GUN");
-	return (weapon);
-}
-
-t_weapon	create_shotgun(void)
-{
-	t_weapon	weapon;
-
-	weapon.type = HAND;
-	bfl_memcpy(weapon.name, "SHOTGUN", 8);
-	weapon.damage = 10;
-	weapon.ammo = 5;
-	weapon.max_ammo = 5;
-	weapon.total_ammo = 20;
-	weapon.range = 3;
-	log_info("Created weapon SHOTGUN");
-	return (weapon);
-}
-
-bool	create_weapon(t_weapon *weapon, t_type type)
-{
-	if (type < 0 || type >= MAX_TYPES)
-		return (false);
-	if (type == HAND)
-		*weapon = create_hand();
-	else if (type == KNIFE)
-		*weapon = create_knife();
-	else if (type == GUN)
-		*weapon = create_gun();
-	else if (type == SHOTGUN)
-		*weapon = create_shotgun();
-	return (true);
-}
-
-bool	create_toolbar(t_toolbar *toolbar)
-{
-	t_type	type;
-
-	type = 0;
-	while (type < MAX_TYPES)
-	{
-		if (!create_weapon(&toolbar->weapons[type], type))
-			return (false);
-		++type;
-	}
-	toolbar->index = 0;
-	toolbar->current_weapon = &toolbar->weapons[0];
-	log_info("Created toolbar");
-	return (true);
 }
 
 // This will probably accept a map later on
@@ -637,42 +478,6 @@ bool	create_screen(t_screen *screen, mlx_t *mlx)
 	return (true);
 }
 
-void	reload_ammo(t_weapon *weapon)
-{
-	if (weapon->max_ammo > weapon->total_ammo)
-	{
-		weapon->ammo = weapon->total_ammo;
-		weapon->total_ammo = 0;
-	}
-	else
-	{
-		weapon->ammo = weapon->max_ammo;
-		weapon->total_ammo -= weapon->max_ammo;
-	}
-	log_info("Reload ammo");
-}
-
-void	reduce_ammo(t_weapon *weapon)
-{
-	if (weapon->total_ammo <= 0 && weapon->ammo <= 0)
-		return ;
-	if (weapon->ammo == 0)
-		reload_ammo(weapon);
-	--weapon->ammo;
-	log_info("Reduce ammo");
-}
-
-void	attack(t_weapon *weapon)
-{
-	if (weapon->ammo == 0 && weapon->total_ammo == 0)
-	{
-		log_info("No ammo");
-		return ;
-	}
-	log_info("Attack");
-	reduce_ammo(weapon);
-}
-
 void	print_info(t_info *info)
 {
 	print_player(&info->player);
@@ -707,7 +512,6 @@ void	render(void *param)
 	render_map(&info->map, &info->screen);
 	render_player(&info->player, &info->screen);
 	render_fov(&info->player, &info->map, &info->screen);
-	//info->player.angle = bfl_mod(info->player.angle + 1, 360);
 }
 
 void	render_map_element(t_map *map, t_screen *screen, int i, int j)
