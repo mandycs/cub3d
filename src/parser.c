@@ -6,7 +6,7 @@
 /*   By: mancorte <mancorte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 22:20:39 by mancorte          #+#    #+#             */
-/*   Updated: 2025/01/19 23:24:45 by mancorte         ###   ########.fr       */
+/*   Updated: 2025/01/19 23:41:26 by mancorte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,6 @@ int	ft_extract_text(t_cub *cub)
 			return (CUB_LKO);
 	}
 	if (cub->height == 0 || cub->width == 0)
-		return (CUB_LKO);
+		return (ft_check_paths(cub));
 	return (CUB_OK);
 }
