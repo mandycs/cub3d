@@ -6,7 +6,7 @@
 /*   By: mancorte <mancorte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 22:19:10 by mancorte          #+#    #+#             */
-/*   Updated: 2025/01/19 18:02:04 by mancorte         ###   ########.fr       */
+/*   Updated: 2025/01/19 20:15:46 by mancorte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ int	main(int argc, char **argv)
 	cub.error = ft_check_arg(argc, argv, &cub) != CUB_OK;
 	if (cub.error != CUB_OK)
 		ft_check_error(&cub);
-	printf("PITOPITOPITO\n");
 }
 
 #else

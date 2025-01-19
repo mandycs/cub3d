@@ -6,7 +6,7 @@
 /*   By: mancorte <mancorte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 22:20:39 by mancorte          #+#    #+#             */
-/*   Updated: 2025/01/19 20:10:28 by mancorte         ###   ########.fr       */
+/*   Updated: 2025/01/19 20:14:08 by mancorte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,15 +116,10 @@ int	ft_extract_text(t_cub *cub)
 			cub->i++;
 		}
 		cub->count++;
-		if (cub->flag == 6)
-			if (ft_mapextract(cub) != CUB_OK)
-				return (CUB_LKO);
+		if (cub->flag == 6 && ft_mapextract(cub) != CUB_OK)
+			return (CUB_LKO);
 	}
 	if (cub->height == 0 || cub->width == 0)
-	{
-		bfl_fprintf(STDERR, "Error in map(No map)\n");
-		cub->error = CUB_ERROR_NO_MAP;
 		return (CUB_LKO);
-	}
 	return (CUB_OK);
 }
