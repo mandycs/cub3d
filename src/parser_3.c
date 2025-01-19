@@ -6,7 +6,7 @@
 /*   By: mancorte <mancorte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 22:25:03 by mancorte          #+#    #+#             */
-/*   Updated: 2025/01/19 20:16:02 by mancorte         ###   ########.fr       */
+/*   Updated: 2025/01/19 20:23:32 by mancorte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ int	ft_open_file(char *filename, int *fd, int flag, t_cub *cub)
 	*fd = open(filename, O_RDONLY);
 	if (*fd == -1)
 	{
-		printf("El fd es %d\n", *fd);
 		cub->error = flag;
 		bfl_fprintf(STDERR, "Error in opening file '%s'\n", filename);
 		return (BFL_LKO);
@@ -61,13 +60,7 @@ int	ft_check_map(t_cub *cub)
 		cub->j = 0;
 		while (cub->map[cub->i][cub->j])
 		{
-			if (cub->map[cub->i][cub->j] != '1'
-				&& cub->map[cub->i][cub->j] != '0'
-				&& bfl_isspace(cub->map[cub->i][cub->j]) == 0
-				&& cub->map[cub->i][cub->j] != 'N'
-				&& cub->map[cub->i][cub->j] != 'S'
-				&& cub->map[cub->i][cub->j] != 'W'
-				&& cub->map[cub->i][cub->j] != 'E')
+			if (ft_is_valid_map_char(cub->map[cub->i][cub->j]))
 			{
 				cub->error = CUB_ERROR_MAP;
 				bfl_fprintf(STDERR, "Error in map (Invalid char)\n");

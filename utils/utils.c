@@ -13,7 +13,7 @@ void	ft_print_map(t_cub *cub)
 	i = 0;
 	while (cub->map_dup[i])
 	{
-		bfl_printf("%s", cub->map_dup[i]);
+		bfl_printf("%s\n", cub->map_dup[i]);
 		i++;
 	}
 }
