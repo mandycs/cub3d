@@ -6,13 +6,12 @@
 /*   By: ribana-b <ribana-b@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 21:26:47 by ribana-b          #+#    #+# Malaga      */
-/*   Updated: 2025/01/18 21:26:48 by ribana-b         ###   ########.com      */
+/*   Updated: 2025/01/18 22:48:27 by ribana-b         ###   ########.com      */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.h"
 
-// Temp textures, might change them later
 bool	create_textures(t_info *info)
 {
 	int	i;

@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ribana-b <ribana-b@student.42malaga.com>   +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/18 22:15:58 by ribana-b          #+#    #+# Malaga      */
+/*   Updated: 2025/01/19 13:30:29 by ribana-b         ###   ########.com      */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef UTILS_H
 # define UTILS_H
 
 // Hardcoded map for testing
-static const char *smap[] = {
+static const char		*smap[] = {
 	"              1111111",
 	"111111111101011000001",
 	"100000000010100000001",
@@ -35,7 +47,8 @@ typedef struct s_info	t_info;
 double	deg_to_rads(double angle);
 int		calculate_step(double dx, double dy);
 double	calculate_distance(t_player *player, t_map *map, double angle);
-t_v2	calculate_wall_collision(t_v2 start, double angle, int fov, t_map *map);
+t_v2	calculate_wall_collision(t_v2 start, double angle, t_map *map);
+t_v2	calculate_wall_collision2(t_v2 start, double angle, t_map *map);
 bool	is_wall_collision(t_map *map, int x, int y);
 
 bool	create_textures(t_info *info);
@@ -55,7 +68,7 @@ void	set_color(uint8_t *pixel, t_color color);
 void	put_pixel(mlx_image_t *img, int x, int y, t_color color);
 
 void	draw_rectangle(mlx_image_t *img, t_v2 position, t_v2 size,
-		t_color color);
+			t_color color);
 void	draw_line(mlx_image_t *img, t_v2 start, t_v2 end, t_color color);
 
 void	clear_background(void *param);

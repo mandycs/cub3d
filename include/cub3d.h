@@ -10,6 +10,7 @@
 # define FILL = '.'
 # define PIXEL_SIZE 32
 # define RESIZE 4
+# define DISTANCE_LENGTH 1000
 
 /* @------------------------------------------------------------------------@ */
 /* |                            Include Section                             | */

@@ -6,7 +6,7 @@
 /*   By: ribana-b <ribana-b@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 21:26:43 by ribana-b          #+#    #+# Malaga      */
-/*   Updated: 2025/01/18 21:42:38 by ribana-b         ###   ########.com      */
+/*   Updated: 2025/01/19 13:31:19 by ribana-b         ###   ########.com      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,15 +19,16 @@ void	render_view(t_player *player, t_map *map, t_screen *screen)
 	double	distance;
 	int		x;
 
-	step = (double)player->fov / screen->width;
 	angle = bfl_mod(player->angle - player->fov * 0.5, 360);
+	step = (double)player->fov / screen->width;
 	x = 0;
-	render_ceiling(screen, blue());
+	render_ceiling(screen, lightyellow());
 	render_floor(screen, lightblue());
 	while (x < screen->width)
 	{
 		distance = calculate_distance(player, map, angle);
-		render_wall(screen, x, distance, lightgreen());
+		if (distance)
+			render_wall(screen, x, distance, lightgreen());
 		angle += step;
 		++x;
 	}
@@ -67,17 +68,17 @@ void	render_fov(t_player *player, t_map *map, t_screen *screen)
 
 	start = v2_create(player->position.y + PIXEL_SIZE * 0.5,
 			player->position.x + PIXEL_SIZE * 0.5);
-	end = calculate_wall_collision(start, deg_to_rads(player->angle),
-			player->fov, map);
+	end = calculate_wall_collision2(start, deg_to_rads(player->angle),
+			map);
 	draw_line(screen->buffer, start, end, green());
 	i = -1;
-	while (++i < 31)
+	while (++i < PIXEL_SIZE - 1)
 	{
-		end = calculate_wall_collision(start,
-				deg_to_rads(bfl_mod(player->angle + i, 360)), player->fov, map);
+		end = calculate_wall_collision2(start,
+				deg_to_rads(bfl_mod(player->angle + i, 360)), map);
 		draw_line(screen->buffer, start, end, green());
-		end = calculate_wall_collision(start,
-				deg_to_rads(bfl_mod(player->angle - i, 360)), player->fov, map);
+		end = calculate_wall_collision2(start,
+				deg_to_rads(bfl_mod(player->angle - i, 360)), map);
 		draw_line(screen->buffer, start, end, green());
 	}
 }
