@@ -6,7 +6,7 @@
 /*   By: ribana-b <ribana-b@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 21:26:40 by ribana-b          #+#    #+# Malaga      */
-/*   Updated: 2025/01/18 21:26:41 by ribana-b         ###   ########.com      */
+/*   Updated: 2025/01/19 15:11:11 by ribana-b         ###   ########.com      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ bool	create_player(t_player *player)
 	player->position = get_player_position();
 	if (!create_toolbar(&player->toolbar))
 		return (false);
-	player->speed = 1;
+	player->speed = 10;
 	player->fov = PIXEL_SIZE * 2;
 	player->angle = 0;
 	log_info("Created player");
