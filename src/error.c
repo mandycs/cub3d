@@ -6,7 +6,7 @@
 /*   By: mancorte <mancorte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 22:20:22 by mancorte          #+#    #+#             */
-/*   Updated: 2025/01/19 18:35:59 by mancorte         ###   ########.fr       */
+/*   Updated: 2025/01/19 23:29:23 by mancorte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	ft_check_error(t_cub *cub)
 	else if (cub->error == CUB_NO_TEXT)
 	{
 		close(cub->fd);
-		bfl_free(cub->text, 2);
+		bfl_free(&cub->text, 2);
 		bfl_fprintf(STDERR, "Error (No text)\n");
 	}
 	else if (cub->error == CUB_NO_PATH)
