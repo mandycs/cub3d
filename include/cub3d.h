@@ -6,7 +6,7 @@
 /*   By: mancorte <mancorte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 13:46:31 by mancorte          #+#    #+#             */
-/*   Updated: 2025/01/19 19:07:39 by mancorte         ###   ########.fr       */
+/*   Updated: 2025/01/19 19:26:49 by mancorte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,5 +124,5 @@ void					ft_init_pos(t_cub *cub);
 int						ft_map_functions(t_cub *cub);
 void					ft_clean_paths(t_cub *cub);
 void					ft_duplicate_map(t_cub *cub);
-void					ft_mapextract(t_cub *cub);
+int						ft_mapextract(t_cub *cub);
 #endif

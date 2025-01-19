@@ -6,7 +6,7 @@
 /*   By: mancorte <mancorte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 22:25:03 by mancorte          #+#    #+#             */
-/*   Updated: 2025/01/19 18:19:02 by mancorte         ###   ########.fr       */
+/*   Updated: 2025/01/19 19:30:35 by mancorte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ int	ft_open_file(char *filename, int *fd, int flag, t_cub *cub)
 	return (BFL_OK);
 }
 
-// FALTA QUE SI NO HAY MAPA DEVUELVA ERROR
 int	ft_check_map(t_cub *cub)
 {
 	cub->i = 0;

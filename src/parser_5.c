@@ -6,7 +6,7 @@
 /*   By: mancorte <mancorte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 02:12:40 by mancorte          #+#    #+#             */
-/*   Updated: 2025/01/19 19:22:25 by mancorte         ###   ########.fr       */
+/*   Updated: 2025/01/19 19:29:20 by mancorte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,21 +36,7 @@ void	ft_duplicate_map(t_cub *cub)
 	cub->map_dup = new_lines;
 }
 
-// if (cub->flag == 6)
-// 			{
-// 				if (cub->text[cub->count][cub->i] == '1'
-// 					|| cub->text[cub->count][cub->i] == '0'
-// 					|| cub->text[cub->count][cub->i] == 'N'
-// 					|| cub->text[cub->count][cub->i] == 'S'
-// 					|| cub->text[cub->count][cub->i] == 'W'
-// 					|| cub->text[cub->count][cub->i] == 'E')
-// 				{
-// 					ft_extract_map(cub);
-// 					break ;
-// 				}
-// 			}
-
-void	ft_mapextract(t_cub *cub)
+int	ft_mapextract(t_cub *cub)
 {
 	cub->i = 0;
 	while (cub->text[cub->count][cub->i] && cub->text[cub->count])
@@ -65,6 +51,13 @@ void	ft_mapextract(t_cub *cub)
 			ft_extract_map(cub);
 			break ;
 		}
+		if (!bfl_isblank(cub->text[cub->count][cub->i]) && cub->text[cub->count][cub->i] != '\n')
+		{
+			bfl_fprintf(STDERR, "Error in map(Invalid Char)\n");
+			cub->error = CUB_ERROR_MAP;
+			return (CUB_LKO);
+		}
 		cub->i++;
 	}
+	return (CUB_OK);
 }
