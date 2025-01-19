@@ -6,7 +6,7 @@
 /*   By: mancorte <mancorte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 20:59:21 by mancorte          #+#    #+#             */
-/*   Updated: 2025/01/19 20:36:46 by mancorte         ###   ########.fr       */
+/*   Updated: 2025/01/19 21:44:29 by mancorte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,22 +57,28 @@ int	ft_extract_color_aux_f(t_cub *cub)
 	return (BFL_OK);
 }
 
-static void	flood_fill(t_cub *cub, char **map, int x, int y)
+int	flood_fill(t_cub *cub, char **map, int x, int y)
 {
-	if (x < 0 || y < 0 || x >= cub->height || y >= cub->width
-		|| map[x][y] == WALL || map[x][y] == FILL)
-		return ;
+	if (x < 0 || y < 0 || x >= cub->height || y >= cub->width)
+		return (1);
+	if (map[x][y] == WALL || map[x][y] == FILL)
+		return (0);
 	map[x][y] = FILL;
-	flood_fill(cub, map, x - 1, y);
-	flood_fill(cub, map, x, y - 1);
-	flood_fill(cub, map, x + 1, y);
-	flood_fill(cub, map, x, y + 1);
+	if (flood_fill(cub, map, x - 1, y))
+		return (1);
+	if (flood_fill(cub, map, x, y - 1))
+		return (1);
+	if (flood_fill(cub, map, x + 1, y))
+		return (1);
+	if (flood_fill(cub, map, x, y + 1))
+		return (1);
+	return (0);
 }
 
 int	ft_init_pos(t_cub *cub)
 {
-	int init_pos;
-	
+	int	init_pos;
+
 	init_pos = -1;
 	cub->i = 0;
 	while (cub->map[cub->i])
@@ -105,9 +111,12 @@ int	ft_map_functions(t_cub *cub)
 		bfl_fprintf(STDERR, "Error in map (No player / Repeated)\n");
 		return (CUB_LKO);
 	}
-	bfl_printf("C: %d\n", cub->map[10][27]);
 	ft_duplicate_map(cub);
-	flood_fill(cub, cub->map_dup, cub->pos_y, cub->pos_x);
+	if (flood_fill(cub, cub->map_dup, cub->pos_y, cub->pos_x))
+	{
+		bfl_printf("Error in map (Not closed)\n");
+		return (CUB_LKO);
+	}
 	ft_print_map(cub);
 	return (CUB_OK);
 }

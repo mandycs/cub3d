@@ -84,4 +84,5 @@ void	initialize_cub(t_cub *cub)
 	cub->height = 0;
 	cub->width = 0;
 	cub->flag = 0;
+	cub->error = CUB_OK;
 }
