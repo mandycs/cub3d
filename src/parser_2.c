@@ -6,7 +6,7 @@
 /*   By: mancorte <mancorte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 22:22:16 by mancorte          #+#    #+#             */
-/*   Updated: 2024/12/21 01:47:22 by mancorte         ###   ########.fr       */
+/*   Updated: 2025/01/19 18:38:08 by mancorte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ void	ft_extract_path_texture(t_cub *cub, int flag)
 	else if (flag == 3)
 		cub->ea = bfl_strdup(&cub->text[cub->count][cub->i]);
 	cub->count++;
+	cub->flag++;
 	cub->i = 0;
 }
 
@@ -68,34 +69,34 @@ int	ft_extract_color(t_cub *cub, int flag)
 	}
 	cub->count++;
 	cub->i = 0;
+	cub->flag++;
 	return (BFL_OK);
 }
 
 int	ft_extract_map(t_cub *cub)
 {
-	int	len;
 	int	tmp;
-
+	
 	tmp = 0;
 	tmp = cub->count;
-	len = 0;
+	cub->height = 0;
 	cub->i = 0;
 	while (cub->text[cub->count])
 	{
-		cub->i = 0;
-		while (cub->text[cub->count][cub->i])
-			cub->i++;
+		if (bfl_strlen(cub->text[cub->count]) > (size_t)cub->width)
+			cub->width = bfl_strlen(cub->text[cub->count]);
 		cub->count++;
-		len++;
+		cub->height++;
 	}
-	cub->map = bfl_calloc(len + 1, sizeof(char *));
-	cub->i = 0;
+	cub->map = bfl_calloc(cub->height + 1, sizeof(char *));
 	while (cub->text[tmp])
 	{
-		cub->map[cub->i] = bfl_strdup(cub->text[tmp]);
+		cub->map[cub->i] = bfl_calloc(cub->width + 1, 1);
+		bfl_strlcpy(cub->map[cub->i], cub->text[tmp], bfl_strlen(cub->text[tmp]));
 		cub->i++;
 		tmp++;
 	}
+	cub->map[cub->i] = NULL;
 	return (BFL_OK);
 }
 

@@ -6,7 +6,7 @@
 /*   By: mancorte <mancorte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 22:20:39 by mancorte          #+#    #+#             */
-/*   Updated: 2024/12/20 22:30:21 by mancorte         ###   ########.fr       */
+/*   Updated: 2025/01/19 18:47:52 by mancorte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,13 +109,22 @@ int	ft_extract_text(t_cub *cub)
 		cub->i = 0;
 		while (cub->text[cub->count][cub->i] && cub->text[cub->count])
 		{
-			ft_process_texture(cub);
+			if (cub->flag < 6)
+				ft_process_texture(cub);
 			if (cub->text[cub->count][cub->i] == '\n')
 				break ;
-			else if (cub->text[cub->count][cub->i] == '1')
+			if (cub->flag == 6)
 			{
-				ft_extract_map(cub);
-				break ;
+				if (cub->text[cub->count][cub->i] == '1'
+					|| cub->text[cub->count][cub->i] == '0'
+					|| cub->text[cub->count][cub->i] == 'N'
+					|| cub->text[cub->count][cub->i] == 'S'
+					|| cub->text[cub->count][cub->i] == 'W'
+					|| cub->text[cub->count][cub->i] == 'E')
+				{
+					ft_extract_map(cub);
+					break ;
+				}
 			}
 			cub->i++;
 		}

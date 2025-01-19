@@ -51,10 +51,10 @@ CC := clang
 ifdef WITH_DEBUG
 	CFLAGS := -Wall -Wextra -Werror -gdwarf-2 
 else
-	CFLAGS := -Wall -Wextra -Werror
+	CFLAGS := -Wall -Wextra -Werror -gdwarf-2 -g
 endif
 
-CFLAGS := -Wall -Wextra -Werror
+CFLAGS := -Wall -Wextra -Werror -gdwarf-2 -g	
 CPPFLAGS := -I $(INCLUDE_DIR) -I $(BFL_DIR)include -I $(MLX42_DIR)/include/MLX42
 LDFLAGS := -L $(BFL_DIR) -L $(MLX42_DIR)/build
 LDLIBS := -lBFL -lmlx42 -lglfw -pthread -lm -ldl
@@ -93,7 +93,7 @@ else
 $(NAME): $(LIBMLX42) $(OBJ_DIR) $(OBJ)
 	$(OBJ_MSG)
 	@make -j4 -s -C $(BFL_DIR)
-	@$(CC) -o $@ $(OBJ) $(CPPFLAGS) $(LDFLAGS) $(LDLIBS)
+	@$(CC) -o $@ $(OBJ) -gdwarf-2 -g $(CPPFLAGS) $(LDFLAGS) $(LDLIBS)
 	$(OUTPUT_MSG)
 endif
 

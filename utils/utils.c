@@ -11,9 +11,9 @@ void	ft_print_map(t_cub *cub)
 	int	i;
 
 	i = 0;
-	while (cub->text[i])
+	while (cub->map_dup[i])
 	{
-		bfl_printf("%s\n", cub->text[i]);
+		bfl_printf("%s", cub->map_dup[i]);
 		i++;
 	}
 }
@@ -81,4 +81,7 @@ void	initialize_cub(t_cub *cub)
 	cub->error = 0;
 	cub->floor_c.a = 255;
 	cub->ceiling_c.a = 255;
+	cub->height = 0;
+	cub->width = 0;
+	cub->flag = 0;
 }

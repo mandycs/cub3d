@@ -6,7 +6,7 @@
 /*   By: mancorte <mancorte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 20:59:21 by mancorte          #+#    #+#             */
-/*   Updated: 2025/01/18 23:22:17 by mancorte         ###   ########.fr       */
+/*   Updated: 2025/01/19 18:13:42 by mancorte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,10 @@ int	ft_check_extension_texture(char *str)
 	int	tmp;
 	int	len;
 
-	tmp =0;
+	tmp = 0;
 	i = 0;
 	len = bfl_strlen(str);
 	len = len - 4;
-	printf("len = %d\n", len);
-	printf("Extension =%s\n", str + len);
 	if (str[len + 1] != 'p' || str[len + 2] != 'n' || str[len + 3] != 'g')
 	{
 		bfl_fprintf(STDERR, "Error in extension file\n");
@@ -59,11 +57,13 @@ int	ft_extract_color_aux_f(t_cub *cub)
 	return (BFL_OK);
 }
 
-static void	flood_fill(t_cub *cub, ***map, int x, int y)
+static void	flood_fill(t_cub *cub, char **map, int x, int y)
 {
-	if ((*map)[x][y] == WALL && (*map)[x][y] == FILL && x < 0 && y < 0 && x >= cub->width && y >= cub->height)
-		return;
-	(*map)[x][y] = FILL;
+	if (x < 0 || y < 0 || x >= cub->height || y >= cub->width
+		|| map[x][y] == WALL
+		|| map[x][y] == FILL)
+		return ;
+	map[x][y] = FILL;
 	flood_fill(cub, map, x - 1, y);
 	flood_fill(cub, map, x, y - 1);
 	flood_fill(cub, map, x + 1, y);
@@ -88,7 +88,7 @@ void	ft_init_pos(t_cub *cub)
 			}
 			cub->j++;
 		}
-	cub->i++;
+		cub->i++;
 	}
 }
 
@@ -97,8 +97,9 @@ int	ft_map_functions(t_cub *cub)
 	if (ft_check_map(cub) != CUB_OK)
 		return (BFL_LKO);
 	ft_init_pos(cub);
-	ft_map_len(cub);
-	ft_floodfill(cub, cub->map, cub->pos_x, cub->pos_y)
+	ft_duplicate_map(cub);
+	flood_fill(cub, cub->map_dup, cub->pos_y, cub->pos_x);
+	ft_print_map(cub);
 	
 	return (CUB_OK);
 }

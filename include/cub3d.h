@@ -6,7 +6,7 @@
 /*   By: mancorte <mancorte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 13:46:31 by mancorte          #+#    #+#             */
-/*   Updated: 2025/01/18 23:04:42 by mancorte         ###   ########.fr       */
+/*   Updated: 2025/01/19 18:38:33 by mancorte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@
 /* |                            Define Section                              | */
 /* @------------------------------------------------------------------------@ */
 # define INITIAL_CAPACITY 16
-# define WALL = '1'
-# define FILL = '.'
+# define WALL '1'
+# define FILL '.'
 /* @------------------------------------------------------------------------@ */
 /* |                            Include Section                             | */
 /* @------------------------------------------------------------------------@ */
@@ -70,6 +70,7 @@ struct					s_cub
 	int					height;
 	char				*line;
 	char				**new_lines;
+	char				**map_dup;
 	int					pos_x;
 	int					pos_y;
 	char				*no;
@@ -86,6 +87,7 @@ struct					s_cub
 	t_color				floor_c;
 	t_color				ceiling_c;
 	int					error;
+	int					flag;
 };
 /* @------------------------------------------------------------------------@ */
 /* |                           Function Section                             | */
@@ -118,8 +120,8 @@ void					ft_check_error(t_cub *cub);
 void					ft_check_error_2(t_cub *cub);
 void					ft_map_len(t_cub *cub);
 int						ft_check_extension_texture(char *str);
-// static void				flood_fill(t_info *info, char ***map, int x, int y);
 void					ft_init_pos(t_cub *cub);
 int						ft_map_functions(t_cub *cub);
 void					ft_clean_paths(t_cub *cub);
+void					ft_duplicate_map(t_cub *cub);
 #endif
