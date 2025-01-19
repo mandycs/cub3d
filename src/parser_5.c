@@ -6,7 +6,7 @@
 /*   By: mancorte <mancorte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 02:12:40 by mancorte          #+#    #+#             */
-/*   Updated: 2025/01/19 19:29:20 by mancorte         ###   ########.fr       */
+/*   Updated: 2025/01/19 20:12:20 by mancorte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	ft_duplicate_map(t_cub *cub)
 int	ft_mapextract(t_cub *cub)
 {
 	cub->i = 0;
-	while (cub->text[cub->count][cub->i] && cub->text[cub->count])
+	while (cub->text[cub->count] && cub->text[cub->count][cub->i])
 	{
 		if (cub->text[cub->count][cub->i] == '1'
 			|| cub->text[cub->count][cub->i] == '0'
@@ -51,7 +51,8 @@ int	ft_mapextract(t_cub *cub)
 			ft_extract_map(cub);
 			break ;
 		}
-		if (!bfl_isblank(cub->text[cub->count][cub->i]) && cub->text[cub->count][cub->i] != '\n')
+		if (!bfl_isblank(cub->text[cub->count][cub->i])
+			&& cub->text[cub->count][cub->i] != '\n')
 		{
 			bfl_fprintf(STDERR, "Error in map(Invalid Char)\n");
 			cub->error = CUB_ERROR_MAP;

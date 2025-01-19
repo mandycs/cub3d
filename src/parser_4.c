@@ -6,7 +6,7 @@
 /*   By: mancorte <mancorte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 20:59:21 by mancorte          #+#    #+#             */
-/*   Updated: 2025/01/19 18:13:42 by mancorte         ###   ########.fr       */
+/*   Updated: 2025/01/19 19:56:22 by mancorte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,5 @@ int	ft_map_functions(t_cub *cub)
 	ft_duplicate_map(cub);
 	flood_fill(cub, cub->map_dup, cub->pos_y, cub->pos_x);
 	ft_print_map(cub);
-	
 	return (CUB_OK);
 }

@@ -6,13 +6,12 @@
 /*   By: mancorte <mancorte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 22:25:03 by mancorte          #+#    #+#             */
-/*   Updated: 2025/01/19 19:30:35 by mancorte         ###   ########.fr       */
+/*   Updated: 2025/01/19 20:10:48 by mancorte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-// CAMBIAR LA FUNCION OPEN EN BASE A LO DE CUB AÑADIDO
 int	ft_check_paths(t_cub *cub)
 {
 	if (cub->no == NULL || cub->so == NULL || cub->we == NULL || cub->ea == NULL
@@ -41,7 +40,7 @@ int	ft_open_file(char *filename, int *fd, int flag, t_cub *cub)
 		bfl_fprintf(STDERR, "Error in extension in file '%s'\n", filename);
 		return (CUB_LKO);
 	}
-	printf( "%s",filename);
+	printf("%s", filename);
 	*fd = open("./test.png", O_RDONLY);
 	if (*fd == -1)
 	{
@@ -80,15 +79,4 @@ int	ft_check_map(t_cub *cub)
 		cub->i++;
 	}
 	return (CUB_OK);
-}
-
-void	ft_map_len(t_cub *cub)
-{
-	while (cub->map[cub->height])
-	{
-		cub->tmp = bfl_strlen(cub->map[cub->height]);
-		if (cub->tmp > cub->width)
-			cub->width = cub->tmp;
-		cub->height++;
-	}
 }

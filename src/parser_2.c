@@ -6,7 +6,7 @@
 /*   By: mancorte <mancorte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 22:22:16 by mancorte          #+#    #+#             */
-/*   Updated: 2025/01/19 19:09:16 by mancorte         ###   ########.fr       */
+/*   Updated: 2025/01/19 20:10:40 by mancorte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,12 +83,11 @@ int	ft_extract_color(t_cub *cub, int flag)
 int	ft_extract_map(t_cub *cub)
 {
 	int	tmp;
-	
+
 	tmp = 0;
 	tmp = cub->count;
 	cub->height = 0;
 	cub->i = 0;
-	
 	while (cub->text[cub->count])
 	{
 		if (bfl_strlen(cub->text[cub->count]) > (size_t)cub->width)
@@ -100,7 +99,8 @@ int	ft_extract_map(t_cub *cub)
 	while (cub->text[tmp])
 	{
 		cub->map[cub->i] = bfl_calloc(cub->width + 1, 1);
-		bfl_strlcpy(cub->map[cub->i], cub->text[tmp], bfl_strlen(cub->text[tmp]));
+		bfl_strlcpy(cub->map[cub->i], cub->text[tmp],
+			bfl_strlen(cub->text[tmp]));
 		cub->i++;
 		tmp++;
 	}

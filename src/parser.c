@@ -6,7 +6,7 @@
 /*   By: mancorte <mancorte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 22:20:39 by mancorte          #+#    #+#             */
-/*   Updated: 2025/01/19 19:26:14 by mancorte         ###   ########.fr       */
+/*   Updated: 2025/01/19 20:10:28 by mancorte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,10 +107,11 @@ int	ft_extract_text(t_cub *cub)
 	while (cub->text[cub->count])
 	{
 		cub->i = 0;
-		while (cub->text[cub->count][cub->i] && cub->text[cub->count] && cub->flag < 6)
+		while (cub->text[cub->count] && cub->text[cub->count][cub->i]
+			&& cub->flag < 6)
 		{
 			ft_process_texture(cub);
-			if (cub->text[cub->count][cub->i] == '\n')
+			if (cub->text[cub->count] && cub->text[cub->count][cub->i] == '\n')
 				break ;
 			cub->i++;
 		}
@@ -118,6 +119,12 @@ int	ft_extract_text(t_cub *cub)
 		if (cub->flag == 6)
 			if (ft_mapextract(cub) != CUB_OK)
 				return (CUB_LKO);
+	}
+	if (cub->height == 0 || cub->width == 0)
+	{
+		bfl_fprintf(STDERR, "Error in map(No map)\n");
+		cub->error = CUB_ERROR_NO_MAP;
+		return (CUB_LKO);
 	}
 	return (CUB_OK);
 }

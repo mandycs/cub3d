@@ -6,7 +6,7 @@
 /*   By: mancorte <mancorte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 13:46:31 by mancorte          #+#    #+#             */
-/*   Updated: 2025/01/19 19:26:49 by mancorte         ###   ########.fr       */
+/*   Updated: 2025/01/19 19:56:14 by mancorte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,6 @@ void					ft_paths_close(t_cub *cub);
 void					ft_close_fd(t_cub *cub);
 void					ft_check_error(t_cub *cub);
 void					ft_check_error_2(t_cub *cub);
-void					ft_map_len(t_cub *cub);
 int						ft_check_extension_texture(char *str);
 void					ft_init_pos(t_cub *cub);
 int						ft_map_functions(t_cub *cub);
