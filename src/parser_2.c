@@ -6,7 +6,7 @@
 /*   By: mancorte <mancorte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 22:22:16 by mancorte          #+#    #+#             */
-/*   Updated: 2025/01/19 18:38:08 by mancorte         ###   ########.fr       */
+/*   Updated: 2025/01/19 19:09:16 by mancorte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,15 @@ void	ft_process_texture(t_cub *cub)
 
 void	ft_extract_path_texture(t_cub *cub, int flag)
 {
-	while (cub->text[cub->count][cub->i] != '.'
-		&& cub->text[cub->count][cub->i])
+	cub->i += 2;
+	while (bfl_isblank(cub->text[cub->count][cub->i]))
 		cub->i++;
+	if (cub->text[cub->count][cub->i] != '.' && cub->text[cub->count][cub->i])
+	{
+		bfl_fprintf(STDERR, "Error (Invalid format in Path)\n");
+		cub->error = CUB_NO_PATH;
+		return ;
+	}
 	if (flag == 0)
 		cub->no = bfl_strdup(&cub->text[cub->count][cub->i]);
 	else if (flag == 1)
@@ -48,11 +54,12 @@ void	ft_extract_path_texture(t_cub *cub, int flag)
 
 int	ft_extract_color(t_cub *cub, int flag)
 {
-	while (!bfl_isdigit(cub->text[cub->count][cub->i]))
+	cub->i++;
+	while (bfl_isblank(cub->text[cub->count][cub->i]))
 		cub->i++;
-	if (cub->text[cub->count][cub->i] == '\0')
+	if (!bfl_isdigit(cub->text[cub->count][cub->i]))
 	{
-		bfl_fprintf(STDERR, "Error (Missing Color)\n");
+		bfl_fprintf(STDERR, "Error (Invalid format color)\n");
 		return (BFL_LKO);
 	}
 	if (flag == 0 && cub->text[cub->count][cub->i])
@@ -81,6 +88,7 @@ int	ft_extract_map(t_cub *cub)
 	tmp = cub->count;
 	cub->height = 0;
 	cub->i = 0;
+	
 	while (cub->text[cub->count])
 	{
 		if (bfl_strlen(cub->text[cub->count]) > (size_t)cub->width)

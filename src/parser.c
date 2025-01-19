@@ -6,7 +6,7 @@
 /*   By: mancorte <mancorte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 22:20:39 by mancorte          #+#    #+#             */
-/*   Updated: 2025/01/19 18:47:52 by mancorte         ###   ########.fr       */
+/*   Updated: 2025/01/19 19:22:36 by mancorte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ int	ft_extract_path(char *filename)
 int	ft_read_file(t_cub *cub)
 {
 	cub->capacity = INITIAL_CAPACITY;
-	cub->text = malloc(sizeof(char *) * cub->capacity);
+	cub->text = bfl_calloc(cub->capacity, sizeof(char *));
 	if (!cub->text)
 	{
 		bfl_free(cub->text, 2);
@@ -107,29 +107,16 @@ int	ft_extract_text(t_cub *cub)
 	while (cub->text[cub->count])
 	{
 		cub->i = 0;
-		while (cub->text[cub->count][cub->i] && cub->text[cub->count])
+		while (cub->text[cub->count][cub->i] && cub->text[cub->count] && cub->flag < 6)
 		{
-			if (cub->flag < 6)
-				ft_process_texture(cub);
+			ft_process_texture(cub);
 			if (cub->text[cub->count][cub->i] == '\n')
 				break ;
-			if (cub->flag == 6)
-			{
-				if (cub->text[cub->count][cub->i] == '1'
-					|| cub->text[cub->count][cub->i] == '0'
-					|| cub->text[cub->count][cub->i] == 'N'
-					|| cub->text[cub->count][cub->i] == 'S'
-					|| cub->text[cub->count][cub->i] == 'W'
-					|| cub->text[cub->count][cub->i] == 'E')
-				{
-					ft_extract_map(cub);
-					break ;
-				}
-			}
 			cub->i++;
 		}
-		if (cub->text[cub->count])
-			cub->count++;
+		cub->count++;
+		if (cub->flag == 6)
+			ft_mapextract(cub);
 	}
 	return (CUB_OK);
 }
