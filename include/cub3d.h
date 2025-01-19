@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cub3d.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ribana-b <ribana-b@student.42malaga.com>   +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/19 14:23:14 by ribana-b          #+#    #+# Malaga      */
+/*   Updated: 2025/01/19 14:23:16 by ribana-b         ###   ########.com      */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef CUB3D_H
 # define CUB3D_H
 
@@ -6,8 +18,8 @@
 /* @------------------------------------------------------------------------@ */
 
 # define INITIAL_CAPACITY 16
-# define WALL = '1'
-# define FILL = '.'
+# define WALL '1'
+# define FILL '.'
 # define PIXEL_SIZE 32
 # define RESIZE 4
 # define DISTANCE_LENGTH 1000
@@ -41,9 +53,9 @@ typedef struct s_info	t_info;
 
 enum					e_exit_status_cub
 {
-	CUB_OK = 0,     /**< 0 */
-	CUB_LKO,        /**< 1 */
-	CUB_RIP_MALLOC, /**< Amount of enums */
+	CUB_OK = 0,
+	CUB_LKO,
+	CUB_RIP_MALLOC,
 	CUB_RIP_READ,
 	CUB_NO_TEXT,
 	CUB_NO_PATH,
