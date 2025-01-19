@@ -6,7 +6,7 @@
 /*   By: mancorte <mancorte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 22:20:22 by mancorte          #+#    #+#             */
-/*   Updated: 2025/01/19 23:29:23 by mancorte         ###   ########.fr       */
+/*   Updated: 2025/01/19 23:53:11 by mancorte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,7 @@ void	ft_check_error(t_cub *cub)
 		ft_free_cub(cub);
 	}
 	else if (cub->error > CUB_NO_PATH)
-	{
 		ft_check_error_2(cub);
-	}
 	exit(CUB_LKO);
 }
 
