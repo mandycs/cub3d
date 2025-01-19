@@ -6,7 +6,7 @@
 /*   By: ribana-b <ribana-b@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 21:26:43 by ribana-b          #+#    #+# Malaga      */
-/*   Updated: 2025/01/19 13:31:19 by ribana-b         ###   ########.com      */
+/*   Updated: 2025/01/19 14:13:06 by ribana-b         ###   ########.com      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,8 +68,7 @@ void	render_fov(t_player *player, t_map *map, t_screen *screen)
 
 	start = v2_create(player->position.y + PIXEL_SIZE * 0.5,
 			player->position.x + PIXEL_SIZE * 0.5);
-	end = calculate_wall_collision2(start, deg_to_rads(player->angle),
-			map);
+	end = calculate_wall_collision2(start, deg_to_rads(player->angle), map);
 	draw_line(screen->buffer, start, end, green());
 	i = -1;
 	while (++i < PIXEL_SIZE - 1)
