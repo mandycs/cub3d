@@ -6,7 +6,7 @@
 /*   By: mancorte <mancorte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 22:25:03 by mancorte          #+#    #+#             */
-/*   Updated: 2025/01/19 23:29:58 by mancorte         ###   ########.fr       */
+/*   Updated: 2025/01/20 03:26:36 by mancorte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,8 +53,6 @@ int	ft_open_file(char *filename, int *fd, int flag, t_cub *cub)
 int	ft_check_map(t_cub *cub)
 {
 	cub->i = 0;
-	if (!cub->map[cub->i])
-		return (CUB_ERROR_NO_MAP);
 	while (cub->map[cub->i])
 	{
 		cub->j = 0;

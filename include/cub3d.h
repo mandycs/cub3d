@@ -6,7 +6,7 @@
 /*   By: mancorte <mancorte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 13:46:31 by mancorte          #+#    #+#             */
-/*   Updated: 2025/01/19 20:27:24 by mancorte         ###   ########.fr       */
+/*   Updated: 2025/01/20 03:18:04 by mancorte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,8 @@ enum					e_exit_status_cub
 	CUB_ERROR_EA_PATH,
 	CUB_ERROR_COLOR,
 	CUB_ERROR_MAP,
-	CUB_ERROR_NO_MAP
+	CUB_ERROR_MAP_NOT_CLOSED,
+	END_GAME
 };
 /* @------------------------------------------------------------------------@ */
 /* |                            Struct Section                              | */

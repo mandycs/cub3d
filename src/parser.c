@@ -6,7 +6,7 @@
 /*   By: mancorte <mancorte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 22:20:39 by mancorte          #+#    #+#             */
-/*   Updated: 2025/01/19 23:41:26 by mancorte         ###   ########.fr       */
+/*   Updated: 2025/01/20 03:26:16 by mancorte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ int	ft_read_file(t_cub *cub)
 					sizeof(char *));
 			if (!cub->new_lines)
 			{
-				bfl_free(&cub->text, 2);	
+				bfl_free (&cub->text, 2);
 				return (CUB_RIP_MALLOC);
 			}
 			cub->text = cub->new_lines;

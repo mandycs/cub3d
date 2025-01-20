@@ -6,7 +6,7 @@
 /*   By: mancorte <mancorte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 20:59:21 by mancorte          #+#    #+#             */
-/*   Updated: 2025/01/19 21:44:29 by mancorte         ###   ########.fr       */
+/*   Updated: 2025/01/20 03:26:28 by mancorte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,8 @@
 
 int	ft_check_extension_texture(char *str)
 {
-	int	i;
-	int	tmp;
 	int	len;
 
-	tmp = 0;
-	i = 0;
 	len = bfl_strlen(str);
 	len = len - 4;
 	if (str[len + 1] != 'p' || str[len + 2] != 'n' || str[len + 3] != 'g')
@@ -109,14 +105,16 @@ int	ft_map_functions(t_cub *cub)
 	if (ft_init_pos(cub) != CUB_OK)
 	{
 		bfl_fprintf(STDERR, "Error in map (No player / Repeated)\n");
+		cub->error = CUB_ERROR_MAP;
 		return (CUB_LKO);
 	}
 	ft_duplicate_map(cub);
 	if (flood_fill(cub, cub->map_dup, cub->pos_y, cub->pos_x))
 	{
 		bfl_printf("Error in map (Not closed)\n");
+		cub->error = CUB_ERROR_MAP_NOT_CLOSED;
 		return (CUB_LKO);
 	}
-	ft_print_map(cub);
+	cub->error = END_GAME;
 	return (CUB_OK);
 }
