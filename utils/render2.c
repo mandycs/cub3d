@@ -61,6 +61,7 @@ void	render_floor(t_screen *screen, t_color color)
 	}
 }
 
+// TODO: Rename this function
 void	render_wall(t_screen *screen, int x, double distance, t_color color)
 {
 	t_v2	start;
@@ -77,4 +78,6 @@ void	render_wall(t_screen *screen, int x, double distance, t_color color)
 	if (end.y >= screen->height)
 		end.y = screen->height - 1;
 	draw_line(screen->buffer, start, end, color);
+	draw_line(screen->buffer, v2_create(x, 0), start, lightyellow());
+	draw_line(screen->buffer, v2_create(x, end.y), v2_create(x, screen->height));
 }

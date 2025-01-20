@@ -12,6 +12,9 @@
 
 #include "utils.h"
 
+// TODO?: When the player is outside of the map it doesn't render anything
+// *Maybe it is not necessary to see anything because I'll implement
+// wall collision later.
 void	render_view(t_player *player, t_map *map, t_screen *screen)
 {
 	double	step;
@@ -22,8 +25,6 @@ void	render_view(t_player *player, t_map *map, t_screen *screen)
 	angle = bfl_mod(player->angle - player->fov * 0.5, 360);
 	step = (double)player->fov / screen->width;
 	x = 0;
-	render_ceiling(screen, lightyellow());
-	render_floor(screen, lightblue());
 	while (x < screen->width)
 	{
 		distance = calculate_distance(player, map, angle);
