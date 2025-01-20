@@ -79,5 +79,6 @@ void	render_wall(t_screen *screen, int x, double distance, t_color color)
 		end.y = screen->height - 1;
 	draw_line(screen->buffer, start, end, color);
 	draw_line(screen->buffer, v2_create(x, 0), start, lightyellow());
-	draw_line(screen->buffer, v2_create(x, end.y), v2_create(x, screen->height));
+	draw_line(screen->buffer, v2_create(x, end.y),
+		v2_create(x, screen->height), lightblue());
 }
