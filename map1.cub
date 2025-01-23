@@ -2,8 +2,18 @@ NO ./test.png
 SO ./test.png
 WE ./test.png
 EA ./test.png
+
+
+
+
 F 220,100,0
 C 225,30,0
+
+
+
+
+
+
 
 
         1111111111111111111111111
