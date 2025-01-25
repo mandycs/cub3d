@@ -6,7 +6,7 @@
 /*   By: mancorte <mancorte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 22:20:39 by mancorte          #+#    #+#             */
-/*   Updated: 2024/12/20 22:30:21 by mancorte         ###   ########.fr       */
+/*   Updated: 2025/01/20 03:26:16 by mancorte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,13 +70,11 @@ int	ft_extract_path(char *filename)
 int	ft_read_file(t_cub *cub)
 {
 	cub->capacity = INITIAL_CAPACITY;
-	cub->text = malloc(sizeof(char *) * cub->capacity);
+	cub->text = bfl_calloc(cub->capacity, sizeof(char *));
 	if (!cub->text)
-	{
-		bfl_free(cub->text, 2);
 		return (CUB_RIP_MALLOC);
-	}
-	while ((cub->line = get_next_line(cub->fd)))
+	cub->line = get_next_line(cub->fd);
+	while (cub->line)
 	{
 		if (cub->count >= cub->capacity)
 		{
@@ -85,12 +83,14 @@ int	ft_read_file(t_cub *cub)
 					sizeof(char *));
 			if (!cub->new_lines)
 			{
-				bfl_free(cub->text, 2);
+				bfl_free (&cub->text, 2);
 				return (CUB_RIP_MALLOC);
 			}
 			cub->text = cub->new_lines;
 		}
-		cub->text[cub->count++] = cub->line;
+		cub->text[cub->count++] = bfl_strdup(cub->line);
+		bfl_free(&cub->line, 1);
+		cub->line = get_next_line(cub->fd);
 	}
 	cub->text[cub->count] = NULL;
 	return (CUB_OK);
@@ -99,7 +99,7 @@ int	ft_read_file(t_cub *cub)
 int	ft_extract_text(t_cub *cub)
 {
 	cub->count = 0;
-	if (!cub->text && !cub->text[cub->count])
+	if (!cub->text || !cub->text[cub->count])
 	{
 		cub->error = CUB_NO_TEXT;
 		return (CUB_LKO);
@@ -107,20 +107,19 @@ int	ft_extract_text(t_cub *cub)
 	while (cub->text[cub->count])
 	{
 		cub->i = 0;
-		while (cub->text[cub->count][cub->i] && cub->text[cub->count])
+		while (cub->text[cub->count] && cub->text[cub->count][cub->i]
+			&& cub->flag < 6)
 		{
 			ft_process_texture(cub);
-			if (cub->text[cub->count][cub->i] == '\n')
+			if (cub->text[cub->count] && cub->text[cub->count][cub->i] == '\n')
 				break ;
-			else if (cub->text[cub->count][cub->i] == '1')
-			{
-				ft_extract_map(cub);
-				break ;
-			}
 			cub->i++;
 		}
-		if (cub->text[cub->count])
-			cub->count++;
+		cub->count++;
+		if (cub->flag == 6 && ft_mapextract(cub) != CUB_OK)
+			return (CUB_LKO);
 	}
+	if (cub->height == 0 || cub->width == 0)
+		return (ft_check_paths(cub));
 	return (CUB_OK);
 }

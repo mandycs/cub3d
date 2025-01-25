@@ -65,7 +65,8 @@ enum					e_exit_status_cub
 	CUB_ERROR_EA_PATH,
 	CUB_ERROR_COLOR,
 	CUB_ERROR_MAP,
-	CUB_ERROR_NO_MAP
+	CUB_ERROR_MAP_NOT_CLOSED,
+	END_GAME
 };
 
 /* @------------------------------------------------------------------------@ */
@@ -82,9 +83,11 @@ struct					s_cub
 	char				**text;
 	char				**map;
 	int					tmp;
-	int					len;
+	int					width;
+	int					height;
 	char				*line;
 	char				**new_lines;
+	char				**map_dup;
 	int					pos_x;
 	int					pos_y;
 	char				*no;
@@ -101,6 +104,7 @@ struct					s_cub
 	t_color				floor_c;
 	t_color				ceiling_c;
 	int					error;
+	int					flag;
 };
 
 struct s_player
@@ -158,10 +162,11 @@ void					ft_paths_close(t_cub *cub);
 void					ft_close_fd(t_cub *cub);
 void					ft_check_error(t_cub *cub);
 void					ft_check_error_2(t_cub *cub);
-void					ft_map_len(t_cub *cub);
 int						ft_check_extension_texture(char *str);
-// static void				flood_fill(t_info *info, char ***map, int x, int y);
-void					ft_init_pos(t_cub *cub);
+int						ft_init_pos(t_cub *cub);
 int						ft_map_functions(t_cub *cub);
 void					ft_clean_paths(t_cub *cub);
+void					ft_duplicate_map(t_cub *cub);
+int						ft_mapextract(t_cub *cub);
+int						ft_is_valid_map_char(char c);
 #endif

@@ -6,7 +6,7 @@
 /*   By: mancorte <mancorte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 20:59:21 by mancorte          #+#    #+#             */
-/*   Updated: 2024/12/21 02:52:58 by mancorte         ###   ########.fr       */
+/*   Updated: 2025/01/20 03:26:28 by mancorte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,10 @@
 
 int	ft_check_extension_texture(char *str)
 {
-	int	i;
-	int	tmp;
 	int	len;
 
-	tmp =0;
-	i = 0;
 	len = bfl_strlen(str);
 	len = len - 4;
-	printf("len = %d\n", len);
-	printf("Extension =%s\n", str + len);
 	if (str[len + 1] != 'p' || str[len + 2] != 'n' || str[len + 3] != 'g')
 	{
 		bfl_fprintf(STDERR, "Error in extension file\n");
@@ -59,20 +53,29 @@ int	ft_extract_color_aux_f(t_cub *cub)
 	return (BFL_OK);
 }
 
-// static void	flood_fill(t_info *info, char ***map, int x, int y)
-// {
-// 	if ((*map)[x][y] != WALL && (*map)[x][y] != FILL)
-// 	{
-// 		(*map)[x][y] = FILL;
-// 		flood_fill(info, map, x - 1, y);
-// 		flood_fill(info, map, x, y - 1);
-// 		flood_fill(info, map, x + 1, y);
-// 		flood_fill(info, map, x, y + 1);
-// 	}
-// }
-
-void	ft_init_pos(t_cub *cub)
+int	flood_fill(t_cub *cub, char **map, int x, int y)
 {
+	if (x < 0 || y < 0 || x >= cub->height || y >= cub->width)
+		return (1);
+	if (map[x][y] == WALL || map[x][y] == FILL)
+		return (0);
+	map[x][y] = FILL;
+	if (flood_fill(cub, map, x - 1, y))
+		return (1);
+	if (flood_fill(cub, map, x, y - 1))
+		return (1);
+	if (flood_fill(cub, map, x + 1, y))
+		return (1);
+	if (flood_fill(cub, map, x, y + 1))
+		return (1);
+	return (0);
+}
+
+int	ft_init_pos(t_cub *cub)
+{
+	int	init_pos;
+
+	init_pos = -1;
 	cub->i = 0;
 	while (cub->map[cub->i])
 	{
@@ -86,20 +89,32 @@ void	ft_init_pos(t_cub *cub)
 			{
 				cub->pos_x = cub->j;
 				cub->pos_y = cub->i;
+				init_pos++;
 			}
 			cub->j++;
 		}
-	cub->i++;
+		cub->i++;
 	}
+	return (init_pos);
 }
 
 int	ft_map_functions(t_cub *cub)
 {
 	if (ft_check_map(cub) != CUB_OK)
 		return (BFL_LKO);
-	ft_init_pos(cub);
-	// if (ft_floodfill(cub) != CUB_OK)
-	// 	return (CUB_LKO);
-	ft_map_len(cub);
+	if (ft_init_pos(cub) != CUB_OK)
+	{
+		bfl_fprintf(STDERR, "Error in map (No player / Repeated)\n");
+		cub->error = CUB_ERROR_MAP;
+		return (CUB_LKO);
+	}
+	ft_duplicate_map(cub);
+	if (flood_fill(cub, cub->map_dup, cub->pos_y, cub->pos_x))
+	{
+		bfl_printf("Error in map (Not closed)\n");
+		cub->error = CUB_ERROR_MAP_NOT_CLOSED;
+		return (CUB_LKO);
+	}
+	cub->error = END_GAME;
 	return (CUB_OK);
 }
