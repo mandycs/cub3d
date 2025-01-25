@@ -6,7 +6,7 @@
 /*   By: ribana-b <ribana-b@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 22:15:58 by ribana-b          #+#    #+# Malaga      */
-/*   Updated: 2025/01/25 13:02:28 by ribana-b         ###   ########.com      */
+/*   Updated: 2025/01/25 14:57:58 by ribana-b         ###   ########.com      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ bool	create_textures(t_info *info, t_cub *cub);
 void	destroy_textures(t_info *info);
 
 void	render(void *param);
-void	render_map(t_map *map, t_screen *screen);
+void	render_map(t_map *map, t_v2 *position, t_screen *screen);
 void	render_player(t_player *player, t_screen *screen);
 void	render_fov(t_player *player, t_map *map, t_screen *screen);
 void	render_view(t_player *player, t_map *map, t_screen *screen);

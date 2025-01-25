@@ -6,7 +6,7 @@
 /*   By: ribana-b <ribana-b@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/19 14:23:14 by ribana-b          #+#    #+# Malaga      */
-/*   Updated: 2025/01/25 12:50:01 by ribana-b         ###   ########.com      */
+/*   Updated: 2025/01/25 15:39:06 by ribana-b         ###   ########.com      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,9 @@
 # define INITIAL_CAPACITY 16
 # define WALL '1'
 # define FILL '.'
-# define PIXEL_SIZE 32
+# define PIXEL_SIZE 80
 # define RESIZE 1
+# define MAP_SCALE PIXEL_SIZE * RESIZE / 4
 # define DISTANCE_LENGTH 1000
 
 /* @------------------------------------------------------------------------@ */

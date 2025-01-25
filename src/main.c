@@ -6,7 +6,7 @@
 /*   By: ribana-b <ribana-b@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/19 14:23:51 by ribana-b          #+#    #+# Malaga      */
-/*   Updated: 2025/01/25 13:56:53 by ribana-b         ###   ########.com      */
+/*   Updated: 2025/01/25 15:43:49 by ribana-b         ###   ########.com      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@
  * - Have a limit distance rendering
  * - Make logs to accept va_args or create something like sprintf
  * to allow giving more information
- * - Reimplement the minimap to scale according to the size of the screen
  *
  * NOTE:
  * Don't activate logging while outside of the map, because it will lag due
