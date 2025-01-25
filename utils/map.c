@@ -6,7 +6,7 @@
 /*   By: ribana-b <ribana-b@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 21:26:37 by ribana-b          #+#    #+# Malaga      */
-/*   Updated: 2025/01/18 21:26:38 by ribana-b         ###   ########.com      */
+/*   Updated: 2025/01/25 13:02:02 by ribana-b         ###   ########.com      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +25,11 @@ void	destroy_map(t_map *map)
 	free(map->data);
 }
 
-bool	create_map(t_map *map)
+bool	create_map(t_map *map, t_cub *cub)
 {
-	if (!create_map_data(map))
-		return (false);
-	log_info("Created map");
+	map->data = cub->map;
+	map->rows = cub->height;
+	map->cols = cub->width;
 	return (true);
 }
 

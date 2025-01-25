@@ -6,7 +6,7 @@
 /*   By: ribana-b <ribana-b@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/19 14:23:51 by ribana-b          #+#    #+# Malaga      */
-/*   Updated: 2025/01/19 14:23:52 by ribana-b         ###   ########.com      */
+/*   Updated: 2025/01/25 13:56:53 by ribana-b         ###   ########.com      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,10 +51,16 @@
 int	main(int argc, char **argv)
 {
 	static t_info	info;
+	t_cub			cub;
 
-	(void)argc;
-	(void)argv;
-	if (!cub_create(&info))
+	initialize_cub(&cub);
+	if (ft_check_arg(argc, argv, &cub) != BFL_OK || cub.error != CUB_OK)
+	{
+		//ft_check_error(&cub);
+		if (cub.error != END_GAME)
+			return (cub.error);
+	}
+	if (!cub_create(&info, &cub))
 	{
 		if (info.mlx)
 			cub_destroy(&info);

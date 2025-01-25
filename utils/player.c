@@ -6,7 +6,7 @@
 /*   By: ribana-b <ribana-b@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 21:26:40 by ribana-b          #+#    #+# Malaga      */
-/*   Updated: 2025/01/25 12:25:37 by ribana-b         ###   ########.com      */
+/*   Updated: 2025/01/25 12:59:16 by ribana-b         ###   ########.com      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,10 @@ t_v2	get_player_position(void)
 	return (v2_create(-1, -1));
 }
 
-bool	create_player(t_player *player)
+bool	create_player(t_player *player, t_cub *cub)
 {
-	player->position = get_player_position();
+	player->position.x = cub->pos_x;
+	player->position.y = cub->pos_y;
 	if (!create_toolbar(&player->toolbar))
 		return (false);
 	player->speed = 10;

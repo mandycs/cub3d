@@ -6,21 +6,21 @@
 /*   By: ribana-b <ribana-b@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 21:26:47 by ribana-b          #+#    #+# Malaga      */
-/*   Updated: 2025/01/18 22:48:27 by ribana-b         ###   ########.com      */
+/*   Updated: 2025/01/25 13:14:10 by ribana-b         ###   ########.com      */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.h"
 
-bool	create_textures(t_info *info)
+bool	create_textures(t_info *info, t_cub *cub)
 {
 	int	i;
 
 	i = 0;
-	info->tex[i++] = mlx_load_png("./sprites/red.png");
-	info->tex[i++] = mlx_load_png("./sprites/green.png");
-	info->tex[i++] = mlx_load_png("./sprites/yellow.png");
-	info->tex[i++] = mlx_load_png("./sprites/purple.png");
+	info->tex[i++] = mlx_load_png(cub->no);
+	info->tex[i++] = mlx_load_png(cub->so);
+	info->tex[i++] = mlx_load_png(cub->we);
+	info->tex[i++] = mlx_load_png(cub->ea);
 	while (i--)
 	{
 		if (!info->tex[i])

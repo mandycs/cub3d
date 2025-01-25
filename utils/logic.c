@@ -6,7 +6,7 @@
 /*   By: ribana-b <ribana-b@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 21:26:35 by ribana-b          #+#    #+# Malaga      */
-/*   Updated: 2025/01/19 15:17:59 by ribana-b         ###   ########.com      */
+/*   Updated: 2025/01/25 12:50:58 by ribana-b         ###   ########.com      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,8 @@ void	swap_buffers(void *param)
 
 void	update(void *param)
 {
-	t_info			*info;
-	static	bool	is_speed_scaled;
+	t_info		*info;
+	static bool	is_speed_scaled;
 
 	info = param;
 	if (!is_speed_scaled)

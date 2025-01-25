@@ -6,7 +6,7 @@
 /*   By: ribana-b <ribana-b@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/19 14:23:14 by ribana-b          #+#    #+# Malaga      */
-/*   Updated: 2025/01/25 12:09:54 by ribana-b         ###   ########.com      */
+/*   Updated: 2025/01/25 12:50:01 by ribana-b         ###   ########.com      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -169,4 +169,5 @@ void					ft_clean_paths(t_cub *cub);
 void					ft_duplicate_map(t_cub *cub);
 int						ft_mapextract(t_cub *cub);
 int						ft_is_valid_map_char(char c);
+
 #endif

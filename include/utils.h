@@ -6,7 +6,7 @@
 /*   By: ribana-b <ribana-b@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 22:15:58 by ribana-b          #+#    #+# Malaga      */
-/*   Updated: 2025/01/25 12:14:12 by ribana-b         ###   ########.com      */
+/*   Updated: 2025/01/25 13:02:28 by ribana-b         ###   ########.com      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ static const char		*smap[] = {
 # include <math.h>
 # include "cub3d.h"
 
+typedef struct s_cub	t_cub;
 typedef struct s_player	t_player;
 typedef struct s_map	t_map;
 typedef struct s_info	t_info;
@@ -51,7 +52,7 @@ t_v2	calculate_wall_collision(t_v2 start, double angle, t_map *map);
 t_v2	calculate_wall_collision2(t_v2 start, double angle, t_map *map);
 bool	is_wall_collision(t_map *map, int x, int y);
 
-bool	create_textures(t_info *info);
+bool	create_textures(t_info *info, t_cub *cub);
 void	destroy_textures(t_info *info);
 
 void	render(void *param);
@@ -85,14 +86,14 @@ void	rotate_right(t_info *info);
 
 void	hook_loader(t_info *info);
 
-bool	cub_create(t_info *info);
+bool	cub_create(t_info *info, t_cub *cub);
 void	cub_close_window(mlx_t *mlx);
 void	cub_destroy(t_info *info);
 
-bool	create_player(t_player *player);
+bool	create_player(t_player *player, t_cub *cub);
 t_v2	get_player_position(void);
 
-bool	create_map(t_map *map);
+bool	create_map(t_map *map, t_cub *cub);
 bool	create_map_data(t_map *map);
 void	destroy_map(t_map *map);
 

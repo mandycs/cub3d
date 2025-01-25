@@ -6,7 +6,7 @@
 /*   By: ribana-b <ribana-b@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 21:26:49 by ribana-b          #+#    #+# Malaga      */
-/*   Updated: 2025/01/18 21:26:49 by ribana-b         ###   ########.com      */
+/*   Updated: 2025/01/25 12:50:39 by ribana-b         ###   ########.com      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,6 @@ void	ft_free_cub(t_cub *cub)
 	bfl_free(&cub->ea, 1);
 	bfl_free(&cub->f, 1);
 	bfl_free(&cub->c, 1);
-
 	bfl_free(&cub->map, 2);
 }
 

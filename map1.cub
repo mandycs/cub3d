@@ -1,7 +1,7 @@
-NO ./test.png
-SO ./test.png
-WE ./test.png
-EA ./test.png
+NO ./sprites/red.png
+SO ./sprites/green.png
+WE ./sprites/yellow.png
+EA ./sprites/purple.png
 
 
 

@@ -153,11 +153,11 @@ FCLEAN_MSG = @echo "🗑️  🦔 $(T_MAGENTA)$(BOLD)$(NAME) $(RESET)$(T_RED)des
 # @--------------------------------------------------------------------------@ #
 
 run: main
-	./$(NAME)
+	./$(NAME) map1.cub
 
 main: build_mlx42
 	make -j4 -s -C $(BFL_DIR)
-	clang -o cub3d -g -Wall -Wextra -Werror -ffast-math -O3 src/main.c utils/*.c utils/v2/*.c src/log/*.c src/weapon/*.c utils/colors/*.c utils/screen/*.c $(CPPFLAGS) $(LDFLAGS) $(LDLIBS)
+	clang -o cub3d -g -Wall -Wextra -Werror -ffast-math -O3 src/main.c src/parser*.c src/error.c utils/*.c utils/v2/*.c src/log/*.c src/weapon/*.c utils/colors/*.c utils/screen/*.c $(CPPFLAGS) $(LDFLAGS) $(LDLIBS)
 
 all: build_mlx42 $(NAME)
 
