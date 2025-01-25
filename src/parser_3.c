@@ -6,13 +6,12 @@
 /*   By: mancorte <mancorte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 22:25:03 by mancorte          #+#    #+#             */
-/*   Updated: 2024/12/21 02:08:19 by mancorte         ###   ########.fr       */
+/*   Updated: 2025/01/20 03:26:36 by mancorte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-// CAMBIAR LA FUNCION OPEN EN BASE A LO DE CUB AÑADIDO
 int	ft_check_paths(t_cub *cub)
 {
 	if (cub->no == NULL || cub->so == NULL || cub->we == NULL || cub->ea == NULL
@@ -41,11 +40,9 @@ int	ft_open_file(char *filename, int *fd, int flag, t_cub *cub)
 		bfl_fprintf(STDERR, "Error in extension in file '%s'\n", filename);
 		return (CUB_LKO);
 	}
-	printf( "%s",filename);
-	*fd = open("./test.png", O_RDONLY);
+	*fd = open(filename, O_RDONLY);
 	if (*fd == -1)
 	{
-		printf("El fd es %d\n", *fd);
 		cub->error = flag;
 		bfl_fprintf(STDERR, "Error in opening file '%s'\n", filename);
 		return (BFL_LKO);
@@ -53,24 +50,15 @@ int	ft_open_file(char *filename, int *fd, int flag, t_cub *cub)
 	return (BFL_OK);
 }
 
-// FALTA QUE SI NO HAY MAPA DEVUELVA ERROR
 int	ft_check_map(t_cub *cub)
 {
 	cub->i = 0;
-	if (!cub->map[cub->i])
-		return (CUB_ERROR_NO_MAP);
 	while (cub->map[cub->i])
 	{
 		cub->j = 0;
 		while (cub->map[cub->i][cub->j])
 		{
-			if (cub->map[cub->i][cub->j] != '1'
-				&& cub->map[cub->i][cub->j] != '0'
-				&& bfl_isspace(cub->map[cub->i][cub->j]) == 0
-				&& cub->map[cub->i][cub->j] != 'N'
-				&& cub->map[cub->i][cub->j] != 'S'
-				&& cub->map[cub->i][cub->j] != 'W'
-				&& cub->map[cub->i][cub->j] != 'E')
+			if (ft_is_valid_map_char(cub->map[cub->i][cub->j]))
 			{
 				cub->error = CUB_ERROR_MAP;
 				bfl_fprintf(STDERR, "Error in map (Invalid char)\n");
@@ -81,17 +69,4 @@ int	ft_check_map(t_cub *cub)
 		cub->i++;
 	}
 	return (CUB_OK);
-}
-
-void	ft_map_len(t_cub *cub)
-{
-	cub->i = 0;
-	cub->len = 0;
-	while (cub->map[cub->i])
-	{
-		cub->tmp = bfl_strlen(cub->map[cub->i]);
-		if (cub->tmp > cub->len)
-			cub->len = cub->tmp;
-		cub->i++;
-	}
 }

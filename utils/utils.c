@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ribana-b <ribana-b@student.42malaga.com>   +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/18 21:26:49 by ribana-b          #+#    #+# Malaga      */
+/*   Updated: 2025/01/25 12:50:39 by ribana-b         ###   ########.com      */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cub3d.h"
 
 void	ribanab(void)
@@ -11,9 +23,9 @@ void	ft_print_map(t_cub *cub)
 	int	i;
 
 	i = 0;
-	while (cub->text[i])
+	while (cub->map_dup[i])
 	{
-		bfl_printf("%s\n", cub->text[i]);
+		bfl_printf("%s\n", cub->map_dup[i]);
 		i++;
 	}
 }
@@ -36,28 +48,14 @@ void	ft_print_paths(t_cub *cub)
 
 void	ft_free_cub(t_cub *cub)
 {
-	int	i;
-
-	i = 0;
-	while (cub->text[i] != NULL)
-	{
-		free(cub->text[i]);
-		i++;
-	}
-	free(cub->text);
-	free(cub->no);
-	free(cub->so);
-	free(cub->we);
-	free(cub->ea);
-	free(cub->f);
-	free(cub->c);
-	i = 0;
-	while (cub->map[i] != NULL)
-	{
-		free(cub->map[i]);
-		i++;
-	}
-	free(cub->map);
+	bfl_free(&cub->text, 2);
+	bfl_free(&cub->no, 1);
+	bfl_free(&cub->so, 1);
+	bfl_free(&cub->we, 1);
+	bfl_free(&cub->ea, 1);
+	bfl_free(&cub->f, 1);
+	bfl_free(&cub->c, 1);
+	bfl_free(&cub->map, 2);
 }
 
 void	initialize_cub(t_cub *cub)
@@ -81,4 +79,8 @@ void	initialize_cub(t_cub *cub)
 	cub->error = 0;
 	cub->floor_c.a = 255;
 	cub->ceiling_c.a = 255;
+	cub->height = 0;
+	cub->width = 0;
+	cub->flag = 0;
+	cub->error = CUB_OK;
 }

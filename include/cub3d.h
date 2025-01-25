@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cub3d.h                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ribana-b <ribana-b@student.42malaga.com>   +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/19 14:23:14 by ribana-b          #+#    #+# Malaga      */
+/*   Updated: 2025/01/25 12:50:01 by ribana-b         ###   ########.com      */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef CUB3D_H
 # define CUB3D_H
 
@@ -6,26 +18,34 @@
 /* @------------------------------------------------------------------------@ */
 
 # define INITIAL_CAPACITY 16
-# define WALL = '1'
-# define FILL = '.'
+# define WALL '1'
+# define FILL '.'
+# define PIXEL_SIZE 32
+# define RESIZE 1
+# define DISTANCE_LENGTH 1000
 
 /* @------------------------------------------------------------------------@ */
 /* |                            Include Section                             | */
 /* @------------------------------------------------------------------------@ */
 
-# include "BFL.h"
-# include "MLX42.h"
-# include "utils.h"
 # include <fcntl.h>
+# include <math.h>
 # include <stdbool.h>
 # include <stdio.h>
-# include <math.h>
+# include "BFL.h"
+# include "MLX42.h"
+# include "screen.h"
+# include "weapon.h"
+# include "utils.h"
 
 /* @------------------------------------------------------------------------@ */
 /* |                            Typedef Section                             | */
 /* @------------------------------------------------------------------------@ */
 
 typedef struct s_cub	t_cub;
+typedef struct s_player	t_player;
+typedef struct s_map	t_map;
+typedef struct s_info	t_info;
 
 /* @------------------------------------------------------------------------@ */
 /* |                             Enum Section                               | */
@@ -33,9 +53,9 @@ typedef struct s_cub	t_cub;
 
 enum					e_exit_status_cub
 {
-	CUB_OK = 0,     /**< 0 */
-	CUB_LKO,        /**< 1 */
-	CUB_RIP_MALLOC, /**< Amount of enums */
+	CUB_OK = 0,
+	CUB_LKO,
+	CUB_RIP_MALLOC,
 	CUB_RIP_READ,
 	CUB_NO_TEXT,
 	CUB_NO_PATH,
@@ -45,7 +65,8 @@ enum					e_exit_status_cub
 	CUB_ERROR_EA_PATH,
 	CUB_ERROR_COLOR,
 	CUB_ERROR_MAP,
-	CUB_ERROR_NO_MAP
+	CUB_ERROR_MAP_NOT_CLOSED,
+	END_GAME
 };
 
 /* @------------------------------------------------------------------------@ */
@@ -62,9 +83,11 @@ struct					s_cub
 	char				**text;
 	char				**map;
 	int					tmp;
-	int					len;
+	int					width;
+	int					height;
 	char				*line;
 	char				**new_lines;
+	char				**map_dup;
 	int					pos_x;
 	int					pos_y;
 	char				*no;
@@ -81,6 +104,33 @@ struct					s_cub
 	t_color				floor_c;
 	t_color				ceiling_c;
 	int					error;
+	int					flag;
+};
+
+struct s_player
+{
+	t_v2		position;
+	t_toolbar	toolbar;
+	double		speed;
+	int			fov;
+	double		angle;
+};
+
+struct s_map
+{
+	char		**data;
+	int			rows;
+	int			cols;
+};
+
+struct s_info
+{
+	mlx_t			*mlx;
+	mlx_image_t		*img[4];
+	mlx_texture_t	*tex[4];
+	t_player		player;
+	t_map			map;
+	t_screen		screen;
 };
 
 /* @------------------------------------------------------------------------@ */
@@ -112,10 +162,12 @@ void					ft_paths_close(t_cub *cub);
 void					ft_close_fd(t_cub *cub);
 void					ft_check_error(t_cub *cub);
 void					ft_check_error_2(t_cub *cub);
-void					ft_map_len(t_cub *cub);
 int						ft_check_extension_texture(char *str);
-// static void				flood_fill(t_info *info, char ***map, int x, int y);
-void					ft_init_pos(t_cub *cub);
+int						ft_init_pos(t_cub *cub);
 int						ft_map_functions(t_cub *cub);
 void					ft_clean_paths(t_cub *cub);
+void					ft_duplicate_map(t_cub *cub);
+int						ft_mapextract(t_cub *cub);
+int						ft_is_valid_map_char(char c);
+
 #endif
