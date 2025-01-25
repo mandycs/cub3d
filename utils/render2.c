@@ -6,12 +6,15 @@
 /*   By: ribana-b <ribana-b@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 21:26:42 by ribana-b          #+#    #+# Malaga      */
-/*   Updated: 2025/01/18 21:27:12 by ribana-b         ###   ########.com      */
+/*   Updated: 2025/01/25 12:11:53 by ribana-b         ###   ########.com      */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.h"
 
+// TODO(srvariable): Make the minimap proportional to the screen with
+// something like PIXEL_SIZE * RESIZE / 4
+// And do the same with render_player and render_fov
 void	render_map_element(t_map *map, t_screen *screen, int i, int j)
 {
 	t_v2	position;

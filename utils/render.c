@@ -6,7 +6,7 @@
 /*   By: ribana-b <ribana-b@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 21:26:43 by ribana-b          #+#    #+# Malaga      */
-/*   Updated: 2025/01/19 14:13:06 by ribana-b         ###   ########.com      */
+/*   Updated: 2025/01/25 12:12:24 by ribana-b         ###   ########.com      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ void	render(void *param)
 
 	info = param;
 	render_view(&info->player, &info->map, &info->screen);
-	render_map(&info->map, &info->screen);
-	render_player(&info->player, &info->screen);
-	render_fov(&info->player, &info->map, &info->screen);
+	//render_map(&info->map, &info->screen);
+	//render_player(&info->player, &info->screen);
+	//render_fov(&info->player, &info->map, &info->screen);
 }

@@ -6,7 +6,7 @@
 /*   By: ribana-b <ribana-b@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/19 14:23:14 by ribana-b          #+#    #+# Malaga      */
-/*   Updated: 2025/01/19 14:23:16 by ribana-b         ###   ########.com      */
+/*   Updated: 2025/01/25 12:09:54 by ribana-b         ###   ########.com      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 # define WALL '1'
 # define FILL '.'
 # define PIXEL_SIZE 32
-# define RESIZE 4
+# define RESIZE 1
 # define DISTANCE_LENGTH 1000
 
 /* @------------------------------------------------------------------------@ */

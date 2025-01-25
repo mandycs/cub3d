@@ -6,13 +6,15 @@
 /*   By: ribana-b <ribana-b@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 21:26:40 by ribana-b          #+#    #+# Malaga      */
-/*   Updated: 2025/01/19 15:11:11 by ribana-b         ###   ########.com      */
+/*   Updated: 2025/01/25 12:25:37 by ribana-b         ###   ########.com      */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.h"
 
-// This will probably accept a map later on
+// NOTE(srvariable): This will probably accept a map later on
+// Also, maybe the fact that I multiply by PIXEL_SIZE to "scale" the position
+// could be an issue
 t_v2	get_player_position(void)
 {
 	t_v2	position;
@@ -44,7 +46,7 @@ bool	create_player(t_player *player)
 	if (!create_toolbar(&player->toolbar))
 		return (false);
 	player->speed = 10;
-	player->fov = PIXEL_SIZE * 2;
+	player->fov = 90;
 	player->angle = 0;
 	log_info("Created player");
 	return (true);
