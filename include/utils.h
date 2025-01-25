@@ -6,26 +6,12 @@
 /*   By: ribana-b <ribana-b@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 22:15:58 by ribana-b          #+#    #+# Malaga      */
-/*   Updated: 2025/01/25 14:57:58 by ribana-b         ###   ########.com      */
+/*   Updated: 2025/01/25 15:47:51 by ribana-b         ###   ########.com      */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef UTILS_H
 # define UTILS_H
-
-// Hardcoded map for testing
-static const char		*smap[] = {
-	"              1111111",
-	"111111111101011000001",
-	"100000000010100000001",
-	"100000000001000000001",
-	"111000000100000000N01",
-	"  1010101111111111111",
-	"  100101             ",
-	"11100001             ",
-	"10000001             ",
-	"11111111             ",
-};
 
 /* @------------------------------------------------------------------------@ */
 /* |                            Include Section                             | */
@@ -91,10 +77,8 @@ void	cub_close_window(mlx_t *mlx);
 void	cub_destroy(t_info *info);
 
 bool	create_player(t_player *player, t_cub *cub);
-t_v2	get_player_position(void);
 
 bool	create_map(t_map *map, t_cub *cub);
-bool	create_map_data(t_map *map);
 void	destroy_map(t_map *map);
 
 #endif // UTILS_H
