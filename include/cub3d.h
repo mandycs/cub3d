@@ -6,7 +6,7 @@
 /*   By: mancorte <mancorte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 13:46:31 by mancorte          #+#    #+#             */
-/*   Updated: 2025/01/26 18:59:12 by mancorte         ###   ########.fr       */
+/*   Updated: 2025/01/26 19:37:06 by mancorte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,32 +16,46 @@
 /* @------------------------------------------------------------------------@ */
 /* |                            Define Section                              | */
 /* @------------------------------------------------------------------------@ */
+
 # define INITIAL_CAPACITY 16
 # define WALL '1'
 # define FILL '.'
+# define PIXEL_SIZE 32
+# define RESIZE 1
+# define DISTANCE_LENGTH 1000
+
 /* @------------------------------------------------------------------------@ */
 /* |                            Include Section                             | */
 /* @------------------------------------------------------------------------@ */
 
-# include "BFL.h"
-# include "MLX42.h"
-# include "utils.h"
 # include <fcntl.h>
+# include <math.h>
 # include <stdbool.h>
 # include <stdio.h>
+# include "BFL.h"
+# include "MLX42.h"
+# include "screen.h"
+# include "weapon.h"
+# include "utils.h"
 
 /* @------------------------------------------------------------------------@ */
 /* |                            Typedef Section                             | */
 /* @------------------------------------------------------------------------@ */
+
 typedef struct s_cub	t_cub;
+typedef struct s_player	t_player;
+typedef struct s_map	t_map;
+typedef struct s_info	t_info;
+
 /* @------------------------------------------------------------------------@ */
 /* |                             Enum Section                               | */
 /* @------------------------------------------------------------------------@ */
+
 enum					e_exit_status_cub
 {
-	CUB_OK = 0,     /**< 0 */
-	CUB_LKO,        /**< 1 */
-	CUB_RIP_MALLOC, /**< Amount of enums */
+	CUB_OK = 0,
+	CUB_LKO,
+	CUB_RIP_MALLOC,
 	CUB_RIP_READ,
 	CUB_NO_TEXT,
 	CUB_NO_PATH,
@@ -54,9 +68,11 @@ enum					e_exit_status_cub
 	CUB_ERROR_MAP_NOT_CLOSED,
 	END_GAME
 };
+
 /* @------------------------------------------------------------------------@ */
 /* |                            Struct Section                              | */
 /* @------------------------------------------------------------------------@ */
+
 struct					s_cub
 {
 	int					fd;
@@ -91,6 +107,33 @@ struct					s_cub
 	int					error;
 	int					flag;
 };
+
+struct s_player
+{
+	t_v2		position;
+	t_toolbar	toolbar;
+	double		speed;
+	int			fov;
+	double		angle;
+};
+
+struct s_map
+{
+	char		**data;
+	int			rows;
+	int			cols;
+};
+
+struct s_info
+{
+	mlx_t			*mlx;
+	mlx_image_t		*img[4];
+	mlx_texture_t	*tex[4];
+	t_player		player;
+	t_map			map;
+	t_screen		screen;
+};
+
 /* @------------------------------------------------------------------------@ */
 /* |                           Function Section                             | */
 /* @------------------------------------------------------------------------@ */
@@ -127,4 +170,5 @@ void					ft_clean_paths(t_cub *cub);
 void					ft_duplicate_map(t_cub *cub);
 int						ft_mapextract(t_cub *cub);
 int						ft_is_valid_map_char(char c);
+
 #endif

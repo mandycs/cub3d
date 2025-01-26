@@ -6,7 +6,7 @@
 #    By: mancorte <mancorte@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/03/22 15:47:45 by ribana-b          #+#    #+#              #
-#    Updated: 2024/09/05 01:09:44 by mancorte         ###   ########.fr        #
+#    Updated: 2025/01/01 15:13:56 by ribana-b         ###   ########.com       #
 #                                                                              #
 # **************************************************************************** #
 
@@ -101,7 +101,8 @@ GET_NEXT_LINE_FILES := get_next_line.c
 MATH_FILES := bfl_gcd.c \
 			 bfl_lcm.c \
 			 bfl_pow.c \
-			 bfl_sqrt.c
+			 bfl_sqrt.c \
+			 bfl_mod.c
 
 MEMORY_FILES := bfl_bzero.c \
 				bfl_calloc.c \
