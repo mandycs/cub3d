@@ -6,7 +6,7 @@
 /*   By: ribana-b <ribana-b@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 22:15:58 by ribana-b          #+#    #+# Malaga      */
-/*   Updated: 2025/01/25 15:47:51 by ribana-b         ###   ########.com      */
+/*   Updated: 2025/01/26 19:53:37 by ribana-b         ###   ########.com      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,11 +74,10 @@ void	hook_loader(t_info *info);
 
 bool	cub_create(t_info *info, t_cub *cub);
 void	cub_close_window(mlx_t *mlx);
-void	cub_destroy(t_info *info);
+void	cub_destroy(t_info *info, t_cub *cub);
 
 bool	create_player(t_player *player, t_cub *cub);
 
 bool	create_map(t_map *map, t_cub *cub);
-void	destroy_map(t_map *map);
 
 #endif // UTILS_H

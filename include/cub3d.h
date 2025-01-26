@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mancorte <mancorte@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ribana-b <ribana-b@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/19 14:23:14 by ribana-b          #+#    #+# Malaga      */
-/*   Updated: 2025/01/26 19:41:49 by ribana-b         ###   ########.com      */
+/*   Created: 2025/01/26 19:54:19 by ribana-b          #+#    #+# Malaga      */
+/*   Updated: 2025/01/26 19:54:21 by ribana-b         ###   ########.com      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 # define INITIAL_CAPACITY 16
 # define WALL '1'
 # define FILL '.'
-# define PIXEL_SIZE 80
+# define PIXEL_SIZE 40
 # define RESIZE 1
 # define MAP_SCALE PIXEL_SIZE * RESIZE / 4
 # define DISTANCE_LENGTH 1000

@@ -6,7 +6,7 @@
 /*   By: mancorte <mancorte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 22:20:22 by mancorte          #+#    #+#             */
-/*   Updated: 2025/01/20 03:46:51 by mancorte         ###   ########.fr       */
+/*   Updated: 2025/01/26 19:29:22 by ribana-b         ###   ########.com      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	ft_check_error_2(t_cub *cub)
 		ft_free_cub(cub);
 		ft_close_fd(cub);
 	}
-	else if (cub->error == CUB_ERROR_MAP_NOT_CLOSED || cub->error == END_GAME)
+	else if (cub->error == CUB_ERROR_MAP_NOT_CLOSED)
 	{
 		ft_free_cub(cub);
 		ft_close_fd(cub);

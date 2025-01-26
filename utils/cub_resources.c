@@ -6,7 +6,7 @@
 /*   By: ribana-b <ribana-b@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 21:26:31 by ribana-b          #+#    #+# Malaga      */
-/*   Updated: 2025/01/25 13:07:26 by ribana-b         ###   ########.com      */
+/*   Updated: 2025/01/26 19:52:23 by ribana-b         ###   ########.com      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,9 +36,11 @@ void	cub_close_window(mlx_t *mlx)
 	mlx_close_window(mlx);
 }
 
-void	cub_destroy(t_info *info)
+void	cub_destroy(t_info *info, t_cub *cub)
 {
-	destroy_map(&info->map);
+	ft_free_cub(cub);
+	ft_close_fd(cub);
+	bfl_free(&cub->map_dup, 2);
 	destroy_textures(info);
 	mlx_terminate(info->mlx);
 	log_info("Resources destroyed");
