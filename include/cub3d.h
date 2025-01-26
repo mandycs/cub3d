@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ribana-b <ribana-b@student.42malaga.com>   +#+  +:+       +#+        */
+/*   By: mancorte <mancorte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/19 14:23:14 by ribana-b          #+#    #+# Malaga      */
-/*   Updated: 2025/01/25 12:50:01 by ribana-b         ###   ########.com      */
+/*   Created: 2024/10/01 13:46:31 by mancorte          #+#    #+#             */
+/*   Updated: 2025/01/26 19:37:06 by mancorte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,7 @@ struct					s_cub
 	char				*ea;
 	char				*f;
 	char				*f_aux;
+	char				*c_aux;
 	char				*c;
 	int					fd_no;
 	int					fd_so;
