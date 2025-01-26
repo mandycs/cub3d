@@ -6,7 +6,7 @@
 /*   By: mancorte <mancorte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 22:22:16 by mancorte          #+#    #+#             */
-/*   Updated: 2025/01/19 20:57:57 by mancorte         ###   ########.fr       */
+/*   Updated: 2025/01/26 19:02:39 by mancorte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,21 +113,21 @@ int	ft_extract_color_aux_c(t_cub *cub)
 	int	tmp;
 
 	tmp = 0;
-	tmp = bfl_atoi(cub->f);
+	tmp = bfl_atoi(cub->c);  // Cambiar cub->f por cub->c
 	if (tmp < 0 || tmp > 255)
 		return (BFL_LKO);
 	cub->ceiling_c.r = tmp;
-	cub->f_aux = bfl_strchr(cub->f, ',');
-	if (!cub->f_aux)
+	cub->c_aux = bfl_strchr(cub->c, ',');  // Cambiar cub->f por cub->c
+	if (!cub->c_aux)
 		return (BFL_LKO);
-	tmp = bfl_atoi(cub->f_aux + 1);
+	tmp = bfl_atoi(cub->c_aux + 1);
 	if (tmp < 0 || tmp > 255)
 		return (BFL_LKO);
 	cub->ceiling_c.g = tmp;
-	cub->f_aux = bfl_strchr(cub->f_aux + 1, ',');
-	if (!cub->f_aux)
+	cub->c_aux = bfl_strchr(cub->c_aux + 1, ',');
+	if (!cub->c_aux)
 		return (BFL_LKO);
-	tmp = bfl_atoi(cub->f_aux + 1);
+	tmp = bfl_atoi(cub->c_aux + 1);
 	if (tmp < 0 || tmp > 255)
 		return (BFL_LKO);
 	cub->ceiling_c.b = tmp;

@@ -6,7 +6,7 @@
 /*   By: mancorte <mancorte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/01 13:46:31 by mancorte          #+#    #+#             */
-/*   Updated: 2025/01/20 03:18:04 by mancorte         ###   ########.fr       */
+/*   Updated: 2025/01/26 18:59:12 by mancorte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,7 @@ struct					s_cub
 	char				*ea;
 	char				*f;
 	char				*f_aux;
+	char				*c_aux;
 	char				*c;
 	int					fd_no;
 	int					fd_so;
