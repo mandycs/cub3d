@@ -6,7 +6,7 @@
 /*   By: ribana-b <ribana-b@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 21:26:42 by ribana-b          #+#    #+# Malaga      */
-/*   Updated: 2025/02/15 17:36:23 by ribana-b         ###   ########.com      */
+/*   Updated: 2025/02/15 17:53:14 by ribana-b         ###   ########.com      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,8 @@ void	render_map_element(t_map *map, t_screen *screen, int i, int j)
 	t_v2	position;
 	t_v2	size;
 
-	position = v2_create(j * MAP_SCALE, i * MAP_SCALE);
-	size = v2_create(MAP_SCALE, MAP_SCALE);
+	position = v2_create(j * screen->scale, i * screen->scale);
+	size = v2_create(screen->scale, screen->scale);
 	if (map->data[i][j] != '1' && map->data[i][j] != '\0'
 		&& map->data[i][j] != '\n' && map->data[i][j] != ' ')
 		draw_rectangle(screen->buffer, position, size, white());

@@ -6,7 +6,7 @@
 /*   By: ribana-b <ribana-b@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 21:26:31 by ribana-b          #+#    #+# Malaga      */
-/*   Updated: 2025/01/26 19:52:23 by ribana-b         ###   ########.com      */
+/*   Updated: 2025/02/15 17:54:42 by ribana-b         ###   ########.com      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,7 @@
 
 bool	cub_create(t_info *info, t_cub *cub)
 {
-	info->mlx = mlx_init(PIXEL_SIZE * 16 * RESIZE, PIXEL_SIZE * 9 * RESIZE,
-			"Cub3D", false);
+	info->mlx = mlx_init(16 * PIXEL_SIZE, 9 * PIXEL_SIZE, "Cub3D", false);
 	if (!info->mlx)
 		return (false);
 	log_info("Window initialized");
