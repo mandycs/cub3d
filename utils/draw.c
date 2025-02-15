@@ -6,7 +6,7 @@
 /*   By: ribana-b <ribana-b@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 21:26:33 by ribana-b          #+#    #+# Malaga      */
-/*   Updated: 2025/01/18 21:26:33 by ribana-b         ###   ########.com      */
+/*   Updated: 2025/02/15 14:08:35 by ribana-b         ###   ########.com      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	draw_line(mlx_image_t *img, t_v2 start, t_v2 end, t_color color)
 	t_v2	p;
 	int		i;
 
-	if (v2_equals(&start, &end))
+	if (v2_equals(start, end))
 		return ;
 	step = calculate_step(end.x - start.x, end.y - start.y);
 	increment.x = (end.x - start.x) / step;
