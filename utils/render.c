@@ -6,7 +6,7 @@
 /*   By: ribana-b <ribana-b@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 21:26:43 by ribana-b          #+#    #+# Malaga      */
-/*   Updated: 2025/02/26 07:21:58 by ribana-b         ###   ########.com      */
+/*   Updated: 2025/02/26 17:35:19 by ribana-b         ###   ########.com      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,7 +137,7 @@ void new_cast_ray(t_screen *screen, t_map *map, t_player *player, double rangle)
     int size = screen->scale;
 	t_v2 ray_start = v2_create(player->position.x * size, player->position.y * size);
 	ray_start = v2_add_scalar(ray_start, 0.5 * size);
-    t_v2 ray_dir = v2_create(cos(rangle), sin(rangle));
+    t_v2 ray_dir = v2_create(sin(rangle), cos(rangle));
     t_v2 ray_step = v2_create(fabs(1 / ray_dir.x), fabs(1 / ray_dir.y));
     t_v2 map_check = ray_start;
 	t_v2 step = v2_create(1, 1);
@@ -161,14 +161,14 @@ void new_cast_ray(t_screen *screen, t_map *map, t_player *player, double rangle)
     {
         if (ray_length.x < ray_length.y)
         {
-            map_check.x += step.y;
-            ray_length.x += ray_step.y;
+            map_check.x += step.x;
+            ray_length.x += ray_step.x;
             side = 0;
         }
         else
         {
-            map_check.y += step.x;
-            ray_length.y += ray_step.x;
+            map_check.y += step.y;
+            ray_length.y += ray_step.y;
             side = 1;
         }
 
@@ -181,7 +181,7 @@ void new_cast_ray(t_screen *screen, t_map *map, t_player *player, double rangle)
         if (map->data[(int)check.x][(int)check.y] == '1')
         {
             hit = true;
-			draw_rectangle(screen->buffer, v2_create(res.y, res.x), v2_create(2, 2), yellow());
+			draw_rectangle(screen->buffer, v2_create(res.y, res.x), v2_create(1, 1), yellow());
 			draw_line(screen->buffer, v2_create(player->position.y * size + size * 0.5, player->position.x * size + size * 0.5), v2_create(res.y, res.x), lightgreen());
         }
     }
@@ -194,9 +194,13 @@ void	render(void *param)
 	t_info	*info;
 
 	info = param;
-	printf("FPS: %f\n", 1 / info->mlx->delta_time);
+	//printf("FPS: %f\n", 1 / info->mlx->delta_time);
 	new_render_minimap(&info->screen, &info->map, &info->player);
-	new_cast_ray(&info->screen, &info->map, &info->player, deg_to_rads(info->player.angle));
+	for (int i = 0; i  < 180; ++i)
+	{
+		new_cast_ray(&info->screen, &info->map, &info->player, deg_to_rads(info->player.angle + i));
+		new_cast_ray(&info->screen, &info->map, &info->player, deg_to_rads(info->player.angle - i));
+	}
 	new_render_player(&info->screen, &info->player);
 
 	//render_view(&info->player, &info->map, &info->screen);
