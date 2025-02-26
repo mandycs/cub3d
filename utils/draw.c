@@ -6,7 +6,7 @@
 /*   By: ribana-b <ribana-b@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 21:26:33 by ribana-b          #+#    #+# Malaga      */
-/*   Updated: 2025/02/15 14:08:35 by ribana-b         ###   ########.com      */
+/*   Updated: 2025/02/26 06:10:19 by ribana-b         ###   ########.com      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,8 @@ void	draw_rectangle(mlx_image_t *img, t_v2 position, t_v2 size,
 		j = position.y - 1;
 		while (++j < position.y + size.y)
 		{
+			if (i < 0 || i >= (int)img->width || j < 0 || j >= (int)img->height)
+				return ;
 			put_pixel(img, i, j, color);
 		}
 	}
@@ -66,6 +68,8 @@ void	draw_line(mlx_image_t *img, t_v2 start, t_v2 end, t_color color)
 	i = -1;
 	while (++i <= step)
 	{
+		if (p.x < 0 || p.x >= img->width || p.y < 0 || p.y >= img->height)
+			return ;
 		put_pixel(img, p.x, p.y, color);
 		p.x += increment.x;
 		p.y += increment.y;
