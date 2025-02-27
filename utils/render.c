@@ -6,7 +6,7 @@
 /*   By: ribana-b <ribana-b@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 21:26:43 by ribana-b          #+#    #+# Malaga      */
-/*   Updated: 2025/02/27 12:56:23 by ribana-b         ###   ########.com      */
+/*   Updated: 2025/02/27 14:04:10 by ribana-b         ###   ########.com      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,16 +71,16 @@ void	render_fov(t_player *player, t_map *map, t_screen *screen)
 
 	start = v2_create(player->position.y * screen->scale + screen->scale * 0.5,
 			player->position.x * screen->scale + screen->scale * 0.5);
-	end = calculate_wall_collision2(start, deg_to_rads(player->angle), map);
+	end = calculate_wall_collision2(start, player->angle * DEG2RAD, map);
 	draw_line(screen->buffer, start, end, green());
 	i = -1;
 	while (++i < player->fov * 0.5)
 	{
 		end = calculate_wall_collision2(start,
-				deg_to_rads(bfl_mod(player->angle + i, 360)), map);
+				(player->angle + i) * DEG2RAD, map);
 		draw_line(screen->buffer, start, end, green());
 		end = calculate_wall_collision2(start,
-				deg_to_rads(bfl_mod(player->angle - i, 360)), map);
+				(player->angle - i) * DEG2RAD, map);
 		draw_line(screen->buffer, start, end, green());
 	}
 }
@@ -202,7 +202,7 @@ t_color get_texture_color(mlx_image_t *img, int x, int y)
 // I might need to create another struct to values related to rays
 void new_render_view(t_screen *screen, t_map *map, t_player *player, double rangle, int x, mlx_image_t *img[4])
 {
-    double size = (double)screen->scale;
+    double size = screen->scale;
 	t_v2 ray_start = v2_create(player->position.x * size, player->position.y * size);
 	ray_start = v2_add_scalar(ray_start, 0.5 * size);
     t_v2 ray_dir = v2_create(sin(rangle), cos(rangle));
@@ -255,7 +255,7 @@ void new_render_view(t_screen *screen, t_map *map, t_player *player, double rang
     }
 	if (hit)
     {
-		distance *= cos(rangle - deg_to_rads(player->angle));
+		distance *= cos(rangle - (player->angle * DEG2RAD));
         int line_height = (int)(screen->height * size / distance);
         int draw_start = screen->height / 2 - line_height / 2;
         if (draw_start < 0)
@@ -336,9 +336,9 @@ void	render(void *param)
 	info = param;
 	if (mlx_is_key_down(info->mlx, MLX_KEY_P))
 		printf("FPS: %f\n", 1 / info->mlx->delta_time);
-	double fov = deg_to_rads(info->player.fov);
+	double fov = info->player.fov * DEG2RAD;
 	double stepView = fov / info->screen.width;
-	double rangleView = deg_to_rads(info->player.angle) - (fov / 2.0);
+	double rangleView = info->player.angle * DEG2RAD - (fov / 2.0);
 	for (int x = 0; x < info->screen.width; ++x)
 	{
 		double newRangleView = fmod(rangleView + (x * stepView), 2 * M_PI);
@@ -347,8 +347,8 @@ void	render(void *param)
 	new_render_minimap(&info->screen, &info->map, &info->player);
 	for (int a = 0; a < info->player.fov * 0.5; ++a)
 	{
-		new_cast_ray(&info->screen, &info->map, &info->player, deg_to_rads(info->player.angle + a));
-		new_cast_ray(&info->screen, &info->map, &info->player, deg_to_rads(info->player.angle - a));
+		new_cast_ray(&info->screen, &info->map, &info->player, (info->player.angle + a) * DEG2RAD);
+		new_cast_ray(&info->screen, &info->map, &info->player, (info->player.angle - a) * DEG2RAD);
 	}
 	new_render_player(&info->screen, &info->player);
 
