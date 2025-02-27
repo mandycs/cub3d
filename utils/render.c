@@ -6,7 +6,7 @@
 /*   By: ribana-b <ribana-b@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 21:26:43 by ribana-b          #+#    #+# Malaga      */
-/*   Updated: 2025/02/26 18:39:47 by ribana-b         ###   ########.com      */
+/*   Updated: 2025/02/27 12:56:23 by ribana-b         ###   ########.com      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -178,17 +178,31 @@ void new_cast_ray(t_screen *screen, t_map *map, t_player *player, double rangle)
         if (map->data[(int)check.x][(int)check.y] == '1')
         {
             hit = true;
-			draw_rectangle(screen->buffer, v2_create(res.y, res.x), v2_create(1, 1), yellow());
+			//draw_rectangle(screen->buffer, v2_create(res.y, res.x), v2_create(1, 1), yellow());
 			draw_line(screen->buffer, v2_create(player->position.y * size + size * 0.5, player->position.x * size + size * 0.5), v2_create(res.y, res.x), lightgreen());
         }
     }
 }
 
+t_color get_texture_color(mlx_image_t *img, int x, int y)
+{
+    t_color color;
+    uint32_t pos = ((uint32_t)y * img->width + x) * 4;
+
+    if (x < 0 || y < 0 || x >= (int)img->width || y >= (int)img->height)
+        return (black());
+    color.r = img->pixels[pos + 0];
+    color.g = img->pixels[pos + 1];
+    color.b = img->pixels[pos + 2];
+    color.a = img->pixels[pos + 3];
+    return (color);
+}
+
 // TODO(srvariable): Merge new_render_view and new_cast_ray to optimize.
 // I might need to create another struct to values related to rays
-void new_render_view(t_screen *screen, t_map *map, t_player *player, double rangle, int x)
+void new_render_view(t_screen *screen, t_map *map, t_player *player, double rangle, int x, mlx_image_t *img[4])
 {
-    int size = screen->scale;
+    double size = (double)screen->scale;
 	t_v2 ray_start = v2_create(player->position.x * size, player->position.y * size);
 	ray_start = v2_add_scalar(ray_start, 0.5 * size);
     t_v2 ray_dir = v2_create(sin(rangle), cos(rangle));
@@ -242,50 +256,75 @@ void new_render_view(t_screen *screen, t_map *map, t_player *player, double rang
 	if (hit)
     {
 		distance *= cos(rangle - deg_to_rads(player->angle));
-        int lineHeight = (int)(screen->height / (distance / size));
-        int drawStart = screen->height / 2 - lineHeight / 2;
-        if (drawStart < 0)
+        int line_height = (int)(screen->height * size / distance);
+        int draw_start = screen->height / 2 - line_height / 2;
+        if (draw_start < 0)
 		{
-            drawStart = 0;
+            draw_start = 0;
 		}
-        int drawEnd = screen->height / 2 + lineHeight / 2;
-        if (drawEnd >= screen->height)
+        int draw_end = screen->height / 2 + line_height / 2;
+        if (draw_end >= screen->height)
 		{
-            drawEnd = screen->height - 1;
+            draw_end = screen->height - 1;
 		}
-        t_color wall_color;
+		double wall_x;
+		int texNum = 0;
 		if (side == 0)
 		{
+			wall_x = (ray_start.y + distance * ray_dir.y) / size;
 			if (rangle >= 0 && rangle < M_PI)
 			{
-				wall_color = lightred();
+				texNum = 0;
 			}
 			else
 			{
-				wall_color = green();
+				texNum = 1;
 			}
 		}
 		if (side == 1)
 		{
+			wall_x = (ray_start.x + distance * ray_dir.x) / size;
 			if (rangle >= M_PI / 2 && rangle < 3 * M_PI / 2)
 			{
-				wall_color = red();
+				texNum = 2;
 			}
 			else
 			{
-				wall_color = lightgreen();
+				texNum = 3;
 			}
 		}
-        draw_line(screen->buffer, v2_create(x, drawStart), v2_create(x, drawEnd), wall_color);
-        t_color ceiling_color = lightyellow();
-        if (drawStart > 0)
+		wall_x -= floor(wall_x);
+		int tex_x = (int)(wall_x * (double)img[texNum]->width);
+		if ((side == 0 && ray_dir.x > 0) || (side == 1 && ray_dir.y < 0))
 		{
-            draw_line(screen->buffer, v2_create(x, 0), v2_create(x, drawStart - 1), ceiling_color);
+            tex_x = img[texNum]->width - tex_x - 1;
+		}
+		double step_tex = (double)img[texNum]->height / (double)line_height;
+		double tex_pos = 0;
+		if (line_height > screen->height)
+		{
+			tex_pos = (draw_start - screen->height * 0.5 + line_height * 0.5) * step_tex;
+		}
+		for (int y = draw_start; y <= draw_end; ++y)
+		{
+			int tex_y = tex_pos;
+			if (tex_y >= (int)img[texNum]->height)
+			{
+				tex_y = img[texNum]->height - 1;
+			}
+			t_color color = get_texture_color(img[texNum], tex_x, tex_y);
+			put_pixel(screen->buffer, x, y, color);
+			tex_pos += step_tex;
+		}
+        t_color ceiling_color = lightyellow();
+        if (draw_start > 0)
+		{
+            draw_line(screen->buffer, v2_create(x, 0), v2_create(x, draw_start - 1), ceiling_color);
 		}
         t_color floor_color = lightblue();
-        if (drawEnd < screen->height - 1)
+        if (draw_end < screen->height - 1)
 		{
-            draw_line(screen->buffer, v2_create(x, drawEnd + 1), v2_create(x, screen->height - 1), floor_color);
+            draw_line(screen->buffer, v2_create(x, draw_end + 1), v2_create(x, screen->height - 1), floor_color);
 		}
     }
 }
@@ -295,17 +334,22 @@ void	render(void *param)
 	t_info	*info;
 
 	info = param;
-	printf("FPS: %f\n", 1 / info->mlx->delta_time);
-	double fov = deg_to_rads(60);
+	if (mlx_is_key_down(info->mlx, MLX_KEY_P))
+		printf("FPS: %f\n", 1 / info->mlx->delta_time);
+	double fov = deg_to_rads(info->player.fov);
 	double stepView = fov / info->screen.width;
 	double rangleView = deg_to_rads(info->player.angle) - (fov / 2.0);
 	for (int x = 0; x < info->screen.width; ++x)
 	{
 		double newRangleView = fmod(rangleView + (x * stepView), 2 * M_PI);
-		new_render_view(&info->screen, &info->map, &info->player, newRangleView, x);
+		new_render_view(&info->screen, &info->map, &info->player, newRangleView, x, info->img);
 	}
 	new_render_minimap(&info->screen, &info->map, &info->player);
-	new_cast_ray(&info->screen, &info->map, &info->player, deg_to_rads(info->player.angle));
+	for (int a = 0; a < info->player.fov * 0.5; ++a)
+	{
+		new_cast_ray(&info->screen, &info->map, &info->player, deg_to_rads(info->player.angle + a));
+		new_cast_ray(&info->screen, &info->map, &info->player, deg_to_rads(info->player.angle - a));
+	}
 	new_render_player(&info->screen, &info->player);
 
 	//render_view(&info->player, &info->map, &info->screen);
