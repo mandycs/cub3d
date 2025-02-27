@@ -111,7 +111,7 @@ OBJ = $(patsubst $(SRC_DIR)%.c, $(OBJ_DIR)%.o, $(SRC)) \
 	$(patsubst $(SCREEN_DIR)%.c, $(OBJ_DIR)%.o, $(SCREEN))
 
 CC = clang
-CFLAGS = -Wall -Wextra -Werror -MMD -MP
+CFLAGS = -Wall -Wextra -Werror -MMD -MP -O3
 ifdef WITH_DEBUG
 	CFLAGS += -gdwarf-2
 endif
