@@ -6,7 +6,7 @@
 /*   By: ribana-b <ribana-b@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 21:26:43 by ribana-b          #+#    #+# Malaga      */
-/*   Updated: 2025/02/27 18:57:30 by ribana-b         ###   ########.com      */
+/*   Updated: 2025/02/28 13:12:55 by ribana-b         ###   ########.com      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,10 +66,11 @@ void new_cast_ray(t_screen *screen, t_map *map, t_player *player, double rangle)
 	ray_start = v2_add_scalar(ray_start, 0.5 * size);
     t_v2 ray_dir = v2_create(sin(rangle), cos(rangle));
     t_v2 ray_step = v2_create(fabs(1 / ray_dir.x), fabs(1 / ray_dir.y));
-    t_v2 map_check = ray_start;
+    t_v2 map_check = v2_create(floor(player->position.x * size), floor(player->position.y * size));
+	map_check = v2_add_scalar(map_check, 0.5 * size);
 	t_v2 step = v2_create(1, 1);
-    t_v2 ray_length = v2_create(((map_check.x + 1) - ray_start.x) * ray_step.x,
-								((map_check.y + 1) - ray_start.y) * ray_step.y);
+    t_v2 ray_length = v2_create((map_check.x + 1 - ray_start.x) * ray_step.x,
+								(map_check.y + 1 - ray_start.y) * ray_step.y);
 
 	if (ray_dir.x < 0)
 	{
@@ -97,7 +98,6 @@ void new_cast_ray(t_screen *screen, t_map *map, t_player *player, double rangle)
         }
 
 		t_v2 check = v2_create(map_check.x / size, map_check.y / size);
-		t_v2 res = v2_mult_scalar(check, size);
         if (check.x < 0 || check.x >= map->rows || check.y < 0 || check.y >= map->cols)
         {
             break;
@@ -105,10 +105,9 @@ void new_cast_ray(t_screen *screen, t_map *map, t_player *player, double rangle)
         if (map->data[(int)check.x][(int)check.y] == '1')
         {
             hit = true;
-			//draw_rectangle(screen->buffer, v2_create(res.y, res.x), v2_create(1, 1), yellow());
 			draw_line(screen->buffer,
 					v2_create(player->position.y * size + size * 0.5, player->position.x * size + size * 0.5),
-					v2_create(res.y, res.x),
+					v2_create(map_check.y, map_check.x),
 					lightgreen());
         }
     }
@@ -130,6 +129,8 @@ t_color get_texture_color(mlx_image_t *img, int x, int y)
 
 // TODO(srvariable): Merge new_render_view and new_cast_ray to optimize.
 // I might need to create another struct to values related to rays
+// NOTE: There is a little bug when rendering corners, the image moves a little
+// have to figure out how to fix it, maybe is due to the scaling?
 void new_render_view(t_screen *screen, t_map *map, t_player *player, double rangle, int x, mlx_image_t *img[4])
 {
     double size = screen->scale;
@@ -137,10 +138,11 @@ void new_render_view(t_screen *screen, t_map *map, t_player *player, double rang
 	ray_start = v2_add_scalar(ray_start, 0.5 * size);
     t_v2 ray_dir = v2_create(sin(rangle), cos(rangle));
     t_v2 ray_step = v2_create(fabs(1 / ray_dir.x), fabs(1 / ray_dir.y));
-    t_v2 map_check = ray_start;
+    t_v2 map_check = v2_create(floor(player->position.x * size), floor(player->position.y * size));
+	map_check = v2_add_scalar(map_check, 0.5 * size);
 	t_v2 step = v2_create(1, 1);
-    t_v2 ray_length = v2_create(((map_check.x + 1) - ray_start.x) * ray_step.x,
-								((map_check.y + 1) - ray_start.y) * ray_step.y);
+    t_v2 ray_length = v2_create((map_check.x + 1 - ray_start.x) * ray_step.x,
+								(map_check.y + 1 - ray_start.y) * ray_step.y);
 
 	if (ray_dir.x < 0)
 	{
@@ -202,7 +204,7 @@ void new_render_view(t_screen *screen, t_map *map, t_player *player, double rang
 		if (side == 0)
 		{
 			wall_x = (ray_start.y + distance * ray_dir.y) / size;
-			if (rangle >= 0 && rangle < M_PI)
+			if (!(rangle >= 0 && rangle < M_PI))
 			{
 				texNum = 0;
 			}
@@ -229,7 +231,7 @@ void new_render_view(t_screen *screen, t_map *map, t_player *player, double rang
 		{
             tex_x = img[texNum]->width - tex_x - 1;
 		}
-		double step_tex = (double)img[texNum]->height / (double)line_height;
+		double step_tex = img[texNum]->height / (double)line_height;
 		double tex_pos = 0;
 		if (line_height > screen->height)
 		{
@@ -237,7 +239,7 @@ void new_render_view(t_screen *screen, t_map *map, t_player *player, double rang
 		}
 		for (int y = draw_start; y <= draw_end; ++y)
 		{
-			int tex_y = tex_pos;
+			int tex_y = (int)tex_pos;
 			if (tex_y >= (int)img[texNum]->height)
 			{
 				tex_y = img[texNum]->height - 1;
@@ -265,20 +267,23 @@ void	render(void *param)
 
 	info = param;
 	if (mlx_is_key_down(info->mlx, MLX_KEY_P))
+	{
 		printf("FPS: %f\n", 1 / info->mlx->delta_time);
+		printf("Angle: %f\n", info->player.angle);
+	}
 	double fov = info->player.fov * DEG2RAD;
-	double stepView = fov / info->screen.width;
-	double rangleView = info->player.angle * DEG2RAD - (fov / 2.0);
+	double step_view = fov / info->screen.width;
+	double rangle_view = info->player.angle * DEG2RAD - (fov * 0.5);
 	for (int x = 0; x < info->screen.width; ++x)
 	{
-		double newRangleView = fmod(rangleView + (x * stepView), 2 * M_PI);
-		new_render_view(&info->screen, &info->map, &info->player, newRangleView, x, info->img);
+		double new_rangle_view = fmod(rangle_view + (x * step_view), 2 * M_PI);
+		new_render_view(&info->screen, &info->map, &info->player, new_rangle_view, x, info->img);
 	}
 	new_render_minimap(&info->screen, &info->map, &info->player);
-	for (double a = 0; a < info->player.fov * 0.5; a += 0.5)
+	for (double a = 0; a < info->player.fov * 0.5; ++a)
 	{
-		new_cast_ray(&info->screen, &info->map, &info->player, fmod(info->player.angle + a, 360) * DEG2RAD);
-		new_cast_ray(&info->screen, &info->map, &info->player, fmod(info->player.angle - a, 360) * DEG2RAD);
+		new_cast_ray(&info->screen, &info->map, &info->player, (info->player.angle - a) * DEG2RAD);
+		new_cast_ray(&info->screen, &info->map, &info->player, (info->player.angle + a) * DEG2RAD);
 	}
 	new_render_player(&info->screen, &info->player);
 }
