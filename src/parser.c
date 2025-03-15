@@ -6,7 +6,7 @@
 /*   By: mancorte <mancorte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 22:20:39 by mancorte          #+#    #+#             */
-/*   Updated: 2025/03/16 00:42:39 by mancorte         ###   ########.fr       */
+/*   Updated: 2025/03/16 00:46:53 by mancorte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	ft_check_arg(int argc, char **argv, t_cub *cub)
 	if (ft_check_extension(argv[1]) != CUB_OK)
 		return (CUB_LKO);
 	cub->fd = ft_extract_path(argv[1]);
-	if (cub->fd != CUB_OK)
+	if (cub->fd < 0)
 		return (CUB_LKO);
 	if (ft_read_file(cub) != CUB_OK)
 		return (CUB_RIP_READ);
@@ -62,7 +62,7 @@ int	ft_extract_path(char *filename)
 	if (fd == -1)
 	{
 		bfl_fprintf(STDERR, "Error in opening file\n");
-		return (BFL_LKO);
+		return (fd);
 	}
 	return (fd);
 }
