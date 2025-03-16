@@ -6,7 +6,7 @@
 /*   By: ribana-b <ribana-b@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 21:26:31 by ribana-b          #+#    #+# Malaga      */
-/*   Updated: 2025/02/15 17:54:42 by ribana-b         ###   ########.com      */
+/*   Updated: 2025/03/16 06:44:53 by ribana-b         ###   ########.com      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ bool	cub_create(t_info *info, t_cub *cub)
 		return (!log_error("Couldn't create textures"));
 	if (!create_screen(&info->screen, info->mlx))
 		return (!log_error("Couldn't create screen"));
+	info->ceiling_color = cub->ceiling_c;
+	info->floor_color = cub->floor_c;
 	return (true);
 }
 

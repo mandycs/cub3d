@@ -6,7 +6,7 @@
 /*   By: mancorte <mancorte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 19:54:19 by ribana-b          #+#    #+#             */
-/*   Updated: 2025/03/16 03:19:38 by mancorte         ###   ########.fr       */
+/*   Updated: 2025/03/16 18:20:49 by mancorte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 # define INITIAL_CAPACITY 16
 # define WALL '1'
 # define FILL '.'
-# define PIXEL_SIZE 80
+# define PIXEL_SIZE 160
 # define DISTANCE_LENGTH 1000
 // PI / 180, but norminette doesn't allow to do M_PI / 180
 # define DEG2RAD 0.017453292519943295
@@ -127,12 +127,14 @@ struct					s_map
 
 struct					s_info
 {
-	mlx_t				*mlx;
-	mlx_image_t			*img[4];
-	mlx_texture_t		*tex[4];
-	t_player			player;
-	t_map				map;
-	t_screen			screen;
+	mlx_t			*mlx;
+	mlx_image_t		*img[4];
+	mlx_texture_t	*tex[4];
+	t_player		player;
+	t_map			map;
+	t_screen		screen;
+	t_color			ceiling_color;
+	t_color			floor_color;
 };
 
 /* @------------------------------------------------------------------------@ */
