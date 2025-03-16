@@ -160,11 +160,9 @@ $(NAME): $(LIBBFL) $(LIBMLX42) $(OBJ_DIR) $(OBJ)
 	@$(CC) -o $@ $(OBJ) $(CPPFLAGS) $(LDFLAGS) $(LDLIBS)
 	$(OUTPUT_MSG)
 
-$(MLX42_DIR):
+$(LIBMLX42): $(MLX42_DIR)
 	@git submodule update --init --recursive
 	@cmake -S include/MLX42 -B include/MLX42/build
-
-$(LIBMLX42): $(MLX42_DIR)
 	@cmake --build include/MLX42/build -j
 
 ifdef WITH_DEBUG
@@ -178,7 +176,7 @@ endif
 $(OBJ_DIR):
 	@mkdir -p $(OBJ_DIR)
 
-$(OBJ_DIR)%.o: %.c
+$(OBJ_DIR)%.o: %.c $(LIBMLX42)
 	@$(COMPILE_MSG)
 	@$(CC) -o $@ $(CFLAGS) $(CPPFLAGS) -c $<
 
