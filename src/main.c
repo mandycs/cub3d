@@ -6,7 +6,7 @@
 /*   By: ribana-b <ribana-b@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/19 14:23:51 by ribana-b          #+#    #+# Malaga      */
-/*   Updated: 2025/01/25 13:56:53 by ribana-b         ###   ########.com      */
+/*   Updated: 2025/01/26 20:01:06 by ribana-b         ###   ########.com      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,6 @@
  * - Have a limit distance rendering
  * - Make logs to accept va_args or create something like sprintf
  * to allow giving more information
- * - Reimplement the minimap to scale according to the size of the screen
  *
  * NOTE:
  * Don't activate logging while outside of the map, because it will lag due
@@ -48,31 +47,39 @@
 
 #include "cub3d.h"
 
-int	main(int argc, char **argv)
+static int	game(t_cub *cub)
 {
 	static t_info	info;
-	t_cub			cub;
 
-	initialize_cub(&cub);
-	if (ft_check_arg(argc, argv, &cub) != BFL_OK || cub.error != CUB_OK)
-	{
-		//ft_check_error(&cub);
-		if (cub.error != END_GAME)
-			return (cub.error);
-	}
-	if (!cub_create(&info, &cub))
+	if (!cub_create(&info, cub))
 	{
 		if (info.mlx)
-			cub_destroy(&info);
+			cub_destroy(&info, cub);
 		return (log_error("Couldn't create cub resources"));
 	}
 	if (mlx_image_to_window(info.mlx, info.screen.view, 0, 0) < 0)
 	{
-		cub_destroy(&info);
+		cub_destroy(&info, cub);
 		return (log_error("Couldn't draw the screen"));
 	}
 	hook_loader(&info);
 	mlx_loop(info.mlx);
-	cub_destroy(&info);
-	return (0);
+	cub_destroy(&info, cub);
+	return (BFL_OK);
+}
+
+int	main(int argc, char **argv)
+{
+	t_cub	cub;
+
+	initialize_cub(&cub);
+	if (ft_check_arg(argc, argv, &cub) != BFL_OK || cub.error != CUB_OK)
+	{
+		if (cub.error != END_GAME)
+		{
+			ft_check_error(&cub);
+			return (cub.error);
+		}
+	}
+	return (game(&cub));
 }

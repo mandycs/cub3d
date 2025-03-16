@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mancorte <mancorte@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ribana-b <ribana-b@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/10/01 13:46:31 by mancorte          #+#    #+#             */
-/*   Updated: 2025/01/26 19:37:06 by mancorte         ###   ########.fr       */
+/*   Created: 2025/01/26 19:54:19 by ribana-b          #+#    #+# Malaga      */
+/*   Updated: 2025/02/27 14:03:39 by ribana-b         ###   ########.com      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,10 @@
 # define INITIAL_CAPACITY 16
 # define WALL '1'
 # define FILL '.'
-# define PIXEL_SIZE 32
-# define RESIZE 1
+# define PIXEL_SIZE 80
 # define DISTANCE_LENGTH 1000
+// PI / 180, but norminette doesn't allow to do M_PI / 180
+# define DEG2RAD 0.017453292519943295
 
 /* @------------------------------------------------------------------------@ */
 /* |                            Include Section                             | */

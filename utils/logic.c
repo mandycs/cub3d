@@ -6,7 +6,7 @@
 /*   By: ribana-b <ribana-b@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 21:26:35 by ribana-b          #+#    #+# Malaga      */
-/*   Updated: 2025/01/25 12:50:58 by ribana-b         ###   ########.com      */
+/*   Updated: 2025/02/26 06:11:45 by ribana-b         ###   ########.com      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	clear_background(void *param)
 	while (i < info->screen.buffer->width * info->screen.buffer->height
 		* sizeof(int))
 	{
-		set_color(&info->screen.buffer->pixels[i], gray());
+		set_color(&info->screen.buffer->pixels[i], darkgray());
 		i += 4;
 	}
 }
