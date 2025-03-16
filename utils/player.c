@@ -6,7 +6,7 @@
 /*   By: ribana-b <ribana-b@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 21:26:40 by ribana-b          #+#    #+# Malaga      */
-/*   Updated: 2025/02/27 06:11:02 by ribana-b         ###   ########.com      */
+/*   Updated: 2025/03/16 06:29:12 by ribana-b         ###   ########.com      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ bool	create_player(t_player *player, t_cub *cub)
 	if (!create_toolbar(&player->toolbar))
 		return (false);
 	player->speed = 0.1;
-	player->fov = 90;
+	player->fov = 60;
 	if (cub->map[cub->pos_y][cub->pos_x] == 'E')
 		player->angle = 0;
 	else if (cub->map[cub->pos_y][cub->pos_x] == 'S')
