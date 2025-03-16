@@ -6,7 +6,7 @@
 /*   By: ribana-b <ribana-b@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 21:26:43 by ribana-b          #+#    #+# Malaga      */
-/*   Updated: 2025/03/16 19:09:06 by ribana-b         ###   ########.com      */
+/*   Updated: 2025/03/16 19:15:50 by ribana-b         ###   ########.com      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -251,30 +251,42 @@ void	new_render_view(t_info *info,
 
 /* ========================================================================== */
 
+void	render2(void *param)
+{
+	t_info	*info;
+	double	fov;
+	double	step_view;
+	double	rangle_view;
+	int		x;
+
+	info = param;
+	fov = info->player.fov * DEG2RAD;
+	step_view = fov / info->screen.width;
+	rangle_view = info->player.angle * DEG2RAD - (fov * 0.5);
+	x = -1;
+	while (++x < info->screen.width)
+	{
+		new_render_view(info, fmod(rangle_view + (x * step_view), 2 * M_PI), x,
+			(t_color [2]){info->floor_color, info->ceiling_color});
+	}
+}
+
 void	render(void *param)
 {
 	t_info	*info;
+	double	a;
 
 	info = param;
-	if (mlx_is_key_down(info->mlx, MLX_KEY_P))
-	{
-		printf("FPS: %f\n", 1 / info->mlx->delta_time);
-		printf("Angle: %f\n", info->player.angle);
-	}
-	double fov = info->player.fov * DEG2RAD;
-	double step_view = fov / info->screen.width;
-	double rangle_view = info->player.angle * DEG2RAD - (fov * 0.5);
-	for (int x = 0; x < info->screen.width; ++x)
-	{
-		double new_rangle_view = fmod(rangle_view + (x * step_view), 2 * M_PI);
-		new_render_view(info, new_rangle_view, x,
-			(t_color [2]){info->floor_color, info->ceiling_color});
-	}
+	render2(info);
 	new_render_minimap(&info->screen, &info->map, &info->player);
-	for (double a = 0; a < round(info->player.fov * 0.5); ++a)
+	a = 0;
+	while (a < round(info->player.fov * 0.5))
 	{
-		new_cast_ray(&info->screen, &info->map, &info->player, (info->player.angle - a) * DEG2RAD);
-		new_cast_ray(&info->screen, &info->map, &info->player, (info->player.angle + a) * DEG2RAD);
+		new_cast_ray(&info->screen, &info->map, &info->player,
+			(info->player.angle - a) * DEG2RAD);
+		new_cast_ray(&info->screen, &info->map, &info->player,
+			(info->player.angle + a) * DEG2RAD);
+		a += 0.1;
 	}
 	new_render_player(&info->screen, &info->player);
 }
