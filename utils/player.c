@@ -6,7 +6,7 @@
 /*   By: ribana-b <ribana-b@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 21:26:40 by ribana-b          #+#    #+# Malaga      */
-/*   Updated: 2025/03/16 06:29:12 by ribana-b         ###   ########.com      */
+/*   Updated: 2025/03/16 12:11:59 by ribana-b         ###   ########.com      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 bool	create_player(t_player *player, t_cub *cub)
 {
-	player->position.x = cub->pos_y;
-	player->position.y = cub->pos_x;
+	player->position.x = cub->pos_y + 0.5;
+	player->position.y = cub->pos_x + 0.5;
 	if (!create_toolbar(&player->toolbar))
 		return (false);
 	player->speed = 0.1;
