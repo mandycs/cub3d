@@ -6,7 +6,7 @@
 /*   By: mancorte <mancorte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 22:20:22 by mancorte          #+#    #+#             */
-/*   Updated: 2025/01/26 19:29:22 by ribana-b         ###   ########.com      */
+/*   Updated: 2025/03/16 19:10:44 by mancorte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	ft_check_error(t_cub *cub)
 
 void	ft_check_error_2(t_cub *cub)
 {
-	if (cub->error >= CUB_ERROR_NO_PATH && cub->error <= CUB_ERROR_EA_PATH)
+	if (cub->error == CUB_ERROR_PATH)
 	{
 		close(cub->fd);
 		ft_free_cub(cub);
@@ -61,29 +61,8 @@ void	ft_check_error_2(t_cub *cub)
 
 void	ft_paths_close(t_cub *cub)
 {
-	if (cub->error == CUB_ERROR_NO_PATH)
-	{
-		close(cub->fd_no);
-		bfl_fprintf(STDERR, "Error in opening file '%s'\n", cub->no);
-	}
-	else if (cub->error == CUB_ERROR_SO_PATH)
-	{
-		close(cub->fd_no);
-		close(cub->fd_so);
-		bfl_fprintf(STDERR, "Error in opening file '%s'\n", cub->so);
-	}
-	else if (cub->error == CUB_ERROR_WE_PATH)
-	{
-		close(cub->fd_no);
-		close(cub->fd_so);
-		close(cub->fd_we);
-		bfl_fprintf(STDERR, "Error in opening file '%s'\n", cub->we);
-	}
-	else if (cub->error == CUB_ERROR_EA_PATH)
-	{
-		ft_close_fd(cub);
-		bfl_fprintf(STDERR, "Error in opening file '%s'\n", cub->ea);
-	}
+	ft_close_fd(cub);
+	bfl_fprintf(STDERR, "Error in opening file");
 }
 
 void	ft_close_fd(t_cub *cub)

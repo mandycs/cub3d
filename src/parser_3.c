@@ -6,7 +6,7 @@
 /*   By: mancorte <mancorte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 22:25:03 by mancorte          #+#    #+#             */
-/*   Updated: 2025/01/20 03:26:36 by mancorte         ###   ########.fr       */
+/*   Updated: 2025/03/16 19:09:45 by mancorte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,24 +35,42 @@ int	ft_check_paths(t_cub *cub)
 
 int	ft_open_file(char *filename, int *fd, int flag, t_cub *cub)
 {
-	if (ft_check_extension_texture(filename))
-	{
-		bfl_fprintf(STDERR, "Error in extension in file '%s'\n", filename);
-		return (CUB_LKO);
-	}
-	*fd = open(filename, O_RDONLY);
-	if (*fd == -1)
+	char	*tmp;
+
+	tmp = bfl_strtrim(filename, " ");
+	if (!tmp)
 	{
 		cub->error = flag;
 		bfl_fprintf(STDERR, "Error in opening file '%s'\n", filename);
 		return (BFL_LKO);
 	}
+	if (ft_check_extension_texture(tmp))
+	{
+		bfl_fprintf(STDERR, "Error in extension in file '%s'\n", tmp);
+		free(tmp);
+		return (CUB_LKO);
+	}
+	*fd = open(tmp, O_RDONLY);
+	if (*fd == -1)
+	{
+		cub->error = flag;
+		bfl_fprintf(STDERR, "Error in opening file '%s'\n", tmp);
+		free(tmp);
+		return (BFL_LKO);
+	}
+	free(tmp);
 	return (BFL_OK);
 }
 
 int	ft_check_map(t_cub *cub)
 {
 	cub->i = 0;
+	if (!cub->map)
+	{
+		cub->error = CUB_ERROR_MAP;
+		bfl_fprintf(STDERR, "Error in map (No map)\n");
+		return (CUB_LKO);
+	}
 	while (cub->map[cub->i])
 	{
 		cub->j = 0;

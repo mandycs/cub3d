@@ -6,7 +6,7 @@
 /*   By: mancorte <mancorte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 22:20:39 by mancorte          #+#    #+#             */
-/*   Updated: 2025/01/20 03:26:16 by mancorte         ###   ########.fr       */
+/*   Updated: 2025/03/16 19:10:25 by mancorte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	ft_check_arg(int argc, char **argv, t_cub *cub)
 	if (ft_check_extension(argv[1]) != CUB_OK)
 		return (CUB_LKO);
 	cub->fd = ft_extract_path(argv[1]);
-	if (cub->fd == CUB_OK)
+	if (cub->fd < 0)
 		return (CUB_LKO);
 	if (ft_read_file(cub) != CUB_OK)
 		return (CUB_RIP_READ);
@@ -32,37 +32,56 @@ int	ft_check_arg(int argc, char **argv, t_cub *cub)
 		return (CUB_LKO);
 	if (ft_check_paths(cub) != CUB_OK)
 		return (CUB_LKO);
+	if (ft_remove_path_spaces(cub) != CUB_OK)
+	{
+		cub->error = CUB_ERROR_PATH;
+		return (CUB_LKO);
+	}
 	ft_map_functions(cub);
 	return (BFL_OK);
 }
 
 int	ft_check_extension(char *str)
 {
-	int	i;
+	int		i;
+	char	*tmp;
 
 	i = 0;
-	while (str[i] != '\0' && str[i] != '.')
+	tmp = bfl_strtrim(str, " ");
+	if (!tmp)
+		return (CUB_LKO);
+	while (tmp[i] != '\0' && tmp[i] != '.')
 		i++;
-	if (str[i] == '\0')
+	if (tmp[i] == '\0')
 	{
 		bfl_fprintf(STDERR, "Error in extension file\n");
+		free(tmp);
 		return (BFL_LKO);
 	}
-	if (str[i + 1] == 'c' && str[i + 2] == 'u' && str[i + 3] == 'b')
+	if (tmp[i + 1] == 'c' && tmp[i + 2] == 'u' && tmp[i + 3] == 'b')
+	{
+		free(tmp);
 		return (BFL_OK);
+	}
+	free(tmp);
 	bfl_fprintf(STDERR, "Error in extension file\n");
 	return (BFL_LKO);
 }
 
 int	ft_extract_path(char *filename)
 {
-	int	fd;
+	int		fd;
+	char	*tmp;
 
-	fd = open(filename, O_RDONLY);
+	tmp = bfl_strtrim(filename, " ");
+	if (!tmp)
+		return (-1);
+	fd = open(tmp, O_RDONLY);
+	free(tmp);
 	if (fd == -1)
 	{
 		bfl_fprintf(STDERR, "Error in opening file\n");
-		return (BFL_LKO);
+		return (fd);
 	}
 	return (fd);
 }
@@ -83,7 +102,7 @@ int	ft_read_file(t_cub *cub)
 					sizeof(char *));
 			if (!cub->new_lines)
 			{
-				bfl_free (&cub->text, 2);
+				bfl_free(&cub->text, 2);
 				return (CUB_RIP_MALLOC);
 			}
 			cub->text = cub->new_lines;

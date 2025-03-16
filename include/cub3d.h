@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ribana-b <ribana-b@student.42malaga.com>   +#+  +:+       +#+        */
+/*   By: mancorte <mancorte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/26 19:54:19 by ribana-b          #+#    #+# Malaga      */
-/*   Updated: 2025/03/16 17:53:24 by ribana-b         ###   ########.com      */
+/*   Created: 2025/01/26 19:54:19 by ribana-b          #+#    #+#             */
+/*   Updated: 2025/03/16 19:17:45 by ribana-b         ###   ########.com      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,15 +29,15 @@
 /* |                            Include Section                             | */
 /* @------------------------------------------------------------------------@ */
 
+# include "BFL.h"
+# include "MLX42.h"
+# include "screen.h"
+# include "utils.h"
+# include "weapon.h"
 # include <fcntl.h>
 # include <math.h>
 # include <stdbool.h>
 # include <stdio.h>
-# include "BFL.h"
-# include "MLX42.h"
-# include "screen.h"
-# include "weapon.h"
-# include "utils.h"
 
 /* @------------------------------------------------------------------------@ */
 /* |                            Typedef Section                             | */
@@ -62,10 +62,7 @@ enum					e_exit_status_cub
 	CUB_RIP_READ,
 	CUB_NO_TEXT,
 	CUB_NO_PATH,
-	CUB_ERROR_NO_PATH,
-	CUB_ERROR_SO_PATH,
-	CUB_ERROR_WE_PATH,
-	CUB_ERROR_EA_PATH,
+	CUB_ERROR_PATH,
 	CUB_ERROR_COLOR,
 	CUB_ERROR_MAP,
 	CUB_ERROR_MAP_NOT_CLOSED,
@@ -111,23 +108,23 @@ struct					s_cub
 	int					flag;
 };
 
-struct s_player
+struct					s_player
 {
-	t_v2		position;
-	t_toolbar	toolbar;
-	double		speed;
-	int			fov;
-	double		angle;
+	t_v2				position;
+	t_toolbar			toolbar;
+	double				speed;
+	int					fov;
+	double				angle;
 };
 
-struct s_map
+struct					s_map
 {
-	char		**data;
-	int			rows;
-	int			cols;
+	char				**data;
+	int					rows;
+	int					cols;
 };
 
-struct s_info
+struct					s_info
 {
 	mlx_t			*mlx;
 	mlx_image_t		*img[4];
@@ -201,5 +198,6 @@ void					ft_clean_paths(t_cub *cub);
 void					ft_duplicate_map(t_cub *cub);
 int						ft_mapextract(t_cub *cub);
 int						ft_is_valid_map_char(char c);
+int						ft_remove_path_spaces(t_cub *cub);
 
 #endif
