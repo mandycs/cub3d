@@ -1,13 +1,13 @@
-NO ./sprites/test1.png
+NO ./textures/test1.png
 
 
 F 220,100,0
 
 
-EA ./sprites/test4.png 
-WE ./sprites/test3.png
+EA ./textures/test4.png 
+WE ./textures/test3.png
 
-SO ./sprites/test2.png
+SO ./textures/test2.png
 
 
 

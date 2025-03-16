@@ -6,7 +6,7 @@
 /*   By: ribana-b <ribana-b@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 22:15:58 by ribana-b          #+#    #+# Malaga      */
-/*   Updated: 2025/01/26 19:53:37 by ribana-b         ###   ########.com      */
+/*   Updated: 2025/03/16 19:40:24 by ribana-b         ###   ########.com      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@
 typedef struct s_cub	t_cub;
 typedef struct s_player	t_player;
 typedef struct s_map	t_map;
+typedef struct s_ray	t_ray;
+typedef struct s_wall	t_wall;
 typedef struct s_info	t_info;
 
 /* @------------------------------------------------------------------------@ */
@@ -79,5 +81,22 @@ void	cub_destroy(t_info *info, t_cub *cub);
 bool	create_player(t_player *player, t_cub *cub);
 
 bool	create_map(t_map *map, t_cub *cub);
+
+void	init_ray(t_ray *ray, t_player *player, const int size, double rangle);
+bool	keep_looping(t_ray *ray, t_map *map, t_screen *screen);
+void	increase_ray(t_ray *ray);
+t_ray	new_cast_ray(t_screen *screen, t_map *map, t_player *player,
+			double rangle);
+
+t_color	get_texture_color(mlx_image_t *img, int x, int y);
+t_wall	init_wall(t_ray *ray, t_screen *screen, t_player *player,
+			double rangle);
+void	init_textures(t_wall *wall, t_ray *ray, mlx_image_t *img[4],
+			t_screen *screen);
+void	paint_wall(t_wall *wall, t_screen *screen, mlx_image_t *img[4], int x);
+void	new_render_view(t_info *info, double rangle, int x, t_color *color);
+
+void	new_render_minimap(t_screen *screen, t_map *map, t_player *player);
+void	new_render_player(t_screen *screen, t_player *player);
 
 #endif // UTILS_H

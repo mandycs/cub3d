@@ -57,6 +57,8 @@ UTILS_FILES = utils.c\
 			   map.c\
 			   hook.c\
 			   cub_resources.c\
+			   ray.c\
+			   wall.c\
 
 V2_FILES = v2add.c\
 			v2create.c\

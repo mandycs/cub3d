@@ -6,80 +6,57 @@
 /*   By: ribana-b <ribana-b@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 21:26:42 by ribana-b          #+#    #+# Malaga      */
-/*   Updated: 2025/02/15 17:53:14 by ribana-b         ###   ########.com      */
+/*   Updated: 2025/03/16 19:31:40 by ribana-b         ###   ########.com      */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.h"
 
-void	render_map_element(t_map *map, t_screen *screen, int i, int j)
+/* ========================================================================== */
+
+// NOTE: The player position will be taked into account to render the minimap,
+// so I can have a fixed size instead of drawing the whole map, useful for
+// big maps.
+void	new_render_minimap(t_screen *screen, t_map *map, t_player *player)
 {
-	t_v2	position;
-	t_v2	size;
+	const double	size = screen->scale;
+	int				x;
+	int				y;
 
-	position = v2_create(j * screen->scale, i * screen->scale);
-	size = v2_create(screen->scale, screen->scale);
-	if (map->data[i][j] != '1' && map->data[i][j] != '\0'
-		&& map->data[i][j] != '\n' && map->data[i][j] != ' ')
-		draw_rectangle(screen->buffer, position, size, white());
-	else if (map->data[i][j] == '1')
-		draw_rectangle(screen->buffer, position, size, black());
-}
-
-void	render_ceiling(t_screen *screen, t_color color)
-{
-	t_v2	start;
-	t_v2	end;
-	int		x;
-
-	x = 0;
-	start = v2_create(x, 0);
-	end = v2_create(x, screen->height * 0.5);
-	while (x < screen->width)
+	(void)player;
+	x = -1;
+	while (++x < map->rows)
 	{
-		start.x = x;
-		end.x = x;
-		draw_line(screen->buffer, start, end, color);
-		++x;
+		y = -1;
+		while (++y < map->cols)
+		{
+			if (map->data[x][y] == '1')
+			{
+				draw_rectangle(screen->buffer, v2_create(y * size, x * size),
+					v2_create(size, size), gray());
+			}
+			else if (map->data[x][y] != '1' && map->data[x][y] != '\0'
+						&& map->data[x][y] != '\n' && map->data[x][y] != ' ')
+			{
+				draw_rectangle(screen->buffer, v2_create(y * size, x * size),
+					v2_create(size, size), black());
+			}
+		}
 	}
 }
 
-void	render_floor(t_screen *screen, t_color color)
-{
-	t_v2	start;
-	t_v2	end;
-	int		x;
+/* ========================================================================== */
 
-	x = 0;
-	start = v2_create(x, screen->height * 0.5);
-	end = v2_create(x, screen->height - 1);
-	while (x < screen->width)
-	{
-		start.x = x;
-		end.x = x;
-		draw_line(screen->buffer, start, end, color);
-		++x;
-	}
+void	new_render_player(t_screen *screen, t_player *player)
+{
+	const double	size = screen->scale;
+	const int		resized_x = player->position.x * size - size * 0.5;
+	const int		resized_y = player->position.y * size - size * 0.5;
+
+	draw_rectangle(screen->buffer,
+		v2_create(resized_y, resized_x),
+		v2_create(size, size),
+		lightred());
 }
 
-// TODO: Rename this function
-void	render_wall(t_screen *screen, int x, double distance, t_color color)
-{
-	t_v2	start;
-	t_v2	end;
-	int		wall_start;
-	int		wall_end;
-	int		wall_height;
-
-	wall_height = (int)(screen->height * PIXEL_SIZE * 0.5 / distance);
-	wall_start = screen->height * 0.5 - wall_height * 0.5;
-	wall_end = wall_start + wall_height;
-	start = v2_create(x, wall_start);
-	end = v2_create(x, wall_end);
-	if (end.y >= screen->height)
-		end.y = screen->height - 1;
-	draw_line(screen->buffer, start, end, color);
-	draw_line(screen->buffer, v2_create(x, 0), start, lightyellow());
-	draw_line(screen->buffer, v2_create(x, end.y),
-		v2_create(x, screen->height), lightblue());
-}
+/* ========================================================================== */
