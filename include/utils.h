@@ -6,7 +6,7 @@
 /*   By: ribana-b <ribana-b@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 22:15:58 by ribana-b          #+#    #+# Malaga      */
-/*   Updated: 2025/03/16 21:56:10 by ribana-b         ###   ########.com      */
+/*   Updated: 2025/03/16 22:26:04 by ribana-b         ###   ########.com      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,5 +103,9 @@ void	collision_forward(t_player *player, t_map *map);
 void	collision_right(t_player *player, t_map *map, double angle);
 void	collision_left(t_player *player, t_map *map, double angle);
 void	collision_backward(t_player *player, t_map *map);
+
+void	rotate_left_mouse(t_info *info);
+void	rotate_right_mouse(t_info *info);
+void	rotate_mouse(double xpos, double ypos, void *param);
 
 #endif // UTILS_H
