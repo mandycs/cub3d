@@ -6,7 +6,7 @@
 /*   By: mancorte <mancorte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 22:19:10 by mancorte          #+#    #+#             */
-/*   Updated: 2025/01/20 03:48:28 by mancorte         ###   ########.fr       */
+/*   Updated: 2025/03/16 03:18:35 by mancorte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,5 +45,8 @@ int	main(int argc, char **argv)
 #endif
 
 // PLANTEAR SI FALLA UN MALLOC DE ALGUN STRDUP COMO GESTIONAR ESE ERROR
-// SI PASAN UN MAPA VACIO EXPLOTA
-// AGREGAR FLOODFILL
+
+
+
+
+//TODO ERROR TEXTURAS PATH NO SE ESTA APLICANDO

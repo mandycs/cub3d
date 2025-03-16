@@ -6,7 +6,7 @@
 /*   By: mancorte <mancorte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/19 20:59:21 by mancorte          #+#    #+#             */
-/*   Updated: 2025/01/20 03:26:28 by mancorte         ###   ########.fr       */
+/*   Updated: 2025/03/16 02:45:20 by mancorte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int	ft_check_extension_texture(char *str)
 {
 	int	len;
-
+	
 	len = bfl_strlen(str);
 	len = len - 4;
 	if (str[len + 1] != 'p' || str[len + 2] != 'n' || str[len + 3] != 'g')

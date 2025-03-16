@@ -6,7 +6,7 @@
 /*   By: mancorte <mancorte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 22:20:39 by mancorte          #+#    #+#             */
-/*   Updated: 2025/03/16 00:46:53 by mancorte         ###   ########.fr       */
+/*   Updated: 2025/03/16 03:28:15 by mancorte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,11 @@ int	ft_check_arg(int argc, char **argv, t_cub *cub)
 		return (CUB_LKO);
 	if (ft_check_paths(cub) != CUB_OK)
 		return (CUB_LKO);
+	if (ft_remove_path_spaces(cub) != CUB_OK)
+	{
+		cub->error = CUB_ERROR_NO_PATH;
+		return (CUB_LKO);
+	}
 	ft_map_functions(cub);
 	return (BFL_OK);
 }
@@ -39,17 +44,26 @@ int	ft_check_arg(int argc, char **argv, t_cub *cub)
 int	ft_check_extension(char *str)
 {
 	int	i;
-
+	char *tmp;
+	
 	i = 0;
-	while (str[i] != '\0' && str[i] != '.')
+	tmp = bfl_strtrim(str, " ");
+	if (!tmp)
+		return (CUB_LKO);
+	while (tmp[i] != '\0' && tmp[i] != '.')
 		i++;
-	if (str[i] == '\0')
+	if (tmp[i] == '\0')
 	{
 		bfl_fprintf(STDERR, "Error in extension file\n");
+		free(tmp);
 		return (BFL_LKO);
 	}
-	if (str[i + 1] == 'c' && str[i + 2] == 'u' && str[i + 3] == 'b')
+	if (tmp[i + 1] == 'c' && tmp[i + 2] == 'u' && tmp[i + 3] == 'b')
+	{
+		free(tmp);
 		return (BFL_OK);
+	}
+	free(tmp);
 	bfl_fprintf(STDERR, "Error in extension file\n");
 	return (BFL_LKO);
 }
@@ -57,8 +71,13 @@ int	ft_check_extension(char *str)
 int	ft_extract_path(char *filename)
 {
 	int	fd;
+	char *tmp;
 
-	fd = open(filename, O_RDONLY);
+	tmp = bfl_strtrim(filename, " ");
+	if (!tmp)
+		return (-1);
+	fd = open(tmp, O_RDONLY);
+	free(tmp);
 	if (fd == -1)
 	{
 		bfl_fprintf(STDERR, "Error in opening file\n");
@@ -74,7 +93,7 @@ int	ft_read_file(t_cub *cub)
 	if (!cub->text)
 		return (CUB_RIP_MALLOC);
 	cub->line = get_next_line(cub->fd);
-	while (cub->line)
+	while (cub->line) 
 	{
 		if (cub->count >= cub->capacity)
 		{

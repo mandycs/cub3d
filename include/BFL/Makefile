@@ -91,6 +91,7 @@ STRING_FILES = bfl_atoi.c\
 				bfl_strrchr.c\
 				bfl_substr.c\
 				bfl_strndup.c\
+				bfl_strtrim.c\
 
 INCLUDE = $(addprefix $(INCLUDE_DIR), $(INCLUDE_FILES))
 BOOL = $(addprefix $(BOOL_DIR), $(BOOL_FILES))

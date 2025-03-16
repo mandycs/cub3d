@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub3d.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ribana-b <ribana-b@student.42malaga.com>   +#+  +:+       +#+        */
+/*   By: mancorte <mancorte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/26 19:54:19 by ribana-b          #+#    #+# Malaga      */
-/*   Updated: 2025/02/27 14:03:39 by ribana-b         ###   ########.com      */
+/*   Created: 2025/01/26 19:54:19 by ribana-b          #+#    #+#             */
+/*   Updated: 2025/03/16 03:19:38 by mancorte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,15 +29,15 @@
 /* |                            Include Section                             | */
 /* @------------------------------------------------------------------------@ */
 
+# include "BFL.h"
+# include "MLX42.h"
+# include "screen.h"
+# include "utils.h"
+# include "weapon.h"
 # include <fcntl.h>
 # include <math.h>
 # include <stdbool.h>
 # include <stdio.h>
-# include "BFL.h"
-# include "MLX42.h"
-# include "screen.h"
-# include "weapon.h"
-# include "utils.h"
 
 /* @------------------------------------------------------------------------@ */
 /* |                            Typedef Section                             | */
@@ -109,30 +109,30 @@ struct					s_cub
 	int					flag;
 };
 
-struct s_player
+struct					s_player
 {
-	t_v2		position;
-	t_toolbar	toolbar;
-	double		speed;
-	int			fov;
-	double		angle;
+	t_v2				position;
+	t_toolbar			toolbar;
+	double				speed;
+	int					fov;
+	double				angle;
 };
 
-struct s_map
+struct					s_map
 {
-	char		**data;
-	int			rows;
-	int			cols;
+	char				**data;
+	int					rows;
+	int					cols;
 };
 
-struct s_info
+struct					s_info
 {
-	mlx_t			*mlx;
-	mlx_image_t		*img[4];
-	mlx_texture_t	*tex[4];
-	t_player		player;
-	t_map			map;
-	t_screen		screen;
+	mlx_t				*mlx;
+	mlx_image_t			*img[4];
+	mlx_texture_t		*tex[4];
+	t_player			player;
+	t_map				map;
+	t_screen			screen;
 };
 
 /* @------------------------------------------------------------------------@ */
@@ -171,5 +171,6 @@ void					ft_clean_paths(t_cub *cub);
 void					ft_duplicate_map(t_cub *cub);
 int						ft_mapextract(t_cub *cub);
 int						ft_is_valid_map_char(char c);
+int						ft_remove_path_spaces(t_cub *cub);
 
 #endif
