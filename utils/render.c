@@ -6,7 +6,7 @@
 /*   By: ribana-b <ribana-b@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 21:26:43 by ribana-b          #+#    #+# Malaga      */
-/*   Updated: 2025/03/16 06:49:09 by ribana-b         ###   ########.com      */
+/*   Updated: 2025/03/16 12:27:57 by ribana-b         ###   ########.com      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,32 +17,27 @@
 // big maps.
 void	new_render_minimap(t_screen *screen, t_map *map, t_player *player)
 {
+	const int	size = screen->scale;
+	int			x;
+	int			y;
+
 	(void)player;
-	for (int x = 0; x < map->rows; ++x)
+	x = -1;
+	while (++x < map->rows)
 	{
-		for (int y = 0; y < map->cols; ++y)
+		y = -1;
+		while (++y < map->cols)
 		{
-			bool is_wall = map->data[x][y] == '1';
-			bool is_floor = map->data[x][y] != '1' && map->data[x][y] != '\0'
-						&& map->data[x][y] != '\n' && map->data[x][y] != ' ';
-			int size = screen->scale;
-			if (is_wall)
+			if (map->data[x][y] == '1')
 			{
-				int resized_x = x * size;
-				int resized_y = y * size;
-				draw_rectangle(screen->buffer,
-								v2_create(resized_y, resized_x),
-								v2_create(size, size),
-								gray());
+				draw_rectangle(screen->buffer, v2_create(y * size, x * size),
+					v2_create(size, size), gray());
 			}
-			else if (is_floor)
+			else if (map->data[x][y] != '1' && map->data[x][y] != '\0'
+						&& map->data[x][y] != '\n' && map->data[x][y] != ' ')
 			{
-				int resized_x = x * size;
-				int resized_y = y * size;
-				draw_rectangle(screen->buffer,
-								v2_create(resized_y, resized_x),
-								v2_create(size, size),
-								black());
+				draw_rectangle(screen->buffer, v2_create(y * size, x * size),
+					v2_create(size, size), black());
 			}
 		}
 	}
