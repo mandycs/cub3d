@@ -6,7 +6,7 @@
 /*   By: ribana-b <ribana-b@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 21:26:43 by ribana-b          #+#    #+# Malaga      */
-/*   Updated: 2025/03/16 19:15:50 by ribana-b         ###   ########.com      */
+/*   Updated: 2025/03/16 19:27:28 by ribana-b         ###   ########.com      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -192,9 +192,9 @@ void	init_textures(t_wall *wall,
 		wall->tex_num = 1;
 	else if (ray->side == 0 && ray->dir.x <= 0)
 		wall->tex_num = 0;
-	else if (ray->side == 0 && ray->dir.y > 0)
+	if (ray->side == 1 && ray->dir.y > 0)
 		wall->tex_num = 3;
-	else if (ray->side == 0 && ray->dir.y <= 0)
+	else if (ray->side == 1 && ray->dir.y <= 0)
 		wall->tex_num = 2;
 	wall->tex_x = (int)(wall->x * (double)img[wall->tex_num]->width);
 	if ((ray->side == 0 && ray->dir.x > 0)
