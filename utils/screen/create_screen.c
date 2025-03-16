@@ -6,7 +6,7 @@
 /*   By: ribana-b <ribana-b@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 21:27:00 by ribana-b          #+#    #+# Malaga      */
-/*   Updated: 2025/02/27 13:01:15 by ribana-b         ###   ########.com      */
+/*   Updated: 2025/03/16 17:54:11 by ribana-b         ###   ########.com      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ bool	create_screen(t_screen *screen, mlx_t *mlx)
 	screen->buffer = mlx_new_image(mlx, screen->width, screen->height);
 	if (!screen->view || !screen->buffer)
 		return (false);
-	screen->scale = pixel_size / 8;
+	screen->scale = pixel_size / 12;
 	log_info("Created screen");
 	return (true);
 }

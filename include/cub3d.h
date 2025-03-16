@@ -6,7 +6,7 @@
 /*   By: ribana-b <ribana-b@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 19:54:19 by ribana-b          #+#    #+# Malaga      */
-/*   Updated: 2025/03/16 13:26:19 by ribana-b         ###   ########.com      */
+/*   Updated: 2025/03/16 17:53:24 by ribana-b         ###   ########.com      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@
 typedef struct s_cub	t_cub;
 typedef struct s_player	t_player;
 typedef struct s_ray	t_ray;
+typedef struct s_wall	t_wall;
 typedef struct s_map	t_map;
 typedef struct s_info	t_info;
 
@@ -147,6 +148,21 @@ struct s_ray
 	t_v2	map_check;
 	t_v2	map_step;
 	bool	hit;
+	double	distance;
+	int		side;
+};
+
+struct s_wall
+{
+	int		height;
+	int		draw_start;
+	int		draw_end;
+	int		tex_num;
+	double	x;
+	int		tex_x;
+	int		tex_y;
+	double	tex_step;
+	double	tex_pos;
 };
 
 /* @------------------------------------------------------------------------@ */

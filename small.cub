@@ -1,0 +1,12 @@
+NO ./textures/red.png
+SO ./textures/green.png
+WE ./textures/yellow.png
+EA ./textures/purple.png
+F 220,100,0
+C 225,30,0
+
+111111
+100S01
+100001
+100001
+111111
