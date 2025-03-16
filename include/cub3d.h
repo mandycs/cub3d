@@ -6,7 +6,7 @@
 /*   By: ribana-b <ribana-b@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 19:54:19 by ribana-b          #+#    #+# Malaga      */
-/*   Updated: 2025/02/27 14:03:39 by ribana-b         ###   ########.com      */
+/*   Updated: 2025/03/16 06:44:13 by ribana-b         ###   ########.com      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 # define INITIAL_CAPACITY 16
 # define WALL '1'
 # define FILL '.'
-# define PIXEL_SIZE 80
+# define PIXEL_SIZE 160
 # define DISTANCE_LENGTH 1000
 // PI / 180, but norminette doesn't allow to do M_PI / 180
 # define DEG2RAD 0.017453292519943295
@@ -133,6 +133,8 @@ struct s_info
 	t_player		player;
 	t_map			map;
 	t_screen		screen;
+	t_color			ceiling_color;
+	t_color			floor_color;
 };
 
 /* @------------------------------------------------------------------------@ */

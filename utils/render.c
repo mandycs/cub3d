@@ -6,7 +6,7 @@
 /*   By: ribana-b <ribana-b@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 21:26:43 by ribana-b          #+#    #+# Malaga      */
-/*   Updated: 2025/03/16 06:24:57 by ribana-b         ###   ########.com      */
+/*   Updated: 2025/03/16 06:49:09 by ribana-b         ###   ########.com      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,8 +127,7 @@ t_color get_texture_color(mlx_image_t *img, int x, int y)
 
 // TODO(srvariable): Merge new_render_view and new_cast_ray to optimize.
 // I might need to create another struct to values related to rays
-// TODO(srvariable): Use the colors from the map instead of hardcoded ones.
-void new_render_view(t_screen *screen, t_map *map, t_player *player, double rangle, int x, mlx_image_t *img[4])
+void new_render_view(t_screen *screen, t_map *map, t_player *player, double rangle, int x, mlx_image_t *img[4], t_color floor_color, t_color ceiling_color)
 {
 	double size = screen->scale;
 	t_v2 ray_start = v2_create(player->position.x * size, player->position.y * size);
@@ -242,12 +241,10 @@ void new_render_view(t_screen *screen, t_map *map, t_player *player, double rang
 			put_pixel(screen->buffer, x, y, color);
 			tex_pos += step_tex;
 		}
-		t_color ceiling_color = lightyellow();
 		if (draw_start > 0)
 		{
 			draw_line(screen->buffer, v2_create(x, 0), v2_create(x, draw_start - 1), ceiling_color);
 		}
-		t_color floor_color = lightblue();
 		if (draw_end < screen->height - 1)
 		{
 			draw_line(screen->buffer, v2_create(x, draw_end + 1), v2_create(x, screen->height - 1), floor_color);
@@ -271,7 +268,7 @@ void	render(void *param)
 	for (int x = 0; x < info->screen.width; ++x)
 	{
 		double new_rangle_view = fmod(rangle_view + (x * step_view), 2 * M_PI);
-		new_render_view(&info->screen, &info->map, &info->player, new_rangle_view, x, info->img);
+		new_render_view(&info->screen, &info->map, &info->player, new_rangle_view, x, info->img, info->floor_color, info->ceiling_color);
 	}
 	new_render_minimap(&info->screen, &info->map, &info->player);
 	for (double a = 0; a < round(info->player.fov * 0.5); ++a)
