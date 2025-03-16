@@ -6,7 +6,7 @@
 /*   By: ribana-b <ribana-b@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 21:26:43 by ribana-b          #+#    #+# Malaga      */
-/*   Updated: 2025/03/16 12:27:57 by ribana-b         ###   ########.com      */
+/*   Updated: 2025/03/16 12:29:26 by ribana-b         ###   ########.com      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,13 +45,14 @@ void	new_render_minimap(t_screen *screen, t_map *map, t_player *player)
 
 void	new_render_player(t_screen *screen, t_player *player)
 {
-	int size = screen->scale;
-	int resized_x = player->position.x * size - size * 0.5;
-	int resized_y = player->position.y * size - size * 0.5;
+	const int	size = screen->scale;
+	const int	resized_x = player->position.x * size - size * 0.5;
+	const int	resized_y = player->position.y * size - size * 0.5;
+
 	draw_rectangle(screen->buffer,
-					v2_create(resized_y, resized_x),
-					v2_create(size, size),
-					lightred());
+		v2_create(resized_y, resized_x),
+		v2_create(size, size),
+		lightred());
 }
 
 void new_cast_ray(t_screen *screen, t_map *map, t_player *player, double rangle)
