@@ -6,7 +6,7 @@
 /*   By: ribana-b <ribana-b@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 22:15:58 by ribana-b          #+#    #+# Malaga      */
-/*   Updated: 2025/03/16 19:40:24 by ribana-b         ###   ########.com      */
+/*   Updated: 2025/03/16 21:56:10 by ribana-b         ###   ########.com      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,5 +98,10 @@ void	new_render_view(t_info *info, double rangle, int x, t_color *color);
 
 void	new_render_minimap(t_screen *screen, t_map *map, t_player *player);
 void	new_render_player(t_screen *screen, t_player *player);
+
+void	collision_forward(t_player *player, t_map *map);
+void	collision_right(t_player *player, t_map *map, double angle);
+void	collision_left(t_player *player, t_map *map, double angle);
+void	collision_backward(t_player *player, t_map *map);
 
 #endif // UTILS_H

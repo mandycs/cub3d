@@ -59,6 +59,7 @@ UTILS_FILES = utils.c\
 			   cub_resources.c\
 			   ray.c\
 			   wall.c\
+			   collision.c\
 
 V2_FILES = v2add.c\
 			v2create.c\
