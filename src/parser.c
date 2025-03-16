@@ -6,7 +6,7 @@
 /*   By: mancorte <mancorte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 22:20:39 by mancorte          #+#    #+#             */
-/*   Updated: 2025/03/16 03:28:15 by mancorte         ###   ########.fr       */
+/*   Updated: 2025/03/16 18:32:15 by mancorte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	ft_check_arg(int argc, char **argv, t_cub *cub)
 		return (CUB_LKO);
 	if (ft_remove_path_spaces(cub) != CUB_OK)
 	{
-		cub->error = CUB_ERROR_NO_PATH;
+		cub->error = CUB_ERROR_EA_PATH;
 		return (CUB_LKO);
 	}
 	ft_map_functions(cub);
