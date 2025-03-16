@@ -6,7 +6,7 @@
 /*   By: mancorte <mancorte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 19:54:19 by ribana-b          #+#    #+#             */
-/*   Updated: 2025/03/16 19:17:45 by ribana-b         ###   ########.com      */
+/*   Updated: 2025/03/16 21:30:06 by mancorte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,40 +126,40 @@ struct					s_map
 
 struct					s_info
 {
-	mlx_t			*mlx;
-	mlx_image_t		*img[4];
-	mlx_texture_t	*tex[4];
-	t_player		player;
-	t_map			map;
-	t_screen		screen;
-	t_color			ceiling_color;
-	t_color			floor_color;
+	mlx_t				*mlx;
+	mlx_image_t			*img[4];
+	mlx_texture_t		*tex[4];
+	t_player			player;
+	t_map				map;
+	t_screen			screen;
+	t_color				ceiling_color;
+	t_color				floor_color;
 };
 
-struct s_ray
+struct					s_ray
 {
-	t_v2	start;
-	t_v2	dir;
-	t_v2	step;
-	t_v2	length;
-	t_v2	map_check;
-	t_v2	map_step;
-	bool	hit;
-	double	distance;
-	int		side;
+	t_v2				start;
+	t_v2				dir;
+	t_v2				step;
+	t_v2				length;
+	t_v2				map_check;
+	t_v2				map_step;
+	bool				hit;
+	double				distance;
+	int					side;
 };
 
-struct s_wall
+struct					s_wall
 {
-	int		height;
-	int		draw_start;
-	int		draw_end;
-	int		tex_num;
-	double	x;
-	int		tex_x;
-	int		tex_y;
-	double	tex_step;
-	double	tex_pos;
+	int					height;
+	int					draw_start;
+	int					draw_end;
+	int					tex_num;
+	double				x;
+	int					tex_x;
+	int					tex_y;
+	double				tex_step;
+	double				tex_pos;
 };
 
 /* @------------------------------------------------------------------------@ */
@@ -199,5 +199,6 @@ void					ft_duplicate_map(t_cub *cub);
 int						ft_mapextract(t_cub *cub);
 int						ft_is_valid_map_char(char c);
 int						ft_remove_path_spaces(t_cub *cub);
+int						ft_remove_path_spaces_second(t_cub *cub);
 
 #endif

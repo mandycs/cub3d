@@ -6,7 +6,7 @@
 /*   By: mancorte <mancorte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 02:12:40 by mancorte          #+#    #+#             */
-/*   Updated: 2025/03/16 19:10:06 by mancorte         ###   ########.fr       */
+/*   Updated: 2025/03/16 21:29:45 by mancorte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,22 +95,16 @@ int	ft_remove_path_spaces(t_cub *cub)
 	tmp = bfl_strtrim(cub->no, " ");
 	if (!tmp)
 		return (CUB_LKO);
+	free(cub->no);
 	cub->no = bfl_strdup(tmp);
 	free(tmp);
 	tmp = bfl_strtrim(cub->so, " ");
+	free(cub->so);
 	if (!tmp)
 		return (CUB_LKO);
 	cub->so = bfl_strdup(tmp);
 	free(tmp);
-	tmp = bfl_strtrim(cub->we, " ");
-	if (!tmp)
+	if (ft_remove_path_spaces_second(cub) == CUB_LKO)
 		return (CUB_LKO);
-	cub->we = bfl_strdup(tmp);
-	free(tmp);
-	tmp = bfl_strtrim(cub->ea, " ");
-	if (!tmp)
-		return (CUB_LKO);
-	cub->ea = bfl_strdup(tmp);
-	free(tmp);
 	return (!cub->no && !cub->so && !cub->we && !cub->ea);
 }
