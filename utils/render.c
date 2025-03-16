@@ -61,18 +61,6 @@ void	new_render_player(t_screen *screen, t_player *player)
 
 /* ========================================================================== */
 
-t_v2	set_step(t_v2 ray_dir)
-{
-	t_v2	step;
-
-	step = v2_create(1, 1);
-	if (ray_dir.x < 0)
-		step.x = -1;
-	if (ray_dir.y < 0)
-		step.y = -1;
-	return (step);
-}
-
 void	init_ray(t_ray *ray,
 						t_player *player,
 						const int size,
@@ -87,11 +75,17 @@ void	init_ray(t_ray *ray,
 	ray->step = v2_create(fabs(1 / ray->dir.x), fabs(1 / ray->dir.y));
 	ray->length = v2_create((ray->map_check.x + 1 - ray->start.x) * ray->step.x,
 			(ray->map_check.y + 1 - ray->start.y) * ray->step.y);
-	ray->map_step = set_step(ray->dir);
+	ray->map_step = v2_create(1, 1);
 	if (ray->dir.x < 0)
-		ray->length.x = (ray->start.x - ray->map_check.x) * ray->map_step.x;
+	{
+		ray->map_step.x = -1;
+		ray->length.x = (ray->start.x - ray->map_check.x) * ray->step.x;
+	}
 	if (ray->dir.y < 0)
-		ray->length.y = (ray->start.y - ray->map_check.y) * ray->map_step.y;
+	{
+		ray->map_step.y = -1;
+		ray->length.y = (ray->start.y - ray->map_check.y) * ray->step.y;
+	}
 }
 
 bool	keep_looping(t_ray *ray,
