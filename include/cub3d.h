@@ -6,7 +6,7 @@
 /*   By: ribana-b <ribana-b@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 19:54:19 by ribana-b          #+#    #+# Malaga      */
-/*   Updated: 2025/03/16 06:44:13 by ribana-b         ###   ########.com      */
+/*   Updated: 2025/03/16 13:26:19 by ribana-b         ###   ########.com      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@
 
 typedef struct s_cub	t_cub;
 typedef struct s_player	t_player;
+typedef struct s_ray	t_ray;
 typedef struct s_map	t_map;
 typedef struct s_info	t_info;
 
@@ -135,6 +136,17 @@ struct s_info
 	t_screen		screen;
 	t_color			ceiling_color;
 	t_color			floor_color;
+};
+
+struct s_ray
+{
+	t_v2	start;
+	t_v2	dir;
+	t_v2	step;
+	t_v2	length;
+	t_v2	map_check;
+	t_v2	map_step;
+	bool	hit;
 };
 
 /* @------------------------------------------------------------------------@ */
