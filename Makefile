@@ -30,6 +30,7 @@ SRC_FILES = main.c\
 			 parser_3.c\
 			 parser_4.c\
 			 parser_5.c\
+			 parser_6.c\
 
 LOG_FILES = cub_log.c\
 			 log_info.c\
