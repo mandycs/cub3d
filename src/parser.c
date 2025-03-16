@@ -6,7 +6,7 @@
 /*   By: mancorte <mancorte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 22:20:39 by mancorte          #+#    #+#             */
-/*   Updated: 2025/03/16 18:32:15 by mancorte         ###   ########.fr       */
+/*   Updated: 2025/03/16 19:10:25 by mancorte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	ft_check_arg(int argc, char **argv, t_cub *cub)
 		return (CUB_LKO);
 	if (ft_remove_path_spaces(cub) != CUB_OK)
 	{
-		cub->error = CUB_ERROR_EA_PATH;
+		cub->error = CUB_ERROR_PATH;
 		return (CUB_LKO);
 	}
 	ft_map_functions(cub);
@@ -43,9 +43,9 @@ int	ft_check_arg(int argc, char **argv, t_cub *cub)
 
 int	ft_check_extension(char *str)
 {
-	int	i;
-	char *tmp;
-	
+	int		i;
+	char	*tmp;
+
 	i = 0;
 	tmp = bfl_strtrim(str, " ");
 	if (!tmp)
@@ -70,8 +70,8 @@ int	ft_check_extension(char *str)
 
 int	ft_extract_path(char *filename)
 {
-	int	fd;
-	char *tmp;
+	int		fd;
+	char	*tmp;
 
 	tmp = bfl_strtrim(filename, " ");
 	if (!tmp)
@@ -93,7 +93,7 @@ int	ft_read_file(t_cub *cub)
 	if (!cub->text)
 		return (CUB_RIP_MALLOC);
 	cub->line = get_next_line(cub->fd);
-	while (cub->line) 
+	while (cub->line)
 	{
 		if (cub->count >= cub->capacity)
 		{
@@ -102,7 +102,7 @@ int	ft_read_file(t_cub *cub)
 					sizeof(char *));
 			if (!cub->new_lines)
 			{
-				bfl_free (&cub->text, 2);
+				bfl_free(&cub->text, 2);
 				return (CUB_RIP_MALLOC);
 			}
 			cub->text = cub->new_lines;

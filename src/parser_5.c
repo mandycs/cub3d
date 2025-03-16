@@ -6,7 +6,7 @@
 /*   By: mancorte <mancorte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/21 02:12:40 by mancorte          #+#    #+#             */
-/*   Updated: 2025/03/16 03:29:42 by mancorte         ###   ########.fr       */
+/*   Updated: 2025/03/16 19:10:06 by mancorte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 void	ft_clean_paths(t_cub *cub)
 {
-	char *tmp;
+	char	*tmp;
+
 	tmp = bfl_strrchr(cub->no, '\n');
 	if (tmp)
 		tmp[0] = '\0';
@@ -33,6 +34,7 @@ void	ft_duplicate_map(t_cub *cub)
 {
 	int		i;
 	char	**new_lines;
+	char	*newline;
 
 	i = 0;
 	new_lines = bfl_calloc(cub->height + 1, sizeof(char *));
@@ -40,9 +42,13 @@ void	ft_duplicate_map(t_cub *cub)
 	while (i < cub->height)
 	{
 		if (i < cub->height - 1)
-			bfl_strchr(cub->map[i], '\n')[0] = '\0';
+		{
+			newline = bfl_strchr(cub->map[i], '\n');
+			if (newline)
+				newline[0] = '\0';
+		}
 		new_lines[i] = bfl_calloc(cub->width + 1, 1);
-		bfl_strlcpy(new_lines[i], cub->map[i], cub->width);
+		bfl_strlcpy(new_lines[i], cub->map[i], cub->width + 1);
 		i++;
 	}
 	new_lines[i] = NULL;
@@ -84,7 +90,7 @@ int	ft_is_valid_map_char(char c)
 
 int	ft_remove_path_spaces(t_cub *cub)
 {
-	char *tmp;
+	char	*tmp;
 
 	tmp = bfl_strtrim(cub->no, " ");
 	if (!tmp)

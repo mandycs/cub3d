@@ -3,31 +3,33 @@
 /*                                                        :::      ::::::::   */
 /*   bfl_strlcpy.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ribana-b <ribana-b@student.42malaga.com>   +#+  +:+       +#+        */
+/*   By: mancorte <mancorte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/22 15:47:11 by ribana-b          #+#    #+# Malaga      */
-/*   Updated: 2024/06/02 11:20:00 by ribana-b         ###   ########.com      */
+/*   Created: 2025/03/16 19:02:59 by mancorte          #+#    #+#             */
+/*   Updated: 2025/03/16 19:03:17 by mancorte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "BFL.h"
 
-size_t	bfl_strlcpy(char *str, const char *str2, size_t bytes)
+size_t	bfl_strlcpy(char *dst, const char *src, size_t dstsize)
 {
-	size_t	index;
-	size_t	index2;
+	size_t	dlen;
+	size_t	srclen;
+	size_t	i;
 
-	if (!str || !str2)
+	if (!dst || !src)
 		return (0);
-	index = bfl_strlen(str);
-	if (index >= bytes)
-		return (bfl_strlen(str2) + bytes);
-	index2 = 0;
-	while (str2[index2] && (index + index2) < (bytes + 1))
+	dlen = bfl_strlen(dst);
+	srclen = bfl_strlen(src);
+	if (dstsize <= dlen)
+		return (dstsize + srclen);
+	i = 0;
+	while (src[i] && (dlen + i) < (dstsize - 1))
 	{
-		str[index + index2] = str2[index2];
-		index2++;
+		dst[dlen + i] = src[i];
+		i++;
 	}
-	str[index + index2] = '\0';
-	return (index + index2);
+	dst[dlen + i] = '\0';
+	return (dlen + srclen);
 }

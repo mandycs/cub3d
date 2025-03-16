@@ -6,7 +6,7 @@
 /*   By: mancorte <mancorte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 19:54:19 by ribana-b          #+#    #+#             */
-/*   Updated: 2025/03/16 18:20:49 by mancorte         ###   ########.fr       */
+/*   Updated: 2025/03/16 18:36:31 by mancorte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,10 +60,7 @@ enum					e_exit_status_cub
 	CUB_RIP_READ,
 	CUB_NO_TEXT,
 	CUB_NO_PATH,
-	CUB_ERROR_NO_PATH,
-	CUB_ERROR_SO_PATH,
-	CUB_ERROR_WE_PATH,
-	CUB_ERROR_EA_PATH,
+	CUB_ERROR_PATH,
 	CUB_ERROR_COLOR,
 	CUB_ERROR_MAP,
 	CUB_ERROR_MAP_NOT_CLOSED,

@@ -6,7 +6,7 @@
 /*   By: mancorte <mancorte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 22:25:03 by mancorte          #+#    #+#             */
-/*   Updated: 2025/03/16 03:10:43 by mancorte         ###   ########.fr       */
+/*   Updated: 2025/03/16 19:09:45 by mancorte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	ft_check_paths(t_cub *cub)
 
 int	ft_open_file(char *filename, int *fd, int flag, t_cub *cub)
 {
-	char *tmp;
+	char	*tmp;
 
 	tmp = bfl_strtrim(filename, " ");
 	if (!tmp)
