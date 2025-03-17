@@ -6,60 +6,72 @@
 /*   By: ribana-b <ribana-b@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 21:26:42 by ribana-b          #+#    #+# Malaga      */
-/*   Updated: 2025/03/17 05:35:56 by ribana-b         ###   ########.com      */
+/*   Updated: 2025/03/17 09:49:17 by ribana-b         ###   ########.com      */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.h"
 
-// TODO: Refactor this and apply the logic on the rays, I might need another
-// function...
+static void	draw_element(t_v2 *p, t_screen *screen, t_map *map)
+{
+	const int	size = screen->scale;
+
+	if (map->data[(int)p[1].x][(int)p[1].y] == '1')
+		draw_rectangle(screen->buffer, v2_create((p[1].y - p[0].y) * size,
+				(p[1].x - p[0].x) * size), v2_create(size, size), gray());
+	else if (map->data[(int)p[1].x][(int)p[1].y] != '1'
+				&& map->data[(int)p[1].x][(int)p[1].y] != '\0'
+				&& map->data[(int)p[1].x][(int)p[1].y] != '\n'
+				&& map->data[(int)p[1].x][(int)p[1].y] != ' ')
+		draw_rectangle(screen->buffer, v2_create((p[1].y - p[0].y) * size,
+				(p[1].x - p[0].x) * size), v2_create(size, size), black());
+}
+
+static void	init_start_current_end_x(t_v2 *p,
+										t_player *player,
+										t_screen *screen,
+										t_map *map)
+{
+	const int	size = screen->scale;
+
+	p[1].x = (int)player->position.x - size;
+	p[2].x = (int)player->position.x + size;
+	if (p[1].x <= -1)
+		p[2].x = (int)player->position.x + size - fmod(p[1].x + 1, size);
+	if (p[2].x >= map->rows)
+	{
+		p[1].x = (int)player->position.x - size - fmod(p[2].x, map->rows);
+		p[2].x = map->rows;
+	}
+	if (p[1].x <= -1)
+		p[1].x = -1;
+	p[0].x = p[1].x + 1;
+}
+
+// TODO: Apply the logic on the rays, I might need another function...
 void	new_render_minimap(t_screen *screen, t_map *map, t_player *player)
 {
 	const int	size = screen->scale;
-	t_v2		c;
-	t_v2		e;
-	t_v2		s;
+	t_v2		p[3];
 
-	c.x = (int)player->position.x - size;
-	e.x = (int)player->position.x + size;
-	if (c.x <= -1)
-		e.x = (int)player->position.x + size - fmod(c.x + 1, size);
-	if (e.x >= map->rows)
+	init_start_current_end_x(p, player, screen, map);
+	while (++p[1].x < p[2].x)
 	{
-		c.x = (int)player->position.x - size - fmod(e.x, map->rows);
-		e.x = map->rows;
-	}
-	if (c.x <= -1)
-		c.x = -1;
-	s.x = c.x + 1;
-	while (++c.x < e.x)
-	{
-		c.y = (int)player->position.y - size;
-		e.y = (int)player->position.y + size;
-		if (c.y <= -1)
+		p[1].y = (int)player->position.y - size;
+		p[2].y = (int)player->position.y + size;
+		if (p[1].y <= -1)
 		{
-			e.y = (int)player->position.y + size - fmod(c.y + 1, size);
-			c.y = -1;
+			p[2].y = (int)player->position.y + size - fmod(p[1].y + 1, size);
+			p[1].y = -1;
 		}
-		if (e.y >= map->cols)
+		if (p[2].y >= map->cols)
 		{
-			c.y = (int)player->position.y - size - fmod(e.y, map->cols);
-			e.y = map->cols;
+			p[1].y = (int)player->position.y - size - fmod(p[2].y, map->cols);
+			p[2].y = map->cols;
 		}
-		s.y = c.y + 1;
-		while (++c.y < e.y)
-		{
-			if (map->data[(int)c.x][(int)c.y] == '1')
-				draw_rectangle(screen->buffer, v2_create((c.y - s.y) * size,
-						(c.x - s.x) * size), v2_create(size, size), gray());
-			else if (map->data[(int)c.x][(int)c.y] != '1'
-						&& map->data[(int)c.x][(int)c.y] != '\0'
-						&& map->data[(int)c.x][(int)c.y] != '\n'
-						&& map->data[(int)c.x][(int)c.y] != ' ')
-				draw_rectangle(screen->buffer, v2_create((c.y - s.y) * size,
-						(c.x - s.x) * size), v2_create(size, size), black());
-		}
+		p[0].y = p[1].y + 1;
+		while (++p[1].y < p[2].y)
+			draw_element(p, screen, map);
 	}
 }
 
