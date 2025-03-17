@@ -6,7 +6,7 @@
 /*   By: ribana-b <ribana-b@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/16 19:31:35 by ribana-b          #+#    #+# Malaga      */
-/*   Updated: 2025/03/16 19:31:36 by ribana-b         ###   ########.com      */
+/*   Updated: 2025/03/17 09:51:15 by ribana-b         ###   ########.com      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,6 @@ bool	keep_looping(t_ray *ray,
 	if (map->data[(int)check.x][(int)check.y] == '1')
 	{
 		ray->hit = true;
-		draw_line(screen->buffer, v2_create(ray->start.y, ray->start.x),
-			v2_create(ray->map_check.y, ray->map_check.x), lightgreen());
 	}
 	return (true);
 }

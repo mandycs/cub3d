@@ -6,17 +6,11 @@
 /*   By: ribana-b <ribana-b@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 21:26:49 by ribana-b          #+#    #+# Malaga      */
-/*   Updated: 2025/01/25 12:50:39 by ribana-b         ###   ########.com      */
+/*   Updated: 2025/03/16 22:44:10 by ribana-b         ###   ########.com      */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
-void	ribanab(void)
-{
-	printf("Hello World, I am ribana-b from 42 Malaga c:\n");
-	return ;
-}
 
 void	ft_print_map(t_cub *cub)
 {
