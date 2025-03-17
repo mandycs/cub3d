@@ -66,6 +66,7 @@ void	hook_loader(t_info *info)
 	mlx_loop_hook(info->mlx, hook_control_keys, info);
 	mlx_key_hook(info->mlx, hook_option_key, info);
 	mlx_mouse_hook(info->mlx, hook_control_mouse, info);
+	mlx_cursor_hook(info->mlx, rotate_mouse, info);
 	mlx_loop_hook(info->mlx, clear_background, info);
 	mlx_loop_hook(info->mlx, render, info);
 	mlx_loop_hook(info->mlx, swap_buffers, info);

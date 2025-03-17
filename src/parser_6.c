@@ -6,14 +6,13 @@
 /*   By: mancorte <mancorte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/16 21:29:36 by mancorte          #+#    #+#             */
-/*   Updated: 2025/03/16 21:30:54 by mancorte         ###   ########.fr       */
+/*   Updated: 2025/03/17 12:46:57 by ribana-b         ###   ########.com      */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-
-int ft_remove_path_spaces_second(t_cub *cub)
+int	ft_remove_path_spaces_second(t_cub *cub)
 {
 	char	*tmp;
 
