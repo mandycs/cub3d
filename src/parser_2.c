@@ -14,17 +14,17 @@
 
 void	ft_process_texture(t_cub *cub)
 {
-	if (bfl_strncmp(cub->text[cub->count], "NO", 2) == 0)
+	if (bfl_strncmp(cub->text[cub->count], "NO", 2) == 0 && cub->no == NULL)
 		ft_extract_path_texture(cub, 0);
-	else if (bfl_strncmp(cub->text[cub->count], "SO", 2) == 0)
+	else if (bfl_strncmp(cub->text[cub->count], "SO", 2) == 0 && cub->so == NULL)
 		ft_extract_path_texture(cub, 1);
-	else if (bfl_strncmp(cub->text[cub->count], "WE", 2) == 0)
+	else if (bfl_strncmp(cub->text[cub->count], "WE", 2) == 0 && cub->we == NULL)
 		ft_extract_path_texture(cub, 2);
-	else if (bfl_strncmp(cub->text[cub->count], "EA", 2) == 0)
+	else if (bfl_strncmp(cub->text[cub->count], "EA", 2) == 0 && cub->ea == NULL)
 		ft_extract_path_texture(cub, 3);
-	else if (bfl_strncmp(cub->text[cub->count], "F", 1) == 0)
+	else if (bfl_strncmp(cub->text[cub->count], "F", 1) == 0 && cub->f == NULL)
 		ft_extract_color(cub, 0);
-	else if (bfl_strncmp(cub->text[cub->count], "C", 1) == 0)
+	else if (bfl_strncmp(cub->text[cub->count], "C", 1) == 0 && cub->c == NULL)
 		ft_extract_color(cub, 1);
 }
 
