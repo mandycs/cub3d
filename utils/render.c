@@ -6,7 +6,7 @@
 /*   By: ribana-b <ribana-b@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 21:26:43 by ribana-b          #+#    #+# Malaga      */
-/*   Updated: 2025/03/16 19:32:49 by ribana-b         ###   ########.com      */
+/*   Updated: 2025/03/17 03:53:36 by ribana-b         ###   ########.com      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ void	render(void *param)
 	render2(info);
 	new_render_minimap(&info->screen, &info->map, &info->player);
 	a = 0;
+	(void)a;
 	while (a < round(info->player.fov * 0.5))
 	{
 		new_cast_ray(&info->screen, &info->map, &info->player,
@@ -49,5 +50,5 @@ void	render(void *param)
 			(info->player.angle + a) * DEG2RAD);
 		a += 0.1;
 	}
-	new_render_player(&info->screen, &info->player);
+	new_render_player(&info->screen, &info->player, &info->map);
 }

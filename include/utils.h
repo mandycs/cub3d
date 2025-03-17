@@ -6,7 +6,7 @@
 /*   By: ribana-b <ribana-b@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 22:15:58 by ribana-b          #+#    #+# Malaga      */
-/*   Updated: 2025/03/16 21:56:10 by ribana-b         ###   ########.com      */
+/*   Updated: 2025/03/17 03:52:03 by ribana-b         ###   ########.com      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ void	paint_wall(t_wall *wall, t_screen *screen, mlx_image_t *img[4], int x);
 void	new_render_view(t_info *info, double rangle, int x, t_color *color);
 
 void	new_render_minimap(t_screen *screen, t_map *map, t_player *player);
-void	new_render_player(t_screen *screen, t_player *player);
+void	new_render_player(t_screen *screen, t_player *player, t_map *map);
 
 void	collision_forward(t_player *player, t_map *map);
 void	collision_right(t_player *player, t_map *map, double angle);
