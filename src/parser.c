@@ -6,7 +6,7 @@
 /*   By: mancorte <mancorte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 22:20:39 by mancorte          #+#    #+#             */
-/*   Updated: 2025/03/16 19:10:25 by mancorte         ###   ########.fr       */
+/*   Updated: 2025/05/08 11:16:16 by mancorte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	ft_check_arg(int argc, char **argv, t_cub *cub)
 {
-	cub->fd = 0;
+	cub->fd = -1;
 	cub->count = 0;
 	if (argc != 2)
 	{

@@ -6,7 +6,7 @@
 /*   By: mancorte <mancorte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 22:22:16 by mancorte          #+#    #+#             */
-/*   Updated: 2025/03/16 19:09:33 by mancorte         ###   ########.fr       */
+/*   Updated: 2025/05/08 11:30:24 by mancorte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,14 @@ void	ft_process_texture(t_cub *cub)
 {
 	if (bfl_strncmp(cub->text[cub->count], "NO", 2) == 0 && cub->no == NULL)
 		ft_extract_path_texture(cub, 0);
-	else if (bfl_strncmp(cub->text[cub->count], "SO", 2) == 0 && cub->so == NULL)
+	else if (bfl_strncmp(cub->text[cub->count], "SO", 2) == 0
+		&& cub->so == NULL)
 		ft_extract_path_texture(cub, 1);
-	else if (bfl_strncmp(cub->text[cub->count], "WE", 2) == 0 && cub->we == NULL)
+	else if (bfl_strncmp(cub->text[cub->count], "WE", 2) == 0
+		&& cub->we == NULL)
 		ft_extract_path_texture(cub, 2);
-	else if (bfl_strncmp(cub->text[cub->count], "EA", 2) == 0 && cub->ea == NULL)
+	else if (bfl_strncmp(cub->text[cub->count], "EA", 2) == 0
+		&& cub->ea == NULL)
 		ft_extract_path_texture(cub, 3);
 	else if (bfl_strncmp(cub->text[cub->count], "F", 1) == 0 && cub->f == NULL)
 		ft_extract_color(cub, 0);
