@@ -6,7 +6,7 @@
 /*   By: mancorte <mancorte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 19:54:19 by ribana-b          #+#    #+#             */
-/*   Updated: 2025/05/08 11:21:56 by mancorte         ###   ########.fr       */
+/*   Updated: 2025/05/17 21:08:16 by ribana-b         ###   ########.com      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,7 @@
 # define INITIAL_CAPACITY 16
 # define WALL '1'
 # define FILL '.'
-# define PIXEL_SIZE 160
-# define DISTANCE_LENGTH 1000
+# define PIXEL_SIZE 80
 // PI / 180, but norminette doesn't allow to do M_PI / 180
 # define DEG2RAD 0.017453292519943295
 
@@ -56,26 +55,23 @@ typedef struct s_info	t_info;
 
 enum e_exit_status_cub
 {
-    CUB_OK = 0,
-    CUB_LKO,
-    CUB_RIP_MALLOC,
-    CUB_RIP_READ,
-    CUB_NO_TEXT,
-    CUB_NO_PATH,
-    
-    // Rango de errores de archivo (6–9)
-    CUB_ERROR_PERMISSION_A,
-    CUB_ERROR_PERMISSION_B,
-    CUB_ERROR_PERMISSION_C,
-    CUB_ERROR_PERMISSION_D,
-
-    CUB_ERROR_PATH,
-    CUB_ERROR_COLOR,
-    CUB_ERROR_MAP,
-    CUB_ERROR_MAP_NOT_CLOSED,
-    END_GAME
+	CUB_OK = 0,
+	CUB_LKO,
+	CUB_RIP_MALLOC,
+	CUB_RIP_READ,
+	CUB_NO_TEXT,
+	CUB_NO_PATH,
+	// Rango de errores de archivo (6–9)
+	CUB_ERROR_PERMISSION_A,
+	CUB_ERROR_PERMISSION_B,
+	CUB_ERROR_PERMISSION_C,
+	CUB_ERROR_PERMISSION_D,
+	CUB_ERROR_PATH,
+	CUB_ERROR_COLOR,
+	CUB_ERROR_MAP,
+	CUB_ERROR_MAP_NOT_CLOSED,
+	END_GAME
 };
-
 
 /* @------------------------------------------------------------------------@ */
 /* |                            Struct Section                              | */
