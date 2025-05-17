@@ -6,7 +6,7 @@
 /*   By: mancorte <mancorte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 19:54:19 by ribana-b          #+#    #+#             */
-/*   Updated: 2025/05/08 11:21:56 by mancorte         ###   ########.fr       */
+/*   Updated: 2025/05/18 00:36:36 by mancorte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 # define INITIAL_CAPACITY 16
 # define WALL '1'
 # define FILL '.'
-# define PIXEL_SIZE 160
+# define PIXEL_SIZE 80
 # define DISTANCE_LENGTH 1000
 // PI / 180, but norminette doesn't allow to do M_PI / 180
 # define DEG2RAD 0.017453292519943295
@@ -176,8 +176,8 @@ struct					s_wall
 
 void					ribanab(void);
 int						ft_check_arg(int argc, char **argv, t_cub *cub);
-int						ft_check_extension(char *str);
-int						ft_extract_path(char *filename);
+int						ft_check_extension(char *str, t_cub *cub);
+int						ft_extract_path(char *filename, t_cub *cub);
 int						ft_read_file(t_cub *cub);
 void					ft_print_map(t_cub *cub);
 int						ft_extract_text(t_cub *cub);

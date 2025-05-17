@@ -6,7 +6,7 @@
 /*   By: mancorte <mancorte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 22:20:39 by mancorte          #+#    #+#             */
-/*   Updated: 2025/05/08 11:16:16 by mancorte         ###   ########.fr       */
+/*   Updated: 2025/05/18 00:37:04 by mancorte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@ int	ft_check_arg(int argc, char **argv, t_cub *cub)
 		bfl_fprintf(STDERR, "Error in number of arguments \n");
 		return (CUB_LKO);
 	}
-	if (ft_check_extension(argv[1]) != CUB_OK)
+	if (ft_check_extension(argv[1], cub) != CUB_OK)
 		return (CUB_LKO);
-	cub->fd = ft_extract_path(argv[1]);
+	cub->fd = ft_extract_path(argv[1], cub);
 	if (cub->fd < 0)
 		return (CUB_LKO);
 	if (ft_read_file(cub) != CUB_OK)
@@ -41,7 +41,7 @@ int	ft_check_arg(int argc, char **argv, t_cub *cub)
 	return (BFL_OK);
 }
 
-int	ft_check_extension(char *str)
+int	ft_check_extension(char *str, t_cub *cub)
 {
 	int		i;
 	char	*tmp;
@@ -55,6 +55,7 @@ int	ft_check_extension(char *str)
 	if (tmp[i] == '\0')
 	{
 		bfl_fprintf(STDERR, "Error in extension file\n");
+		cub->error = CUB_LKO;
 		free(tmp);
 		return (BFL_LKO);
 	}
@@ -64,23 +65,28 @@ int	ft_check_extension(char *str)
 		return (BFL_OK);
 	}
 	free(tmp);
+	cub->error = BFL_LKO;
 	bfl_fprintf(STDERR, "Error in extension file\n");
 	return (BFL_LKO);
 }
 
-int	ft_extract_path(char *filename)
+int	ft_extract_path(char *filename, t_cub *cub)
 {
 	int		fd;
 	char	*tmp;
 
 	tmp = bfl_strtrim(filename, " ");
 	if (!tmp)
+	{
+		cub->error = CUB_LKO;
 		return (-1);
+	}
 	fd = open(tmp, O_RDONLY);
 	free(tmp);
 	if (fd == -1)
 	{
 		bfl_fprintf(STDERR, "Error in opening file\n");
+		cub->error = CUB_LKO;
 		return (fd);
 	}
 	return (fd);

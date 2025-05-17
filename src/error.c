@@ -6,7 +6,7 @@
 /*   By: mancorte <mancorte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 22:20:22 by mancorte          #+#    #+#             */
-/*   Updated: 2025/05/08 11:30:46 by mancorte         ###   ########.fr       */
+/*   Updated: 2025/05/18 00:41:31 by mancorte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,10 @@ void	ft_check_error(t_cub *cub)
 	if (cub->error == CUB_LKO)
 		exit(CUB_LKO);
 	else if (cub->error == CUB_RIP_READ)
-		close(cub->fd);
+	{
+		if (cub->fd > 0)
+			close(cub->fd);
+	}
 	else if (cub->error == CUB_NO_TEXT)
 	{
 		close(cub->fd);
