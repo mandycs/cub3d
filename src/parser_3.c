@@ -6,7 +6,7 @@
 /*   By: mancorte <mancorte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 22:25:03 by mancorte          #+#    #+#             */
-/*   Updated: 2025/03/16 19:09:45 by mancorte         ###   ########.fr       */
+/*   Updated: 2025/05/18 01:19:29 by mancorte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int	ft_open_file(char *filename, int *fd, int flag, t_cub *cub)
 	{
 		bfl_fprintf(STDERR, "Error in extension in file '%s'\n", tmp);
 		free(tmp);
-		return (CUB_LKO);
+		return (set_cub_error(cub, flag));
 	}
 	*fd = open(tmp, O_RDONLY);
 	if (*fd == -1)

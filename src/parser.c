@@ -6,7 +6,7 @@
 /*   By: mancorte <mancorte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 22:20:39 by mancorte          #+#    #+#             */
-/*   Updated: 2025/05/18 00:37:04 by mancorte         ###   ########.fr       */
+/*   Updated: 2025/05/18 01:24:00 by mancorte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,13 +129,14 @@ int	ft_extract_text(t_cub *cub)
 		cub->error = CUB_NO_TEXT;
 		return (CUB_LKO);
 	}
-	while (cub->text[cub->count])
+	while (cub->text[cub->count] && cub-> error == 0)
 	{
 		cub->i = 0;
 		while (cub->text[cub->count] && cub->text[cub->count][cub->i]
-			&& cub->flag < 6)
+			&& cub->flag < 6 && cub-> error == 0)
 		{
-			ft_process_texture(cub);
+			if (ft_process_texture(cub) != CUB_OK)
+				return (CUB_LKO);
 			if (cub->text[cub->count] && cub->text[cub->count][cub->i] == '\n')
 				break ;
 			cub->i++;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ribana-b <ribana-b@student.42malaga.com>   +#+  +:+       +#+        */
+/*   By: mancorte <mancorte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/19 14:23:51 by ribana-b          #+#    #+# Malaga      */
-/*   Updated: 2025/01/26 20:01:06 by ribana-b         ###   ########.com      */
+/*   Created: 2025/01/19 14:23:51 by ribana-b          #+#    #+#             */
+/*   Updated: 2025/05/18 01:32:49 by mancorte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,12 @@ static int	game(t_cub *cub)
 	mlx_loop(info.mlx);
 	cub_destroy(&info, cub);
 	return (BFL_OK);
+}
+
+int	set_cub_error(t_cub *cub, int error)
+{
+	cub->error = error;
+	return (error);
 }
 
 int	main(int argc, char **argv)
