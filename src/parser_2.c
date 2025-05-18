@@ -6,7 +6,7 @@
 /*   By: mancorte <mancorte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 22:22:16 by mancorte          #+#    #+#             */
-/*   Updated: 2025/05/18 01:33:00 by mancorte         ###   ########.fr       */
+/*   Updated: 2025/05/18 02:02:27 by mancorte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ void	ft_extract_path_texture(t_cub *cub, int flag)
 		cub->i++;
 	if (cub->text[cub->count][cub->i] != '.' && cub->text[cub->count][cub->i])
 	{
-		bfl_fprintf(STDERR, "Error (Invalid format in Path)\n");
 		cub->error = CUB_NO_PATH;
 		return ;
 	}
@@ -62,10 +61,7 @@ int	ft_extract_color(t_cub *cub, int flag)
 	while (bfl_isblank(cub->text[cub->count][cub->i]))
 		cub->i++;
 	if (!bfl_isdigit(cub->text[cub->count][cub->i]))
-	{
-		bfl_fprintf(STDERR, "Error (Invalid format color)\n");
 		return (set_cub_error(cub, CUB_NO_PATH));
-	}
 	if (flag == 0 && cub->text[cub->count][cub->i])
 	{
 		cub->f = bfl_strdup(&cub->text[cub->count][cub->i]);
