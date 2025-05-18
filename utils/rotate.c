@@ -6,7 +6,7 @@
 /*   By: ribana-b <ribana-b@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 21:26:46 by ribana-b          #+#    #+# Malaga      */
-/*   Updated: 2025/03/17 17:02:32 by ribana-b         ###   ########.com      */
+/*   Updated: 2025/05/18 16:13:50 by ribana-b         ###   ########.com      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ void	rotate_mouse(double xpos, double ypos, void *param)
 
 	(void)ypos;
 	info = param;
+	if (info->is_cursor_free)
+		return ;
 	if (xpos < info->screen.width * 0.5)
 	{
 		info->player.angle = fmod(info->player.angle
