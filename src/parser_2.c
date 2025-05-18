@@ -6,13 +6,13 @@
 /*   By: mancorte <mancorte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 22:22:16 by mancorte          #+#    #+#             */
-/*   Updated: 2025/05/08 11:30:24 by mancorte         ###   ########.fr       */
+/*   Updated: 2025/05/18 02:02:27 by mancorte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
 
-void	ft_process_texture(t_cub *cub)
+int	ft_process_texture(t_cub *cub)
 {
 	if (bfl_strncmp(cub->text[cub->count], "NO", 2) == 0 && cub->no == NULL)
 		ft_extract_path_texture(cub, 0);
@@ -29,6 +29,7 @@ void	ft_process_texture(t_cub *cub)
 		ft_extract_color(cub, 0);
 	else if (bfl_strncmp(cub->text[cub->count], "C", 1) == 0 && cub->c == NULL)
 		ft_extract_color(cub, 1);
+	return (cub->error);
 }
 
 void	ft_extract_path_texture(t_cub *cub, int flag)
@@ -38,7 +39,6 @@ void	ft_extract_path_texture(t_cub *cub, int flag)
 		cub->i++;
 	if (cub->text[cub->count][cub->i] != '.' && cub->text[cub->count][cub->i])
 	{
-		bfl_fprintf(STDERR, "Error (Invalid format in Path)\n");
 		cub->error = CUB_NO_PATH;
 		return ;
 	}
@@ -61,21 +61,18 @@ int	ft_extract_color(t_cub *cub, int flag)
 	while (bfl_isblank(cub->text[cub->count][cub->i]))
 		cub->i++;
 	if (!bfl_isdigit(cub->text[cub->count][cub->i]))
-	{
-		bfl_fprintf(STDERR, "Error (Invalid format color)\n");
-		return (BFL_LKO);
-	}
+		return (set_cub_error(cub, CUB_NO_PATH));
 	if (flag == 0 && cub->text[cub->count][cub->i])
 	{
 		cub->f = bfl_strdup(&cub->text[cub->count][cub->i]);
 		if (ft_extract_color_aux_f(cub) == BFL_LKO)
-			return (BFL_LKO);
+			return (set_cub_error(cub, CUB_NO_PATH));
 	}
 	else if (flag == 1 && cub->text[cub->count][cub->i])
 	{
 		cub->c = bfl_strdup(&cub->text[cub->count][cub->i]);
 		if (ft_extract_color_aux_c(cub) == BFL_LKO)
-			return (BFL_LKO);
+			return (set_cub_error(cub, CUB_NO_PATH));
 	}
 	cub->count++;
 	cub->i = 0;

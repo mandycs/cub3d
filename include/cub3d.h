@@ -6,7 +6,7 @@
 /*   By: mancorte <mancorte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 19:54:19 by ribana-b          #+#    #+#             */
-/*   Updated: 2025/05/17 21:08:16 by ribana-b         ###   ########.com      */
+/*   Updated: 2025/05/18 01:05:02 by mancorte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ typedef struct s_info	t_info;
 /* |                             Enum Section                               | */
 /* @------------------------------------------------------------------------@ */
 
-enum e_exit_status_cub
+enum					e_exit_status_cub
 {
 	CUB_OK = 0,
 	CUB_LKO,
@@ -61,7 +61,6 @@ enum e_exit_status_cub
 	CUB_RIP_READ,
 	CUB_NO_TEXT,
 	CUB_NO_PATH,
-	// Rango de errores de archivo (6–9)
 	CUB_ERROR_PERMISSION_A,
 	CUB_ERROR_PERMISSION_B,
 	CUB_ERROR_PERMISSION_C,
@@ -172,8 +171,8 @@ struct					s_wall
 
 void					ribanab(void);
 int						ft_check_arg(int argc, char **argv, t_cub *cub);
-int						ft_check_extension(char *str);
-int						ft_extract_path(char *filename);
+int						ft_check_extension(char *str, t_cub *cub);
+int						ft_extract_path(char *filename, t_cub *cub);
 int						ft_read_file(t_cub *cub);
 void					ft_print_map(t_cub *cub);
 int						ft_extract_text(t_cub *cub);
@@ -185,7 +184,7 @@ int						ft_extract_map(t_cub *cub);
 void					ft_print_paths(t_cub *cub);
 void					ft_free_cub(t_cub *cub);
 void					initialize_cub(t_cub *cub);
-void					ft_process_texture(t_cub *cub);
+int						ft_process_texture(t_cub *cub);
 int						ft_check_paths(t_cub *cub);
 int						ft_open_file(char *filename, int *fd, int flag,
 							t_cub *cub);
@@ -204,5 +203,6 @@ int						ft_mapextract(t_cub *cub);
 int						ft_is_valid_map_char(char c);
 int						ft_remove_path_spaces(t_cub *cub);
 int						ft_remove_path_spaces_second(t_cub *cub);
+int						set_cub_error(t_cub *cub, int error);
 
 #endif
