@@ -14,7 +14,6 @@ OBJ_DIR = obj/
 BFL_DIR = $(INCLUDE_DIR)BFL/
 SRC_DIR = src/
 LOG_DIR = $(SRC_DIR)log/
-WEAPON_DIR = $(SRC_DIR)weapon/
 UTILS_DIR = utils/
 V2_DIR = $(UTILS_DIR)v2/
 COLORS_DIR = $(UTILS_DIR)colors/
@@ -24,7 +23,6 @@ INCLUDE_FILES = cub3d.h\
 				 cub_log.h\
 				 utils.h\
 				 v2.h\
-				 weapon.h\
 				 colors.h
 
 SRC_FILES = main.c\
@@ -40,11 +38,6 @@ LOG_FILES = cub_log.c\
 			 log_info.c\
 			 log_error.c\
 
-WEAPON_FILES = create_weapon.c\
-				attack.c\
-				switch_weapon.c\
-				reload_ammo.c\
-				create_toolbar.c\
 
 UTILS_FILES = utils.c\
 			   calculate_step.c\

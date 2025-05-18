@@ -6,7 +6,7 @@
 /*   By: mancorte <mancorte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/26 19:54:19 by ribana-b          #+#    #+#             */
-/*   Updated: 2025/05/18 16:08:11 by ribana-b         ###   ########.com      */
+/*   Updated: 2025/05/18 17:06:51 by mancorte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,6 @@
 # include "MLX42.h"
 # include "screen.h"
 # include "utils.h"
-# include "weapon.h"
 # include <fcntl.h>
 # include <math.h>
 # include <stdbool.h>
@@ -114,7 +113,6 @@ struct					s_cub
 struct					s_player
 {
 	t_v2				position;
-	t_toolbar			toolbar;
 	double				speed;
 	int					fov;
 	double				angle;
