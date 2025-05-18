@@ -6,7 +6,7 @@
 /*   By: mancorte <mancorte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 21:26:40 by ribana-b          #+#    #+#             */
-/*   Updated: 2025/05/18 17:06:05 by mancorte         ###   ########.fr       */
+/*   Updated: 2025/05/18 17:24:02 by ribana-b         ###   ########.com      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ bool	create_player(t_player *player, t_cub *cub)
 {
 	player->position.x = cub->pos_y + 0.5;
 	player->position.y = cub->pos_x + 0.5;
-	player->speed = 1;
+	player->speed = 0.6;
 	player->fov = 60;
 	if (cub->map[cub->pos_y][cub->pos_x] == 'E')
 		player->angle = 0;

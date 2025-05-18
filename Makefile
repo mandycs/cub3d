@@ -54,12 +54,7 @@ UTILS_FILES = utils.c\
 			   ray.c\
 			   wall.c\
 			   collision.c\
-
-ifdef WITH_BONUS
-	UTILS_FILES += minimap_bonus.c
-else
-	UTILS_FILES += render.c
-endif
+			   render.c\
 
 V2_FILES = v2add.c\
 			v2create.c\
@@ -84,8 +79,6 @@ COLORS_FILES = black.c\
 				yellow.c\
 
 SCREEN_FILES = create_screen.c\
-
-BONUS_FILES = minimap_bonus.c\
 
 INCLUDE = $(addprefix $(INCLUDE_DIR), $(INCLUDE_FILES))
 SRC = $(addprefix $(SRC_DIR), $(SRC_FILES))
@@ -155,10 +148,7 @@ debug:
 tags:
 	@$(shell ctags $$(find . -name "*.[ch]"))
 
-bonus:
-	@make -s all WITH_BONUS=1
-
-.PHONY: all bonus clean debug fclean re tags
+.PHONY: all clean debug fclean re tags
 
 $(NAME): $(LIBBFL) $(LIBMLX42) $(OBJ_DIR) $(OBJ)
 	$(OBJ_MSG)
