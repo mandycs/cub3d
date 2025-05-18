@@ -6,7 +6,7 @@
 /*   By: ribana-b <ribana-b@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 21:26:35 by ribana-b          #+#    #+# Malaga      */
-/*   Updated: 2025/03/16 22:34:19 by ribana-b         ###   ########.com      */
+/*   Updated: 2025/05/18 16:09:50 by ribana-b         ###   ########.com      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,12 @@ void	update(void *param)
 		is_speed_scaled = true;
 		info->player.speed = info->player.speed * info->mlx->delta_time;
 	}
-	mlx_set_mouse_pos(info->mlx, info->screen.width * 0.5,
-		info->screen.height * 0.5);
-	mlx_set_cursor_mode(info->mlx, MLX_MOUSE_HIDDEN);
+	if (!info->is_cursor_free)
+	{
+		mlx_set_mouse_pos(info->mlx, info->screen.width * 0.5,
+			info->screen.height * 0.5);
+		mlx_set_cursor_mode(info->mlx, MLX_MOUSE_HIDDEN);
+	}
+	else
+		mlx_set_cursor_mode(info->mlx, MLX_MOUSE_NORMAL);
 }

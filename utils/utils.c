@@ -3,20 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ribana-b <ribana-b@student.42malaga.com>   +#+  +:+       +#+        */
+/*   By: mancorte <mancorte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/18 21:26:49 by ribana-b          #+#    #+# Malaga      */
-/*   Updated: 2025/01/25 12:50:39 by ribana-b         ###   ########.com      */
+/*   Created: 2025/01/18 21:26:49 by ribana-b          #+#    #+#             */
+/*   Updated: 2025/05/08 11:15:47 by mancorte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cub3d.h"
-
-void	ribanab(void)
-{
-	printf("Hello World, I am ribana-b from 42 Malaga c:\n");
-	return ;
-}
 
 void	ft_print_map(t_cub *cub)
 {
@@ -72,10 +66,10 @@ void	initialize_cub(t_cub *cub)
 	cub->map = NULL;
 	cub->line = NULL;
 	cub->new_lines = NULL;
-	cub->fd_no = 0;
-	cub->fd_so = 0;
-	cub->fd_we = 0;
-	cub->fd_ea = 0;
+	cub->fd_no = -1;
+	cub->fd_so = -1;
+	cub->fd_we = -1;
+	cub->fd_ea = -1;
 	cub->error = 0;
 	cub->floor_c.a = 255;
 	cub->ceiling_c.a = 255;

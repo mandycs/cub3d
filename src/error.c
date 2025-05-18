@@ -6,7 +6,7 @@
 /*   By: mancorte <mancorte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/20 22:20:22 by mancorte          #+#    #+#             */
-/*   Updated: 2025/03/16 19:10:44 by mancorte         ###   ########.fr       */
+/*   Updated: 2025/05/18 02:03:46 by mancorte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,10 @@ void	ft_check_error(t_cub *cub)
 	if (cub->error == CUB_LKO)
 		exit(CUB_LKO);
 	else if (cub->error == CUB_RIP_READ)
-		close(cub->fd);
+	{
+		if (cub->fd > 0)
+			close(cub->fd);
+	}
 	else if (cub->error == CUB_NO_TEXT)
 	{
 		close(cub->fd);
@@ -26,6 +29,7 @@ void	ft_check_error(t_cub *cub)
 	}
 	else if (cub->error == CUB_NO_PATH)
 	{
+		bfl_fprintf(STDERR, "Error, invalid format color/path texture\n");
 		close(cub->fd);
 		ft_free_cub(cub);
 	}
@@ -35,25 +39,17 @@ void	ft_check_error(t_cub *cub)
 
 void	ft_check_error_2(t_cub *cub)
 {
-	if (cub->error == CUB_ERROR_PATH)
-	{
-		close(cub->fd);
-		ft_free_cub(cub);
+	if (cub->error >= CUB_ERROR_PERMISSION_A
+		&& cub->error <= CUB_ERROR_PERMISSION_D)
+		ft_close_fd(cub);
+	else if (cub->error == CUB_ERROR_PATH)
 		ft_paths_close(cub);
-	}
 	else if (cub->error == CUB_ERROR_COLOR)
-	{
-		ft_free_cub(cub);
 		ft_close_fd(cub);
-	}
 	else if (cub->error == CUB_ERROR_MAP)
-	{
-		ft_free_cub(cub);
 		ft_close_fd(cub);
-	}
 	else if (cub->error == CUB_ERROR_MAP_NOT_CLOSED)
 	{
-		ft_free_cub(cub);
 		ft_close_fd(cub);
 		bfl_free(&cub->map_dup, 2);
 	}
@@ -67,9 +63,15 @@ void	ft_paths_close(t_cub *cub)
 
 void	ft_close_fd(t_cub *cub)
 {
-	close(cub->fd_no);
-	close(cub->fd_so);
-	close(cub->fd_we);
-	close(cub->fd_ea);
-	close(cub->fd);
+	if (cub->fd_no >= 0)
+		close(cub->fd_no);
+	if (cub->fd_so >= 0)
+		close(cub->fd_so);
+	if (cub->fd_we >= 0)
+		close(cub->fd_we);
+	if (cub->fd_ea >= 0)
+		close(cub->fd_ea);
+	if (cub->fd >= 0)
+		close(cub->fd);
+	ft_free_cub(cub);
 }

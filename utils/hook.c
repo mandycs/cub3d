@@ -6,7 +6,7 @@
 /*   By: ribana-b <ribana-b@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 21:26:34 by ribana-b          #+#    #+# Malaga      */
-/*   Updated: 2025/03/16 22:23:51 by ribana-b         ###   ########.com      */
+/*   Updated: 2025/05/18 16:12:33 by ribana-b         ###   ########.com      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,38 +34,22 @@ static void	hook_control_keys(void *param)
 		rotate_right(info);
 }
 
-static void	hook_option_key(mlx_key_data_t keydata, void *param)
+static void	is_key_pressed(mlx_key_data_t keydata, void *param)
 {
 	t_info	*info;
 
 	info = param;
-	if (keydata.key == MLX_KEY_1)
-		switch_weapon(&info->player.toolbar, HAND);
-	if (keydata.key == MLX_KEY_2)
-		switch_weapon(&info->player.toolbar, KNIFE);
-	if (keydata.key == MLX_KEY_3)
-		switch_weapon(&info->player.toolbar, GUN);
-	if (keydata.key == MLX_KEY_4)
-		switch_weapon(&info->player.toolbar, SHOTGUN);
-}
-
-static void	hook_control_mouse(mouse_key_t button, action_t action,
-						modifier_key_t mods, void *param)
-{
-	t_info	*info;
-
-	info = param;
-	(void)mods;
-	if (action == MLX_PRESS && button == MLX_MOUSE_BUTTON_LEFT)
-		attack(info->player.toolbar.current_weapon);
+	if (keydata.key == MLX_KEY_P && keydata.action == MLX_PRESS)
+		bfl_printf("%d\n", (int)(1 / info->mlx->delta_time));
+	else if (keydata.key == MLX_KEY_C && keydata.action == MLX_PRESS)
+		info->is_cursor_free = !info->is_cursor_free;
 }
 
 void	hook_loader(t_info *info)
 {
 	mlx_loop_hook(info->mlx, update, info);
 	mlx_loop_hook(info->mlx, hook_control_keys, info);
-	mlx_key_hook(info->mlx, hook_option_key, info);
-	mlx_mouse_hook(info->mlx, hook_control_mouse, info);
+	mlx_key_hook(info->mlx, is_key_pressed, info);
 	mlx_cursor_hook(info->mlx, rotate_mouse, info);
 	mlx_loop_hook(info->mlx, clear_background, info);
 	mlx_loop_hook(info->mlx, render, info);

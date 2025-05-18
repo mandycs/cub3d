@@ -2,7 +2,11 @@
 # |                                 Macros                                   | #
 # @--------------------------------------------------------------------------@ #
 
-NAME = cub3d
+ifdef WITH_BONUS
+	NAME = cub3d_bonus
+else
+	NAME = cub3d
+endif
 
 INCLUDE_DIR = include/
 MLX42_DIR = $(INCLUDE_DIR)MLX42/
@@ -43,12 +47,8 @@ WEAPON_FILES = create_weapon.c\
 				create_toolbar.c\
 
 UTILS_FILES = utils.c\
-			   deg_to_rads.c\
 			   calculate_step.c\
-			   wall_collision.c\
-			   calculate_distance.c\
 			   texture.c\
-			   render.c\
 			   render2.c\
 			   draw.c\
 			   logic.c\
@@ -61,6 +61,12 @@ UTILS_FILES = utils.c\
 			   ray.c\
 			   wall.c\
 			   collision.c\
+
+ifdef WITH_BONUS
+	UTILS_FILES += minimap_bonus.c
+else
+	UTILS_FILES += render.c
+endif
 
 V2_FILES = v2add.c\
 			v2create.c\
@@ -85,6 +91,8 @@ COLORS_FILES = black.c\
 				yellow.c\
 
 SCREEN_FILES = create_screen.c\
+
+BONUS_FILES = minimap_bonus.c\
 
 INCLUDE = $(addprefix $(INCLUDE_DIR), $(INCLUDE_FILES))
 SRC = $(addprefix $(SRC_DIR), $(SRC_FILES))
@@ -139,7 +147,7 @@ clean:
 
 fclean:
 	@make -s clean
-	@$(RM) $(NAME) tags
+	@$(RM) $(NAME) $(NAME)_bonus tags
 	@make -s fclean -C $(BFL_DIR)
 	$(FCLEAN_MSG)
 
@@ -155,7 +163,7 @@ tags:
 	@$(shell ctags $$(find . -name "*.[ch]"))
 
 bonus:
-	@make -s -C bonus_part
+	@make -s all WITH_BONUS=1
 
 .PHONY: all bonus clean debug fclean re tags
 
