@@ -21,6 +21,7 @@
 # define WALL '1'
 # define FILL '.'
 # define PIXEL_SIZE 160
+# define PLAYER_RADIUS 0.2
 // PI / 180, but norminette doesn't allow to do M_PI / 180
 # define DEG2RAD 0.017453292519943295
 

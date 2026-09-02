@@ -99,10 +99,7 @@ void	new_render_view(t_info *info, double rangle, int x, t_color *color);
 void	new_render_minimap(t_screen *screen, t_map *map, t_player *player);
 void	new_render_player(t_screen *screen, t_player *player, t_map *map);
 
-void	collision_forward(t_player *player, t_map *map);
-void	collision_right(t_player *player, t_map *map, double angle);
-void	collision_left(t_player *player, t_map *map, double angle);
-void	collision_backward(t_player *player, t_map *map);
+void	resolve_movement(t_player *player, t_map *map, t_v2 delta);
 
 void	rotate_left_mouse(t_info *info);
 void	rotate_right_mouse(t_info *info);
