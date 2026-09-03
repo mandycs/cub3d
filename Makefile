@@ -50,16 +50,12 @@ UTILS_FILES = utils.c\
 			   rotate.c\
 			   map.c\
 			   hook.c\
+			   cub_loop.c\
 			   cub_resources.c\
 			   ray.c\
 			   wall.c\
 			   collision.c\
-
-ifdef WITH_BONUS
-	UTILS_FILES += minimap_bonus.c
-else
-	UTILS_FILES += render.c
-endif
+			   render.c\
 
 V2_FILES = v2add.c\
 			v2create.c\
@@ -84,8 +80,6 @@ COLORS_FILES = black.c\
 				yellow.c\
 
 SCREEN_FILES = create_screen.c\
-
-BONUS_FILES = minimap_bonus.c\
 
 INCLUDE = $(addprefix $(INCLUDE_DIR), $(INCLUDE_FILES))
 SRC = $(addprefix $(SRC_DIR), $(SRC_FILES))
@@ -124,6 +118,18 @@ CPPFLAGS = -I $(INCLUDE_DIR) -I $(BFL_DIR)include -I $(MLX42_DIR)include/MLX42
 LDFLAGS = -L $(BFL_DIR) -L $(MLX42_DIR)build
 LDLIBS = -lBFL -lmlx42 -lglfw -pthread -lm -ldl
 
+EMCC = emcc
+WEB_DIR = web/
+WASM_BUILD_DIR = $(MLX42_DIR)build_wasm/
+LIBMLX42_WASM = $(WASM_BUILD_DIR)libmlx42.a
+LIBBFL_WASM = $(BFL_DIR)libBFL_wasm.a
+WASM_PIXEL_SIZE ?= 60
+
+WASM_CFLAGS = -O3 -Wall -Wextra -DPIXEL_SIZE=$(WASM_PIXEL_SIZE)
+WASM_LDFLAGS = -sUSE_GLFW=3 -sUSE_WEBGL2=1 -sFULL_ES3=1 -sWASM=1 \
+				-sALLOW_MEMORY_GROWTH -sEXIT_RUNTIME=0 \
+				--preload-file maps --preload-file textures
+
 RM := rm -rf
 
 # @--------------------------------------------------------------------------@ #
@@ -155,10 +161,20 @@ debug:
 tags:
 	@$(shell ctags $$(find . -name "*.[ch]"))
 
-bonus:
-	@make -s all WITH_BONUS=1
+wasm: $(LIBMLX42_WASM) $(LIBBFL_WASM)
+	@mkdir -p $(WEB_DIR)
+	$(EMCC) -o $(WEB_DIR)cub3d.js \
+		$(SRC) $(LOG) $(UTILS) $(V2) $(COLORS) $(SCREEN) \
+		$(WASM_CFLAGS) $(CPPFLAGS) \
+		$(LIBMLX42_WASM) $(LIBBFL_WASM) $(WASM_LDFLAGS)
+	$(OUTPUT_MSG)
 
-.PHONY: all bonus clean debug fclean re tags
+wasm-clean:
+	@$(RM) $(WASM_BUILD_DIR)
+	@$(RM) $(BFL_DIR)libBFL_wasm.a $(BFL_DIR)obj_wasm
+	@$(RM) $(WEB_DIR)cub3d.js $(WEB_DIR)cub3d.wasm $(WEB_DIR)cub3d.data
+
+.PHONY: all clean debug fclean re tags wasm wasm-clean
 
 $(NAME): $(LIBBFL) $(LIBMLX42) $(OBJ_DIR) $(OBJ)
 	$(OBJ_MSG)
@@ -170,6 +186,12 @@ $(LIBMLX42): $(MLX42_DIR)
 	@cmake -S include/MLX42 -B include/MLX42/build
 	@cmake --build include/MLX42/build -j
 
+$(LIBMLX42_WASM):
+	@git submodule update --init --recursive
+	emcmake cmake -S $(MLX42_DIR) -B $(WASM_BUILD_DIR) \
+		-DCMAKE_C_FLAGS="-DEMSCRIPTEN"
+	cmake --build $(WASM_BUILD_DIR) -j
+
 ifdef WITH_DEBUG
 $(LIBBFL):
 	@make -j -s debug -C $(BFL_DIR)
@@ -177,6 +199,10 @@ else
 $(LIBBFL):
 	@make -j -s -C $(BFL_DIR)
 endif
+
+$(LIBBFL_WASM):
+	@make -j -s -C $(BFL_DIR) \
+		CC=emcc AR=emar NAME=libBFL_wasm.a OBJ_DIR=./obj_wasm/
 
 $(OBJ_DIR):
 	@mkdir -p $(OBJ_DIR)

@@ -6,108 +6,39 @@
 /*   By: ribana-b <ribana-b@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/16 21:51:10 by ribana-b          #+#    #+# Malaga      */
-/*   Updated: 2025/03/16 21:56:23 by ribana-b         ###   ########.com      */
+/*   Updated: 2026/09/03 02:34:25 by ribana-b         ###   ########.com      */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.h"
 
-void	collision_forward(t_player *player, t_map *map)
+static bool	is_wall(t_map *map, double x, double y)
 {
-	int	x;
-	int	y;
+	int	row;
+	int	col;
 
-	x = (int)(player->position.x - 0.5);
-	y = (int)(player->position.y);
-	if (x < 0 || x >= map->rows
-		|| y < 0 || y >= map->cols
-		|| map->data[x][y] == '1')
-	{
-		player->position.x -= player->speed * sin(player->angle * DEG2RAD);
-		player->position.y -= player->speed * cos(player->angle * DEG2RAD);
-	}
-	x = (int)(player->position.x);
-	y = (int)(player->position.y - 0.5);
-	if (x < 0 || x >= map->rows
-		|| y < 0 || y >= map->cols
-		|| map->data[x][y] == '1')
-	{
-		player->position.x -= player->speed * sin(player->angle * DEG2RAD);
-		player->position.y -= player->speed * cos(player->angle * DEG2RAD);
-	}
+	row = (int)x;
+	col = (int)y;
+	return (row < 0 || row >= map->rows
+		|| col < 0 || col >= map->cols
+		|| map->data[row][col] == WALL);
 }
 
-void	collision_right(t_player *player, t_map *map, double angle)
+void	resolve_movement(t_player *player, t_map *map, t_v2 delta)
 {
-	int	x;
-	int	y;
+	double	edge_x;
+	double	edge_y;
 
-	x = (int)(player->position.x - 0.5);
-	y = (int)(player->position.y);
-	if (x < 0 || x >= map->rows
-		|| y < 0 || y >= map->cols
-		|| map->data[x][y] == '1')
-	{
-		player->position.x -= player->speed * sin(angle * DEG2RAD);
-		player->position.y -= player->speed * cos(angle * DEG2RAD);
-	}
-	x = (int)(player->position.x);
-	y = (int)(player->position.y - 0.5);
-	if (x < 0 || x >= map->rows
-		|| y < 0 || y >= map->cols
-		|| map->data[x][y] == '1')
-	{
-		player->position.x -= player->speed * sin(angle * DEG2RAD);
-		player->position.y -= player->speed * cos(angle * DEG2RAD);
-	}
-}
-
-void	collision_left(t_player *player, t_map *map, double angle)
-{
-	int	x;
-	int	y;
-
-	x = (int)(player->position.x - 0.5);
-	y = (int)(player->position.y);
-	if (x < 0 || x >= map->rows
-		|| y < 0 || y >= map->cols
-		|| map->data[x][y] == '1')
-	{
-		player->position.x += player->speed * sin(angle * DEG2RAD);
-		player->position.y += player->speed * cos(angle * DEG2RAD);
-	}
-	x = (int)(player->position.x);
-	y = (int)(player->position.y - 0.5);
-	if (x < 0 || x >= map->rows
-		|| y < 0 || y >= map->cols
-		|| map->data[x][y] == '1')
-	{
-		player->position.x += player->speed * sin(angle * DEG2RAD);
-		player->position.y += player->speed * cos(angle * DEG2RAD);
-	}
-}
-
-void	collision_backward(t_player *player, t_map *map)
-{
-	int	x;
-	int	y;
-
-	x = (int)(player->position.x - 0.5);
-	y = (int)(player->position.y);
-	if (x < 0 || x >= map->rows
-		|| y < 0 || y >= map->cols
-		|| map->data[x][y] == '1')
-	{
-		player->position.x += player->speed * sin(player->angle * DEG2RAD);
-		player->position.y += player->speed * cos(player->angle * DEG2RAD);
-	}
-	x = (int)(player->position.x);
-	y = (int)(player->position.y - 0.5);
-	if (x < 0 || x >= map->rows
-		|| y < 0 || y >= map->cols
-		|| map->data[x][y] == '1')
-	{
-		player->position.x += player->speed * sin(player->angle * DEG2RAD);
-		player->position.y += player->speed * cos(player->angle * DEG2RAD);
-	}
+	edge_x = PLAYER_RADIUS;
+	if (delta.x < 0)
+		edge_x = -PLAYER_RADIUS;
+	edge_y = PLAYER_RADIUS;
+	if (delta.y < 0)
+		edge_y = -PLAYER_RADIUS;
+	if (!is_wall(map, player->position.x + delta.x + edge_x,
+			player->position.y))
+		player->position.x += delta.x;
+	if (!is_wall(map, player->position.x,
+			player->position.y + delta.y + edge_y))
+		player->position.y += delta.y;
 }

@@ -6,11 +6,35 @@
 /*   By: ribana-b <ribana-b@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 21:26:34 by ribana-b          #+#    #+# Malaga      */
-/*   Updated: 2025/05/18 16:12:33 by ribana-b         ###   ########.com      */
+/*   Updated: 2026/09/03 03:46:20 by ribana-b         ###   ########.com      */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "utils.h"
+
+static void	clear_background(void *param)
+{
+	t_info			*info;
+	unsigned int	i;
+
+	info = param;
+	i = 0;
+	while (i < info->screen.buffer->width * info->screen.buffer->height
+		* sizeof(int))
+	{
+		set_color(&info->screen.buffer->pixels[i], darkgray());
+		i += 4;
+	}
+}
+
+static void	swap_buffers(void *param)
+{
+	t_info	*info;
+
+	info = param;
+	bfl_memcpy(info->screen.view->pixels, info->screen.buffer->pixels,
+		info->screen.width * info->screen.height * sizeof(int));
+}
 
 static void	hook_control_keys(void *param)
 {
@@ -39,9 +63,7 @@ static void	is_key_pressed(mlx_key_data_t keydata, void *param)
 	t_info	*info;
 
 	info = param;
-	if (keydata.key == MLX_KEY_P && keydata.action == MLX_PRESS)
-		bfl_printf("%d\n", (int)(1 / info->mlx->delta_time));
-	else if (keydata.key == MLX_KEY_C && keydata.action == MLX_PRESS)
+	if (keydata.key == MLX_KEY_C && keydata.action == MLX_PRESS)
 		info->is_cursor_free = !info->is_cursor_free;
 }
 
