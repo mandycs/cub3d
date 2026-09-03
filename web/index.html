@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>cub3d</title>
+		<style>
+body {
+	margin: auto;
+	padding-top: 1rem;
+	width: 100%;
+	min-height: 100dvh;
+	background-color: #121212;
+	color: #ffffff;
+	font-family: 'Arial', sans-serif;
+	max-width: 65rem;
+	overflow: hidden;
+}
+
+		header {
+			text-align: center;
+			margin-bottom: 20px;
+		}
+
+		h1 {
+			margin: 0;
+			font-size: 2.5em;
+			text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+		}
+
+		.controls {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			gap: 0.75rem;
+			margin-bottom: 1rem;
+		}
+
+		select {
+			background: #333;
+			color: #fff;
+			border: 1px solid #666;
+			border-radius: 4px;
+			padding: 4px 8px;
+			font-size: 1em;
+		}
+
+		.canvas-container {
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+			position: relative;
+		}
+
+		canvas {
+			width: 100%;
+			max-width: 960px;
+			height: auto;
+			aspect-ratio: 16 / 9;
+			image-rendering: pixelated;
+		}
+
+		.loading {
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			font-size: 1.5em;
+			color: #1e90ff;
+			font-weight: bold;
+		}
+
+		.instructions {
+			text-align: center;
+			margin: 20px;
+		}
+
+		.instructions p {
+			font-size: 1.2em;
+		}
+
+		kbd {
+			background-color: #333;
+			border-radius: 3px;
+			border: 1px solid #666;
+			box-shadow: 0 1px 0 #666, 0 1px 0 1px rgba(255, 255, 255, 0.1);
+			color: #fff;
+			display: inline-block;
+			font-size: 1em;
+			line-height: 1.4;
+			padding: 2px 6px;
+			margin: 0 2px;
+			white-space: nowrap;
+		}
+		</style>
+	</head>
+
+	<body>
+		<header>
+			<h1>cub3d</h1>
+		</header>
+
+		<div class="controls">
+			<label for="map">Mapa</label>
+			<select id="map"></select>
+		</div>
+
+		<div class="canvas-container">
+			<span class="loading" id="loading">Loading...</span>
+			<canvas width="960" height="540" id="canvas" tabindex="-1"></canvas>
+		</div>
+
+		<div class="instructions">
+			<p>
+			<kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> moverse &middot;
+			rat&oacute;n o <kbd>&larr;</kbd><kbd>&rarr;</kbd> girar &middot;
+			<kbd>C</kbd> liberar cursor &middot; <kbd>P</kbd> FPS &middot;
+			<kbd>Q</kbd> salir
+			</p>
+			<p>Haz click en el canvas para capturar el rat&oacute;n.</p>
+		</div>
+
+		<script>
+			var MAPS = ['ex.cub', 'a.cub', 'big.cub', 'big2.cub',
+				'large.cub', 'map1.cub', 'map2.cub'];
+
+			var current = new URLSearchParams(location.search).get('map');
+			if (MAPS.indexOf(current) === -1) {
+				current = MAPS[0];
+			}
+
+			var select = document.getElementById('map');
+			MAPS.forEach(function (name) {
+				var option = document.createElement('option');
+				option.value = name;
+				option.textContent = name;
+				option.selected = (name === current);
+				select.appendChild(option);
+			});
+			select.addEventListener('change', function () {
+				location.search = '?map=' + encodeURIComponent(select.value);
+			});
+
+			var Module = {
+				arguments: ['maps/' + current],
+				onRuntimeInitialized: () => {
+					console.log("Emscripten module initialized");
+					document.getElementById('loading').style.display = 'none';
+				},
+				print: (text) => console.log(text),
+				printErr: (text) => console.error(text),
+				canvas: (() => {
+					var canvas = document.getElementById('canvas');
+					canvas.addEventListener("webglcontextlost", function (e) {
+						alert('WebGL context lost. Reload the page.');
+						e.preventDefault();
+					}, false);
+					return canvas;
+				})()
+			};
+		</script>
+		<script src="cub3d.js"></script>
+	</body>
+
+</html>
