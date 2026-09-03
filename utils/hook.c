@@ -6,7 +6,7 @@
 /*   By: ribana-b <ribana-b@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 21:26:34 by ribana-b          #+#    #+# Malaga      */
-/*   Updated: 2026/09/03 02:39:08 by ribana-b         ###   ########.com      */
+/*   Updated: 2026/09/03 03:46:20 by ribana-b         ###   ########.com      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,9 +63,7 @@ static void	is_key_pressed(mlx_key_data_t keydata, void *param)
 	t_info	*info;
 
 	info = param;
-	if (keydata.key == MLX_KEY_P && keydata.action == MLX_PRESS)
-		bfl_printf("%d\n", (int)(1 / info->mlx->delta_time));
-	else if (keydata.key == MLX_KEY_C && keydata.action == MLX_PRESS)
+	if (keydata.key == MLX_KEY_C && keydata.action == MLX_PRESS)
 		info->is_cursor_free = !info->is_cursor_free;
 }
 
