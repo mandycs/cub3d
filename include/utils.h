@@ -6,7 +6,7 @@
 /*   By: ribana-b <ribana-b@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/18 22:15:58 by ribana-b          #+#    #+# Malaga      */
-/*   Updated: 2026/09/03 02:39:19 by ribana-b         ###   ########.com      */
+/*   Updated: 2025/03/17 17:01:44 by ribana-b         ###   ########.com      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,8 @@ void	draw_rectangle(mlx_image_t *img, t_v2 position, t_v2 size,
 			t_color color);
 void	draw_line(mlx_image_t *img, t_v2 start, t_v2 end, t_color color);
 
+void	clear_background(void *param);
+void	swap_buffers(void *param);
 void	update(void *param);
 
 void	move_left(t_info *info);
@@ -71,8 +73,6 @@ void	rotate_left(t_info *info);
 void	rotate_right(t_info *info);
 
 void	hook_loader(t_info *info);
-
-void	cub_run_loop(t_info *info);
 
 bool	cub_create(t_info *info, t_cub *cub);
 void	cub_close_window(mlx_t *mlx);
@@ -99,7 +99,10 @@ void	new_render_view(t_info *info, double rangle, int x, t_color *color);
 void	new_render_minimap(t_screen *screen, t_map *map, t_player *player);
 void	new_render_player(t_screen *screen, t_player *player, t_map *map);
 
-void	resolve_movement(t_player *player, t_map *map, t_v2 delta);
+void	collision_forward(t_player *player, t_map *map);
+void	collision_right(t_player *player, t_map *map, double angle);
+void	collision_left(t_player *player, t_map *map, double angle);
+void	collision_backward(t_player *player, t_map *map);
 
 void	rotate_left_mouse(t_info *info);
 void	rotate_right_mouse(t_info *info);

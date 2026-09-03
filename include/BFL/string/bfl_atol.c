@@ -6,7 +6,7 @@
 /*   By: ribana-b <ribana-b@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/22 15:46:56 by ribana-b          #+#    #+# Malaga      */
-/*   Updated: 2026/09/03 03:02:14 by ribana-b         ###   ########.com      */
+/*   Updated: 2024/06/02 11:20:54 by ribana-b         ###   ########.com      */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ long int	bfl_atol(const char *str)
 	if (!str)
 		return (0);
 	if (!bfl_strncmp(str, "-9223372036854775808", 20))
-		return ((long)(-9223372036854775807 - 1));
+		return (-9223372036854775807 - 1);
 	sign = 1;
 	while (*str == '\n' || *str == '\t' || *str == '\v' || *str == ' '
 		|| *str == '\f' || *str == '\r')

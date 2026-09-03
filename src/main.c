@@ -6,7 +6,7 @@
 /*   By: mancorte <mancorte@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/19 14:23:51 by ribana-b          #+#    #+#             */
-/*   Updated: 2026/09/03 02:29:57 by ribana-b         ###   ########.com      */
+/*   Updated: 2025/05/18 01:32:49 by mancorte         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ static int	game(t_cub *cub)
 		return (log_error("Couldn't draw the screen"));
 	}
 	hook_loader(&info);
-	cub_run_loop(&info);
+	mlx_loop(info.mlx);
 	cub_destroy(&info, cub);
 	return (BFL_OK);
 }
