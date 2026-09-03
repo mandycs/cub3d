@@ -125,7 +125,6 @@ OBJ = $(patsubst $(BOOL_DIR)%.c, $(OBJ_DIR)%.o, $(BOOL)) \
 		$(patsubst $(STRING_DIR)%.c, $(OBJ_DIR)%.o, $(STRING))
 
 CC = clang
-AR = ar
 
 ifdef WITH_DEBUG
 	CFLAGS = -Wall -Wextra -Werror -gdwarf-2
@@ -164,7 +163,7 @@ debug:
 
 $(NAME): $(OBJ_DIR) $(OBJ)
 	@$(OBJ_MSG)
-	@$(AR) rcs $@ $(OBJ)
+	@ar rcs $@ $(OBJ)
 	@$(OUTPUT_MSG)
 
 $(OBJ_DIR):
